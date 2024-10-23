@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/const/resource.dart';
@@ -38,28 +39,33 @@ class EmptyBodyMessageWidget extends GetWidget<ChatController> {
             // Upload Image
             Align(
               alignment: Alignment.center,
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: AppColor.primary.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Image.asset(
-                        R.ASSETS_ICON_IC_UPLOAD_IMG_PNG,
+              child: InkWell(
+                onTap: (){
+                  controller.onUploadImage();
+                },
+                child: Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    color: AppColor.primary.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          R.ASSETS_ICON_IC_UPLOAD_IMG_PNG,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "Upload Image",
-                      style: AppStyle.boldStyle(),
-                    ),
-                  ],
+                      const SizedBox(height: 8),
+                      Text(
+                        "Upload Image",
+                        style: AppStyle.boldStyle(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
