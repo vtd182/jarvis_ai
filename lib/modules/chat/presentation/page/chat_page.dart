@@ -18,30 +18,31 @@ class ChatPage extends StatelessWidget {
     return Container(
         color: Colors.white,
         child: SafeArea(
-          child: GestureDetector(
-            onTap: () {
-              controller.inputMessageFocusNode.unfocus();
-            },
-            child: Scaffold(
-              key: drawerController.scaffoldKey,
+            child: GestureDetector(
+          onTap: () {
+            controller.inputMessageFocusNode.unfocus();
+          },
+          child: Scaffold(
+            key: drawerController.scaffoldKey,
 
-              // Side menu
-              drawer: const AppDrawer(),
+            // Side menu
+            drawer: const AppDrawer(),
 
-              body: const Column(
-                children: [
-                  // Header
-                  HeaderChatWidget(),
+            body: const Column(
+              children: [
+                SizedBox(height: 32),
 
-                  // Body
-                  EmptyBodyMessageWidget(),
+                // Header
+                HeaderChatWidget(),
 
-                  // Input message
-                  InputMessageWidget(),
-                ],
-              ),
+                // Body
+                EmptyBodyMessageWidget(),
+
+                // Input message
+                InputMessageWidget(),
+              ],
             ),
           ),
-        ));
+        )));
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/modules/chat/presentation/controller/chat_controller.dart';
-import 'package:jarvis_ai/modules/chat/presentation/widgets/promt_library_bottomsheet.dart';
+import 'package:jarvis_ai/modules/chat/presentation/widgets/input_mesage_action_bottom_sheet.dart';
 
 class InputMessageWidget extends GetWidget<ChatController> {
   const InputMessageWidget({super.key});
@@ -29,7 +29,9 @@ class InputMessageWidget extends GetWidget<ChatController> {
         children: [
           IconButton(
             onPressed: () {
-              Get.bottomSheet(const PromtLibraryBottomsheet());
+              controller.inputMessageFocusNode.unfocus();
+              Get.bottomSheet(const InputMesageActionBottomSheet());
+              // Get.bottomSheet(const PromtLibraryBottomsheet());
             },
             icon: const Icon(Icons.add_circle_outline_rounded),
             color: Colors.grey,
@@ -37,6 +39,7 @@ class InputMessageWidget extends GetWidget<ChatController> {
           ),
           Expanded(
             child: TextField(
+              controller: controller.inputMessageController,
               focusNode: controller.inputMessageFocusNode,
               decoration: const InputDecoration(
                 hintText: "Chat anything with Jarvis...",
