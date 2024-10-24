@@ -3,11 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:jarvis_ai/modules/app.dart';
 
 void main() async {
-  
   WidgetsFlutterBinding.ensureInitialized();
 
   await initSystem();
-
 
   runApp(const App());
 }
@@ -21,10 +19,7 @@ Future<void> initSystem() async {
     ),
   );
 
-  SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown
-  ]);
+  SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   SystemChrome.setSystemUIChangeCallback((systemOverlaysAreVisible) async {
     if (systemOverlaysAreVisible) {

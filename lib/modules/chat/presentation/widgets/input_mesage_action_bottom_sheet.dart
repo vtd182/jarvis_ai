@@ -60,7 +60,7 @@ class InputMesageActionBottomSheet extends GetWidget<ChatController> {
           ),
           const SizedBox(height: 8),
           InkWell(
-            onTap: (){
+            onTap: () {
               Get.bottomSheet(const PromtLibraryBottomsheet());
             },
             child: Row(

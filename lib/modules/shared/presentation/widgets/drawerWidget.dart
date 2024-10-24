@@ -39,9 +39,7 @@ class FunctionButtonsWidget extends GetView<AppDrawerController> {
           vertical: 10,
         ),
         decoration: BoxDecoration(
-          color: controller.indexFunctionSelected.value == title
-              ? AppColor.blueBold.withOpacity(0.2)
-              : Colors.transparent,
+          color: controller.indexFunctionSelected.value == title ? AppColor.blueBold.withOpacity(0.2) : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(

@@ -27,8 +27,7 @@ class HistoryChatWidget extends GetView<AppDrawerController> {
           child: Container(
             width: double.maxFinite,
             decoration: BoxDecoration(
-              color: controller.indexHistorySelected.value == index &&
-                      controller.indexFunctionSelected.value == "History"
+              color: controller.indexHistorySelected.value == index && controller.indexFunctionSelected.value == "History"
                   ? AppColor.blueBold.withOpacity(0.2)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(8),

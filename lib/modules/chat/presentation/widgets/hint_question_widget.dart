@@ -4,8 +4,7 @@ import 'package:jarvis_ai/core/styles/app_style.dart';
 import 'package:jarvis_ai/modules/app.dart';
 
 class HintQuestionWidget extends StatelessWidget {
-  const HintQuestionWidget(
-      {super.key, required this.title, required this.subTitle});
+  const HintQuestionWidget({super.key, required this.title, required this.subTitle});
   final String title;
   final String subTitle;
   @override

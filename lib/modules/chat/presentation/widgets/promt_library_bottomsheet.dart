@@ -41,8 +41,7 @@ class PromtLibraryBottomsheet extends GetWidget<ChatController> {
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                        colors: AppColor.primaryLinearGradient),
+                    gradient: const LinearGradient(colors: AppColor.primaryLinearGradient),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(
@@ -89,9 +88,7 @@ class PromtLibraryBottomsheet extends GetWidget<ChatController> {
           ),
           const SizedBox(height: 8),
           Obx(
-            () => controller.indexTabPromt.value == 0
-                ? const PrivatePromptTabViewItem()
-                : const PublicPromptTabViewItem(),
+            () => controller.indexTabPromt.value == 0 ? const PrivatePromptTabViewItem() : const PublicPromptTabViewItem(),
           )
         ],
       ),

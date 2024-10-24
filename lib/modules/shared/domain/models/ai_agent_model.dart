@@ -6,5 +6,6 @@ class AiAgentModel {
   String? prompt;
   List<String>? attachmentPaths;
 
-  AiAgentModel({required this.name,required this.description, required this.numberToken, required this.imagePath, this.prompt, this.attachmentPaths});
+  AiAgentModel(
+      {required this.name, required this.description, required this.numberToken, required this.imagePath, this.prompt, this.attachmentPaths});
 }

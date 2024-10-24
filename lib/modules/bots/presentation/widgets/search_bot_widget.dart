@@ -18,4 +18,3 @@ class SearchBotWidget extends StatelessWidget {
     );
   }
 }
-

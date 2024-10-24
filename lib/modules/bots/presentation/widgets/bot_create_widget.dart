@@ -18,32 +18,16 @@ class BotsCreateWidget extends StatelessWidget {
           children: [
             // Bot
             Column(children: [
-              const Text('Create Bot',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text('Create Bot', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
+              const TextField(decoration: InputDecoration(labelText: 'Bot Name', border: OutlineInputBorder(), hintText: 'Enter bot name')),
               const SizedBox(height: 20),
               const TextField(
-                  decoration: InputDecoration(
-                      labelText: 'Bot Name',
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter bot name')),
+                  decoration: InputDecoration(labelText: 'Bot Description', border: OutlineInputBorder(), hintText: 'Enter bot description')),
               const SizedBox(height: 20),
-              const TextField(
-                  decoration: InputDecoration(
-                      labelText: 'Bot Description',
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter bot description')),
+              const TextField(decoration: InputDecoration(labelText: 'Bot Image', border: OutlineInputBorder(), hintText: 'Enter bot image')),
               const SizedBox(height: 20),
-              const TextField(
-                  decoration: InputDecoration(
-                      labelText: 'Bot Image',
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter bot image')),
-              const SizedBox(height: 20),
-              const TextField(
-                  decoration: InputDecoration(
-                      labelText: 'Bot prompt',
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter bot prompt')),
+              const TextField(decoration: InputDecoration(labelText: 'Bot prompt', border: OutlineInputBorder(), hintText: 'Enter bot prompt')),
               const SizedBox(height: 20),
               //Ok button
               ElevatedButton(

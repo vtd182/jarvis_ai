@@ -10,8 +10,7 @@ class PublicPromptTabViewItem extends StatefulWidget {
   const PublicPromptTabViewItem({super.key});
 
   @override
-  State<PublicPromptTabViewItem> createState() =>
-      _PublicPromptTabViewItemState();
+  State<PublicPromptTabViewItem> createState() => _PublicPromptTabViewItemState();
 }
 
 class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
@@ -50,8 +49,7 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                       size: 22,
                     ),
                     hintText: "Search",
-                    hintStyle: AppStyle.boldStyle(
-                        color: AppColor.greyText, fontSize: 14),
+                    hintStyle: AppStyle.boldStyle(color: AppColor.greyText, fontSize: 14),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 4,
@@ -108,17 +106,12 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(24),
-                        color: controller.indexCategoryPublicPrompt.value == index
-                            ? AppColor.blueBold
-                            : AppColor.greyBackground,
+                        color: controller.indexCategoryPublicPrompt.value == index ? AppColor.blueBold : AppColor.greyBackground,
                       ),
                       child: Text(
                         controller.listCategoryPublicPrompt[index],
                         style: AppStyle.boldStyle(
-                          color:
-                              controller.indexCategoryPublicPrompt.value == index
-                                  ? Colors.white
-                                  : Colors.black,
+                          color: controller.indexCategoryPublicPrompt.value == index ? Colors.white : Colors.black,
                           fontSize: 14,
                         ),
                       ),

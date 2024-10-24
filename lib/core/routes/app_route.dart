@@ -7,7 +7,7 @@ class AppRoute {
   static const botsRoute = '/bots';
 
   static final listPages = [
-    GetPage(name: chatRoute, page: () =>  ChatPage()),
-    GetPage(name: botsRoute, page: () =>  BotPage()),
+    GetPage(name: chatRoute, page: () => ChatPage()),
+    GetPage(name: botsRoute, page: () => BotPage()),
   ];
 }

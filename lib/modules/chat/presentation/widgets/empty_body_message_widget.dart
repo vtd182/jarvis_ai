@@ -32,15 +32,14 @@ class EmptyBodyMessageWidget extends GetWidget<ChatController> {
               style: AppStyle.boldStyle(fontSize: 26),
             ),
             const SizedBox(height: 4),
-            const Text(
-                "I’m Jarvis, your personal assistant.\nHere are some of my amazing powers"),
+            const Text("I’m Jarvis, your personal assistant.\nHere are some of my amazing powers"),
             const SizedBox(height: 8),
 
             // Upload Image
             Align(
               alignment: Alignment.center,
               child: InkWell(
-                onTap: (){
+                onTap: () {
                   controller.onUploadImage();
                 },
                 child: Container(
@@ -50,8 +49,7 @@ class EmptyBodyMessageWidget extends GetWidget<ChatController> {
                     color: AppColor.primary.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: Column(
                     children: [
                       Expanded(

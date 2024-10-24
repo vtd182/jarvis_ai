@@ -28,8 +28,7 @@ class PrivatePromptTabViewItem extends GetWidget<ChatController> {
                 size: 22,
               ),
               hintText: "Search",
-              hintStyle:
-                  AppStyle.boldStyle(color: AppColor.greyText, fontSize: 14),
+              hintStyle: AppStyle.boldStyle(color: AppColor.greyText, fontSize: 14),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
                 vertical: 4,

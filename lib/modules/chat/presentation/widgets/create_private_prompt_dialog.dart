@@ -61,8 +61,7 @@ class CreatePrivatePromptDialog extends GetWidget<ChatController> {
                     ),
                     TextSpan(
                       text: " Use square brackets [] to specify user input.",
-                      style: AppStyle.regularStyle(color: Colors.black)
-                          .copyWith(fontWeight: FontWeight.w500),
+                      style: AppStyle.regularStyle(color: Colors.black).copyWith(fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
@@ -79,8 +78,7 @@ class CreatePrivatePromptDialog extends GetWidget<ChatController> {
                 fillColor: AppColor.greyBackground,
                 filled: true,
                 hintMaxLines: 2,
-                hintText:
-                    "e.g: Write an article [TOPIC], make sure to inclue these keywords: [KEYWORDS]",
+                hintText: "e.g: Write an article [TOPIC], make sure to inclue these keywords: [KEYWORDS]",
                 hintStyle: AppStyle.regularStyle(color: AppColor.greyText),
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8),
@@ -106,27 +104,24 @@ class CreatePrivatePromptDialog extends GetWidget<ChatController> {
                     ),
                     child: Text(
                       "Cancel",
-                      style:
-                          AppStyle.boldStyle(color: Colors.black, fontSize: 14),
+                      style: AppStyle.boldStyle(color: Colors.black, fontSize: 14),
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     Get.back();
                   },
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                          colors: AppColor.primaryLinearGradient),
+                      gradient: const LinearGradient(colors: AppColor.primaryLinearGradient),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       "Save",
-                      style:
-                          AppStyle.boldStyle(color: Colors.white, fontSize: 14),
+                      style: AppStyle.boldStyle(color: Colors.white, fontSize: 14),
                     ),
                   ),
                 ),

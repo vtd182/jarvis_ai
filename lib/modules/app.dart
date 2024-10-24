@@ -14,11 +14,8 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-
       theme: AppTheme.lightTheme,
-
       debugShowCheckedModeBanner: false,
-      
       getPages: AppRoute.listPages,
       initialRoute: AppRoute.chatRoute,
     );

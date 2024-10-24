@@ -29,8 +29,7 @@ class BotController extends GetxController {
     AiAgentModel(
         name: 'Doctor',
         imagePath: "assets/images/doctor.png",
-        description:
-            'Your personal doctor assistant',
+        description: 'Your personal doctor assistant',
         numberToken: 3,
         prompt:
             "Your name is Doctor and you are my personal doctor assistant. You are here to help me with my health tasks. You can help me with my health problems, give me health solutions, and even give me health examples. You am here to make your life easier."),
