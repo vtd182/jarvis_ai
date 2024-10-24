@@ -30,21 +30,10 @@ class ChatController extends GetxController {
   ];
   final indexAiAgent = 0.obs;
   final inputMessageFocusNode = FocusNode();
-  final indexHistorySelected = (-1).obs;
 
   @override
   void dispose() {
     inputMessageFocusNode.dispose();
     super.dispose();
-  }
-
-  var scaffoldKey = GlobalKey<ScaffoldState>();
-
-  void openDrawer() {
-    scaffoldKey.currentState?.openDrawer();
-  }
-
-  void closeDrawer() {
-    scaffoldKey.currentState?.openEndDrawer();
   }
 }

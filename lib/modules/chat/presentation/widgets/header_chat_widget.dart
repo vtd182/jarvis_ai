@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import 'package:jarvis_ai/const/resource.dart';
 import 'package:jarvis_ai/core/styles/app_color.dart';
 import 'package:jarvis_ai/modules/chat/presentation/controller/chat_controller.dart';
+import 'package:jarvis_ai/modules/shared/presentation/controller/drawer_controller.dart';
 import 'package:jarvis_ai/modules/chat/presentation/widgets/select_ai_agent_widget.dart';
 
-class HeaderChatWidget extends GetWidget<ChatController> {
+class HeaderChatWidget extends GetView<AppDrawerController> {
   const HeaderChatWidget({
     super.key,
   });
@@ -52,7 +53,10 @@ class HeaderChatWidget extends GetWidget<ChatController> {
           onPressed: () {
             controller.indexHistorySelected.value = -1;
           },
-          icon: const Icon(Icons.add_circle_rounded, color: AppColor.blueBold,),
+          icon: const Icon(
+            Icons.add_circle_rounded,
+            color: AppColor.blueBold,
+          ),
         ),
         const SizedBox(width: 8),
       ],
