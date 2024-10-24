@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:jarvis_ai/modules/app.dart';
+import 'package:jarvis_ai/modules/subscribe/presentation/controller/subscribe_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initSystem();
+
+  initDi();
 
   runApp(const App());
 }
@@ -28,4 +32,8 @@ Future<void> initSystem() async {
     }
   });
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+}
+
+void initDi(){
+  Get.put(SubscribeController(), permanent: true);
 }

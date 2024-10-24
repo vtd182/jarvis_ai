@@ -17,6 +17,9 @@ dependencies:
   
   get: ^4.6.6
   image_picker: ^1.1.2
+  in_app_purchase: ^3.2.0
+  in_app_purchase_android: ^0.3.5
+  in_app_purchase_storekit: ^0.3.18+3
 
 
 
