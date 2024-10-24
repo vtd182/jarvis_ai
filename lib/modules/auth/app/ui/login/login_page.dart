@@ -1,5 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../../chat/presentation/page/chat_page.dart';
+import '../register/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -112,7 +116,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                 return null;
               },
               style: const TextStyle(
-                color: Colors.white,
+                color: Colors.black,
               ),
               decoration: InputDecoration(
                 hintText: "Enter your email",
@@ -164,7 +168,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                 return null;
               },
               style: const TextStyle(
-                color: Colors.white,
+                color: Colors.black,
               ),
               decoration: InputDecoration(
                 hintText: "Enter your password",
@@ -321,7 +325,9 @@ class _LoginPageViewState extends State<LoginPageView> {
           ),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
-              print("register");
+              Get.to(
+                () => const RegisterPage(),
+              );
             },
         ),
       ],
@@ -342,6 +348,10 @@ class _LoginPageViewState extends State<LoginPageView> {
     } else {
       final email = _emailTextController.text;
       final password = _passwordTextController.text;
+
+      Get.to(
+        () => ChatPage(),
+      );
     }
   }
 }
