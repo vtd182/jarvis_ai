@@ -15,6 +15,177 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.6
+  # retrofit.dart is an dio client generator using source_gen and inspired by Chopper and Retrofit.
+  retrofit: ^4.1.0
+
+  # Classes and helper functions that support JSON code generation via the `json_serializable` package.
+  json_annotation: ^4.8.1
+
+  # A simple Event Bus using Dart Streams for decoupling applications
+  event_bus: ^2.0.0
+
+  # Simple direct Service Locator that allows to decouple the interface from a concrete implementation and to access the concrete implementation from everywhere in your App"
+  get_it: ^7.2.0
+
+  # Injectable is a convenient code generator for get_it. Inspired by Angular DI, Guice DI and inject.dart.
+  injectable: ^2.4.1
+
+  # Flutter plugin for reading and writing simple key-value pairs. Wraps NSUserDefaults on iOS and SharedPreferences on Android.
+  shared_preferences: ^2.2.3
+
+  # Toast Library for Flutter, Easily create toast messages in single line of code
+  fluttertoast: ^8.2.5
+
+  # A powerful Http client for Dart, which supports Interceptors, FormData, Request Cancellation, File Downloading, Timeout etc.
+  dio: ^5.4.2+1
+
+  # A cross platform plugin for displaying and scheduling local notifications for Flutter applications with the ability to customise for each platform.
+  flutter_local_notifications: ^17.1.1
+
+  # Permission plugin for Flutter. This plugin provides a cross-platform (iOS, Android) API to request and check permissions.
+  permission_handler: ^10.2.0
+
+  # Flutter plugin for querying information about the application package, such as CFBundleVersion on iOS or versionCode on Android.
+  package_info_plus: ^6.0.0
+
+  # Flutter library to load and cache network images. Can also be used with placeholder and error widgets.
+  cached_network_image: ^3.2.3
+
+  # Flutter plugin for accepting incoming links - App/Deep Links (Android), Universal Links and Custom URL schemes (iOS).
+  uni_links: ^0.5.1
+
+  # A Flutter plugin to assist in leaving user reviews/ratings in Google Play Store and Apple App Store.
+  launch_review: ^3.0.1
+
+  # Flutter package for day, week, range and month date pickers.
+  flutter_date_pickers: ^0.4.0
+
+  # Photo View provides a gesture sensitive zoomable widget. Photo View is largely used to show interactive images and other stuff such as SVG.
+  photo_view: ^0.14.0
+
+  # Easy and Fast internationalizing and localization your Flutter Apps, this package simplify the internationalizing process
+  easy_localization: ^3.0.1
+
+  # Open screens/snackbars/dialogs without context, manage states and inject dependencies easily with GetX
+  get: ^4.6.5
+
+  # Suga Core Package.
+  suga_core: ^5.0.0
+
+  # A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.
+  equatable: ^2.0.5
+
+  # Annotation for generating `copyWith` extensions code using `copy_with_extension_gen`.
+  copy_with_extension: ^5.0.0
+
+  # Contains code to deal with internationalized/localized messages, date and number formatting and parsing, bi-directional text, and other internationalization issues
+  intl: ^0.18.1
+
+  # A package to include fonts from fonts.google.com in your Flutter app.
+  google_fonts: ^4.0.4
+
+  # Small, easy to use and extensible logger which prints beautiful logs.
+  logger: ^1.1.0
+
+  # Flutter plugin for launching a URL. Supports web, phone, SMS, and email schemes.
+  url_launcher: ^6.2.6
+
+  # A Flutter plugin that provides a WebView widget on Android and iOS.
+  webview_flutter: ^4.2.2
+
+  # A Flutter plugin to redirect users to an app page in Google Play Store and Apple App Store.
+  store_redirect: ^2.0.1
+
+  # Alice is an HTTP Inspector tool which helps debugging http requests. It catches and stores http requests and responses, which can be viewed via simple UI.
+  alice_lightweight: ^3.6.0
+
+  # Collections and utilities functions and classes related to collections.
+  collection: ^1.16.0
+
+  # This package allows you to draw dotted lines with Flutter. You can draw a beautiful dotted line.
+  dotted_line: ^3.1.0
+
+  # Flutter plugin providing detailed information about the device (make, model, etc.), and Android or iOS version the app is running on.
+  device_info_plus: ^10.1.0
+
+  # A PageView widget adjusting it's height to currently displayed page
+  expandable_page_view: ^1.0.17
+
+  # Provides a simple class for parsing and comparing semantic versions as defined by http://semver.org/
+  version: ^3.0.2
+
+  # A Flutter plugin to retrieve and manage contacts on Android and iOS devices.
+  contacts_service: ^0.6.3
+
+  # A pure Dart library that checks for internet by opening a socket to a list of specified addresses, each with individual port and timeout. Defaults are provided for convenience.
+  internet_connection_checker: ^1.0.0+1
+
+  # Converts vietnamese language sign to unsigned easily. Give me a string vietnamese language, i will respond you string vietnamese unsigned.
+  tiengviet: ^0.5.0
+
+  # A clean and lightweight loading/toast widget for Flutter, Easy to use without context, Support iOS、Android and Web
+  flutter_easyloading: ^3.0.5
+
+  # Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
+  upgrader: ^10.0.1
+
+  # Tap debounce simplifying widget. Wrap your button widget in TapDebounce widget and any taps will be disabled while tap callback is in progress.
+  tap_debouncer: ^2.0.2
+
+  # Flutter Secure Storage provides API to store data in secure storage. Keychain is used in iOS, KeyStore based solution is used in Android.
+  flutter_secure_storage: ^8.0.0
+
+  # The EasyRichText widget provides an easy way to use RichText. You do not have to split the string manually.
+  easy_rich_text: ^1.1.0
+
+  # A flutter package for creating badges. Badges can be used for an additional marker for any widget, e.g. show a number of items in a shopping cart.
+  badges: ^2.0.3
+
+  # Plugin for reading QR codes using Firebase's Mobile Vision API.
+  qr_mobile_vision: ^4.0.0
+
+  # swiper/carousel for flutter, with multiple layouts, infinite loop. Compatible with Android & iOS.
+  card_swiper: ^2.0.4
+
+  # A flutter package to detect phone shakes. Adjustable G-force and reset periods.
+  shake: ^2.1.0
+
+  # Guide that helps you to present your app and its features in a beautiful, simple and customizable way. Tutorial | Guide | Coach.
+  tutorial_coach_mark: ^1.2.4
+
+  # A carousel slider widget, support infinite scroll and custom child widget
+  carousel_slider: ^4.2.1
+
+  # Flutter plugin to implement a beautiful and dynamic Material Design Speed Dial with labels, animated icons, multi-directional children and much more.
+  flutter_speed_dial: ^7.0.0
+
+  # Flutter plugin for sharing content via the platform share UI, using the ACTION_SEND intent on Android and UIActivityViewController on iOS.
+  share_plus: ^8.0.2
+
+  # A state for StatefulWidgets that is aware of its visibility.
+  visibility_aware_state: ^1.0.5
+
+  # A Flutter plugin that provides a WebView widget on Android.
+  webview_flutter_android: ^3.12.1
+
+  # A Flutter plugin that provides a WebView widget based on Apple's WKWebView control.
+  webview_flutter_wkwebview: ^3.13.0
+
+  # A Flutter plugin that allows you to add an inline webview, to use an headless webview, and to open an in-app browser window.
+  flutter_inappwebview: ^6.0.0
+
+  # Flutter plugin for selecting images from the Android and iOS image library, and taking new pictures with the camera.
+  image_picker: ^1.1.1
+
+  # Compress Pictures. Can effectively reduce the size of the transmission.
+  flutter_image_compress: ^2.3.0
+
+  # Dart Image Library provides server and web apps the ability to load, manipulate, and save images with various image file formats.
+  image: ^4.2.0
+
+  # A flutter plugin for save image to gallery, iOS need to add the following keys to your Info.plist file.
+  image_gallery_saver: ^2.0.3
+
 
 dev_dependencies:
   flutter_test:
@@ -43,9 +214,6 @@ dev_dependencies:
 
   # Checks for missing, under-promoted, over-promoted, and unused dependencies.
   dependency_validator: ^3.2.2
-
-
-
 
 flutter_gen:
   output: lib/gen/
