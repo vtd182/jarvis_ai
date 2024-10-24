@@ -102,14 +102,8 @@ dependencies:
   # Collections and utilities functions and classes related to collections.
   collection: ^1.16.0
 
-  # This package allows you to draw dotted lines with Flutter. You can draw a beautiful dotted line.
-  dotted_line: ^3.1.0
-
   # Flutter plugin providing detailed information about the device (make, model, etc.), and Android or iOS version the app is running on.
   device_info_plus: ^10.1.0
-
-  # A PageView widget adjusting it's height to currently displayed page
-  expandable_page_view: ^1.0.17
 
   # Provides a simple class for parsing and comparing semantic versions as defined by http://semver.org/
   version: ^3.0.2
@@ -141,9 +135,6 @@ dependencies:
   # A flutter package for creating badges. Badges can be used for an additional marker for any widget, e.g. show a number of items in a shopping cart.
   badges: ^2.0.3
 
-  # Plugin for reading QR codes using Firebase's Mobile Vision API.
-  qr_mobile_vision: ^4.0.0
-
   # swiper/carousel for flutter, with multiple layouts, infinite loop. Compatible with Android & iOS.
   card_swiper: ^2.0.4
 
@@ -164,15 +155,6 @@ dependencies:
 
   # A state for StatefulWidgets that is aware of its visibility.
   visibility_aware_state: ^1.0.5
-
-  # A Flutter plugin that provides a WebView widget on Android.
-  webview_flutter_android: ^3.12.1
-
-  # A Flutter plugin that provides a WebView widget based on Apple's WKWebView control.
-  webview_flutter_wkwebview: ^3.13.0
-
-  # A Flutter plugin that allows you to add an inline webview, to use an headless webview, and to open an in-app browser window.
-  flutter_inappwebview: ^6.0.0
 
   # Flutter plugin for selecting images from the Android and iOS image library, and taking new pictures with the camera.
   image_picker: ^1.1.1
