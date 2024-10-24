@@ -17,7 +17,7 @@ class _AppState extends State<App> {
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       getPages: AppRoute.listPages,
-      initialRoute: AppRoute.chatRoute,
+      initialRoute: AppRoute.loginRoute,
     );
   }
 }
