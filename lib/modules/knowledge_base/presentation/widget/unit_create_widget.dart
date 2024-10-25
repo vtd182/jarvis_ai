@@ -18,8 +18,7 @@ class UnitCreateWidget extends StatelessWidget {
           children: [
             // Bot
             Column(children: [
-              const Text('Add Unit',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text('Add Unit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 20),
               const SizedBox(height: 20),
               // List of unit types to choose from (localFile, googleDrive, dropbox, etc)
@@ -31,28 +30,19 @@ class UnitCreateWidget extends StatelessWidget {
               // Implementation:
               SingleChildScrollView(
                   child: Column(
-                      children: const [
-                "Local File",
-                "Website",
-                "Github Repositories",
-                "Gitlab Repositories",
-                "Google Drive",
-                "Slack",
-                "Confluence"
-              ].map((name) {
+                      children: const ["Local File", "Website", "Github Repositories", "Gitlab Repositories", "Google Drive", "Slack", "Confluence"]
+                          .map((name) {
                 return Align(
                   alignment: Alignment.centerLeft,
                   child: Row(
                     children: [
-                    const Icon(Icons.check_circle, color: Colors.grey),
+                      const Icon(Icons.check_circle, color: Colors.grey),
                       const SizedBox(width: 10),
-                    Text(name, style: const TextStyle(fontSize: 16)),
-                    const SizedBox(width: 20),
-                                        
+                      Text(name, style: const TextStyle(fontSize: 16)),
+                      const SizedBox(width: 20),
                     ],
                   ),
                 );
-                             
               }).toList())),
 
               //Ok button

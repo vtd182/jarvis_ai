@@ -52,7 +52,10 @@ class HeaderKnowledgeWidget extends GetView<AppDrawerController> {
           onPressed: () {
             Get.bottomSheet(const KnowledgeCreateWidget());
           },
-          icon: const Icon(Icons.add_circle_rounded, color: AppColor.blueBold,),
+          icon: const Icon(
+            Icons.add_circle_rounded,
+            color: AppColor.blueBold,
+          ),
         ),
         const SizedBox(width: 8),
       ],

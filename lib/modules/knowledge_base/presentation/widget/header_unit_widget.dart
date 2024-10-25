@@ -53,7 +53,10 @@ class HeaderUnitWidget extends GetView<AppDrawerController> {
           onPressed: () {
             Get.bottomSheet(const UnitCreateWidget());
           },
-          icon: const Icon(Icons.add_circle_rounded, color: AppColor.blueBold,),
+          icon: const Icon(
+            Icons.add_circle_rounded,
+            color: AppColor.blueBold,
+          ),
         ),
         const SizedBox(width: 8),
       ],

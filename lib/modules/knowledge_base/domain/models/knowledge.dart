@@ -37,8 +37,7 @@ abstract class Unit {
 
 class LocalFile extends Unit {
   String path;
-  LocalFile(
-      super.name, super.source, super.updatedTime, super.enabled, this.path);
+  LocalFile(super.name, super.source, super.updatedTime, super.enabled, this.path);
   @override
   String getServiceName() {
     return 'Local File';
@@ -65,8 +64,7 @@ class Github extends Unit {
 
 class GoogleDrive extends Unit {
   String url;
-  GoogleDrive(
-      super.name, super.source, super.updatedTime, super.enabled, this.url);
+  GoogleDrive(super.name, super.source, super.updatedTime, super.enabled, this.url);
   @override
   String getServiceName() {
     return 'Google Drive';
@@ -84,8 +82,7 @@ class Slack extends Unit {
 
 class Confluence extends Unit {
   String url;
-  Confluence(
-      super.name, super.source, super.updatedTime, super.enabled, this.url);
+  Confluence(super.name, super.source, super.updatedTime, super.enabled, this.url);
   @override
   String getServiceName() {
     return 'Confluence';

@@ -14,22 +14,10 @@ class KnowledgeTableWidget extends GetWidget<KnowledgeBaseController> {
           showCheckboxColumn: false,
           columnSpacing: 20,
           columns: const [
-            DataColumn(
-                label: Text('Knowledge',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-            DataColumn(
-                label: Text('Units',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-            DataColumn(
-                label: Text('Size',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-            DataColumn(
-                label: Text('Updated Time',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            DataColumn(label: Text('Knowledge', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            DataColumn(label: Text('Units', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            DataColumn(label: Text('Size', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            DataColumn(label: Text('Updated Time', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
           ],
           rows: controller.knowledges.map((knowledge) {
             return DataRow(
@@ -49,8 +37,7 @@ class KnowledgeTableWidget extends GetWidget<KnowledgeBaseController> {
                   DataCell(Text(
                     knowledge.getSize().toString(),
                   )),
-                  DataCell(Text(
-                      "${knowledge.updatedTime.day}/${knowledge.updatedTime.month}/${knowledge.updatedTime.year}"))
+                  DataCell(Text("${knowledge.updatedTime.day}/${knowledge.updatedTime.month}/${knowledge.updatedTime.year}"))
                 ]);
           }).toList()),
     );

@@ -12,8 +12,7 @@ class UnitTableController extends GetxController {
       [
         LocalFile('Local File 1', 'Source 1', DateTime.now(), true, 'Path 1'),
         Github('Github 1', 'Source 1', DateTime.now(), true, 'Path 1'),
-        GoogleDrive(
-            'Google Drive 1', 'Source 1', DateTime.now(), true, 'Path 1'),
+        GoogleDrive('Google Drive 1', 'Source 1', DateTime.now(), true, 'Path 1'),
       ],
     ),
     Knowledge(
@@ -23,20 +22,14 @@ class UnitTableController extends GetxController {
       [
         LocalFile('Local File 2', 'Source 2', DateTime.now(), true, 'Path 2'),
         Github('Github 2', 'Source 2', DateTime.now(), true, 'Path 2'),
-        GoogleDrive(
-            'Google Drive 2', 'Source 2', DateTime.now(), true, 'Path 2'),
+        GoogleDrive('Google Drive 2', 'Source 2', DateTime.now(), true, 'Path 2'),
       ],
     ),
-    Knowledge(
-      'Knowledge 3',
-      'Description 3',
-      DateTime.now(),
-      [
-        LocalFile('Local File 3', 'Source 3', DateTime.now(), true, 'Path 3'),
-        Github('Github 3', 'Source 3', DateTime.now(), true, 'Path 3'),
-        GoogleDrive(
-            'Google Drive 3', 'Source 3', DateTime.now(), true, 'Path 3'),
-     ])
+    Knowledge('Knowledge 3', 'Description 3', DateTime.now(), [
+      LocalFile('Local File 3', 'Source 3', DateTime.now(), true, 'Path 3'),
+      Github('Github 3', 'Source 3', DateTime.now(), true, 'Path 3'),
+      GoogleDrive('Google Drive 3', 'Source 3', DateTime.now(), true, 'Path 3'),
+    ])
   ];
   final indexAiAgent = 0.obs;
   final inputMessageFocusNode = FocusNode();

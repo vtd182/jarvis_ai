@@ -8,50 +8,35 @@ class UnitTableWidget extends GetWidget<KnowledgeBaseController> {
 
   @override
   Widget build(BuildContext context) {
-    //Table view of Knowledge
     return SingleChildScrollView(
-      child: DataTable(
+      scrollDirection: Axis.horizontal, // Thêm cuộn ngang
+      child: SingleChildScrollView(
+        child: DataTable(
           columnSpacing: 20,
           columns: const [
-            DataColumn(
-                label: Text('Unit',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-            DataColumn(
-                label: Text('Source',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-            DataColumn(
-                label: Text('Size',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-            DataColumn(
-                label: Text('Updated Time',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            DataColumn(label: Text('Unit', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            DataColumn(label: Text('Source', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            DataColumn(label: Text('Size', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+            DataColumn(label: Text('Updated Time', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
           ],
-          rows: controller
-              .knowledges[controller.selectedKnowledgeIndex.value].units
-              .map((unit) {
+          rows: controller.knowledges[controller.selectedKnowledgeIndex.value].units.map((unit) {
             return DataRow(
-                onSelectChanged: (selected) {
-                  if (selected != null && selected) {}
-                },
-                onLongPress: () {
-                  Get.bottomSheet(const KnowledgeFloatingHoldMenu());
-                },
-                cells: [
-                  DataCell(Text(unit.name)),
-                  DataCell(Text(
-                    unit.source,
-                  )),
-                  DataCell(Text(
-                    unit.getSize().toString(),
-                  )),
-                  DataCell(Text(
-                      "${unit.updatedTime.day}/${unit.updatedTime.month}/${unit.updatedTime.year}"))
-                ]);
-          }).toList()),
+              onSelectChanged: (selected) {
+                if (selected != null && selected) {}
+              },
+              onLongPress: () {
+                Get.bottomSheet(const KnowledgeFloatingHoldMenu());
+              },
+              cells: [
+                DataCell(Text(unit.name)),
+                DataCell(Text(unit.source)),
+                DataCell(Text(unit.getSize().toString())),
+                DataCell(Text("${unit.updatedTime.day}/${unit.updatedTime.month}/${unit.updatedTime.year}")),
+              ],
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 }
