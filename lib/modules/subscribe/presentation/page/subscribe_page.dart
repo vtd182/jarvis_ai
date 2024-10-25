@@ -60,9 +60,7 @@ class SubscribeState extends State<SubscribePage> {
                   alignment: Alignment.topRight,
                   child: GestureDetector(
                     onTap: () {
-                      widget.canBack
-                          ? Get.back()
-                          : Get.offAllNamed(AppRoute.chatRoute);
+                      widget.canBack ? Get.back() : Get.offAllNamed(AppRoute.chatRoute);
                     },
                     child: Container(
                       margin: const EdgeInsets.only(right: 24),
@@ -133,34 +131,20 @@ class SubscribeState extends State<SubscribePage> {
                 const SizedBox(height: 28),
                 Obx(
                   () => ListView.separated(
-                    itemCount: controller
-                        .productDetailResponse.value.productDetails.length,
+                    itemCount: controller.productDetailResponse.value.productDetails.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return Obx(
                         () => SubscribeItem(
-                          id: controller.productDetailResponse.value
-                              .productDetails[index].id,
-                          currencySymbol: getCurrencySymbol(controller
-                              .productDetailResponse
-                              .value
-                              .productDetails[index]
-                              .currencySymbol),
-                          isHighLight: controller.productDetailResponse.value
-                                  .productDetails[index].id ==
-                              controller.monthSubscriptionId,
+                          id: controller.productDetailResponse.value.productDetails[index].id,
+                          currencySymbol: getCurrencySymbol(controller.productDetailResponse.value.productDetails[index].currencySymbol),
+                          isHighLight: controller.productDetailResponse.value.productDetails[index].id == controller.monthSubscriptionId,
                           isChoosing: controller.currentItem.value == index,
-                          title: controller.productDetailResponse.value
-                              .productDetails[index].title,
-                          price: controller.productDetailResponse.value
-                              .productDetails[index].rawPrice
-                              .toStringAsFixed(0),
+                          title: controller.productDetailResponse.value.productDetails[index].title,
+                          price: controller.productDetailResponse.value.productDetails[index].rawPrice.toStringAsFixed(0),
                           onTap: () => controller.onItemtap(index),
-                          description: index == 1
-                              ? "Most popular"
-                              : controller.productDetailResponse.value
-                                  .productDetails[index].description,
+                          description: index == 1 ? "Most popular" : controller.productDetailResponse.value.productDetails[index].description,
                         ),
                       );
                     },
@@ -177,8 +161,7 @@ class SubscribeState extends State<SubscribePage> {
                   child: Container(
                     width: double.maxFinite,
                     margin: const EdgeInsets.symmetric(horizontal: 24),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [

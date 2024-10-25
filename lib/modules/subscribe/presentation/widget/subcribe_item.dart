@@ -40,13 +40,10 @@ class SubscribeItem extends StatelessWidget {
                 horizontal: 15,
               ),
               decoration: BoxDecoration(
-                color:
-                    isChoosing ? const Color(0xFFDFFFF1) : Colors.transparent,
+                color: isChoosing ? const Color(0xFFDFFFF1) : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: isChoosing
-                      ? const Color(0xFF48B1BF)
-                      : const Color(0xFF45556E),
+                  color: isChoosing ? const Color(0xFF48B1BF) : const Color(0xFF45556E),
                   width: isChoosing ? 2 : 1,
                 ),
               ),
@@ -54,9 +51,7 @@ class SubscribeItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
-                    !isChoosing
-                        ? R.ASSETS_ICON_IC_UN_CHECK_PNG
-                        : R.ASSETS_ICON_IC_CHECKED_PNG,
+                    !isChoosing ? R.ASSETS_ICON_IC_UN_CHECK_PNG : R.ASSETS_ICON_IC_CHECKED_PNG,
                     width: 24,
                     height: 24,
                   ),
@@ -135,9 +130,7 @@ class SubscribeItem extends StatelessWidget {
                               ).createShader(bounds);
                             },
                             child: Text("$currencySymbol${price.tr}",
-                                overflow: TextOverflow.ellipsis,
-                                style: AppStyle.boldStyle()
-                                    .copyWith(color: Colors.white)),
+                                overflow: TextOverflow.ellipsis, style: AppStyle.boldStyle().copyWith(color: Colors.white)),
                           ),
                         ],
                       ),
@@ -149,9 +142,7 @@ class SubscribeItem extends StatelessWidget {
             Positioned(
               top: 0,
               right: 0,
-              child: Transform.translate(
-                  offset: const Offset(0, -10),
-                  child: DiscountTagWidget(id: id)),
+              child: Transform.translate(offset: const Offset(0, -10), child: DiscountTagWidget(id: id)),
             ),
           ],
         ),

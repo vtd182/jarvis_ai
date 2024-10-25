@@ -30,7 +30,7 @@ class HeaderChatWidget extends GetView<AppDrawerController> {
         const SelectAiAgentWidget(),
         const Spacer(),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.toNamed(AppRoute.subscribeRoute);
           },
           child: Container(

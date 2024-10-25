@@ -23,8 +23,7 @@ class SubscribeController extends SuperController {
   final String monthSubscriptionId = 'monthly';
   final String yearSubscriptionId = 'yearly';
 
-  Rx<ProductDetailsResponse> productDetailResponse =
-      ProductDetailsResponse(productDetails: [], notFoundIDs: []).obs;
+  Rx<ProductDetailsResponse> productDetailResponse = ProductDetailsResponse(productDetails: [], notFoundIDs: []).obs;
   final List<String> _kProductIds = [];
 
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
@@ -36,8 +35,7 @@ class SubscribeController extends SuperController {
   }
 
   initStream() async {
-    final Stream<List<PurchaseDetails>> purchaseUpdated =
-        _inAppPurchase.purchaseStream;
+    final Stream<List<PurchaseDetails>> purchaseUpdated = _inAppPurchase.purchaseStream;
     _subscription = purchaseUpdated.listen((purchaseDetailsList) async {
       print("tpoo purchaseDetailsList ${purchaseDetailsList.length}");
       if (purchaseDetailsList.isEmpty) {
@@ -77,22 +75,27 @@ class SubscribeController extends SuperController {
     //   }
     // }
 
-    productDetailResponse.value.productDetails.addAll(
-      [
-        ProductDetails(id: weekSubscriptionId, title: "Weekly", description: "", price: "6.99", rawPrice: 9.99, currencyCode: "USD",currencySymbol: "\$"),
-        ProductDetails(id: monthSubscriptionId, title: "Monthly", description: "Most popular", price: "6.99", rawPrice: 9.99, currencyCode: "USD",currencySymbol: "\$"),
-        ProductDetails(id: yearSubscriptionId, title: "Yearly", description: "", price: "6.99", rawPrice: 9.99, currencyCode: "USD",currencySymbol: "\$"),
-      ]
-    );
+    productDetailResponse.value.productDetails.addAll([
+      ProductDetails(
+          id: weekSubscriptionId, title: "Weekly", description: "", price: "6.99", rawPrice: 9.99, currencyCode: "USD", currencySymbol: "\$"),
+      ProductDetails(
+          id: monthSubscriptionId,
+          title: "Monthly",
+          description: "Most popular",
+          price: "6.99",
+          rawPrice: 9.99,
+          currencyCode: "USD",
+          currencySymbol: "\$"),
+      ProductDetails(
+          id: yearSubscriptionId, title: "Yearly", description: "", price: "6.99", rawPrice: 9.99, currencyCode: "USD", currencySymbol: "\$"),
+    ]);
     super.onInit();
   }
 
   @override
   void onClose() {
     if (Platform.isIOS) {
-      final InAppPurchaseStoreKitPlatformAddition iosPlatformAddition =
-          _inAppPurchase
-              .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
+      final InAppPurchaseStoreKitPlatformAddition iosPlatformAddition = _inAppPurchase.getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
       iosPlatformAddition.setDelegate(null);
     }
     currentItem.value = 0;
@@ -100,8 +103,7 @@ class SubscribeController extends SuperController {
     super.onClose();
   }
 
-  Future<void> _listenToPurchaseUpdated(
-      List<PurchaseDetails> purchaseDetailsList) async {
+  Future<void> _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) async {
     for (final PurchaseDetails purchaseDetails in purchaseDetailsList) {
       try {
         print("tpoo status ${purchaseDetails.status}");
@@ -166,8 +168,7 @@ class SubscribeController extends SuperController {
           await _inAppPurchase
               .buyNonConsumable(
             purchaseParam: PurchaseParam(
-              productDetails:
-                  productDetailResponse.value.productDetails[currentItem.value],
+              productDetails: productDetailResponse.value.productDetails[currentItem.value],
             ),
           )
               .then(

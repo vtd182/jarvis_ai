@@ -28,7 +28,7 @@ class HeaderBotWidget extends GetView<AppDrawerController> {
         const SizedBox(width: 10),
         const Spacer(),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.toNamed(AppRoute.subscribeRoute);
           },
           child: Container(

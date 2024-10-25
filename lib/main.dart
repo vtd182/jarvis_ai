@@ -34,6 +34,6 @@ Future<void> initSystem() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 }
 
-void initDi(){
+void initDi() {
   Get.put(SubscribeController(), permanent: true);
 }

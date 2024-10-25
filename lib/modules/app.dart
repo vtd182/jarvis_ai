@@ -12,13 +12,13 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   @override
   void initState() {
     final subscribeController = Get.find<SubscribeController>();
     subscribeController.initStream();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

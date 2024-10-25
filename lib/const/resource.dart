@@ -11,12 +11,10 @@ class R {
   static const String ASSETS_ICON_IC_CHECKED_PNG = 'assets/icon/ic_checked.png';
 
   /// ![preview](file://D:\Nam_4\mobile\jarvis_ai\assets\icon\ic_gemini_1.png)
-  static const String ASSETS_ICON_IC_GEMINI_1_PNG =
-      'assets/icon/ic_gemini_1.png';
+  static const String ASSETS_ICON_IC_GEMINI_1_PNG = 'assets/icon/ic_gemini_1.png';
 
   /// ![preview](file://D:\Nam_4\mobile\jarvis_ai\assets\icon\ic_gemini_15.png)
-  static const String ASSETS_ICON_IC_GEMINI_15_PNG =
-      'assets/icon/ic_gemini_15.png';
+  static const String ASSETS_ICON_IC_GEMINI_15_PNG = 'assets/icon/ic_gemini_15.png';
 
   /// ![preview](file://D:\Nam_4\mobile\jarvis_ai\assets\icon\ic_gpt_35.png)
   static const String ASSETS_ICON_IC_GPT_35_PNG = 'assets/icon/ic_gpt_35.png';
@@ -34,10 +32,8 @@ class R {
   static const String ASSETS_ICON_IC_TOKEN_PNG = 'assets/icon/ic_token.png';
 
   /// ![preview](file://D:\Nam_4\mobile\jarvis_ai\assets\icon\ic_un_check.png)
-  static const String ASSETS_ICON_IC_UN_CHECK_PNG =
-      'assets/icon/ic_un_check.png';
+  static const String ASSETS_ICON_IC_UN_CHECK_PNG = 'assets/icon/ic_un_check.png';
 
   /// ![preview](file://D:\Nam_4\mobile\jarvis_ai\assets\icon\ic_upload_img.png)
-  static const String ASSETS_ICON_IC_UPLOAD_IMG_PNG =
-      'assets/icon/ic_upload_img.png';
+  static const String ASSETS_ICON_IC_UPLOAD_IMG_PNG = 'assets/icon/ic_upload_img.png';
 }
