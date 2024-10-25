@@ -1,16 +1,11 @@
-# jarvis_ai
+# Course: Advanced Mobile App Development
 
-A new Flutter project.
+## JARVIS AI BOT CHAT APP
 
-## Getting Started
+### Description
+Xay dựng hệ thống cho người dùng tạo Knowledge-based BOT, sau đó người dùng có thể chat/collaborate với Knowledge-based BOT trong việc hỏi đáp.
 
-This project is a starting point for a Flutter application.
+### Features
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Demo Videos
+- [Milestone 1 - UI Mockup](https://youtu.be/XimbiuEToT4)
