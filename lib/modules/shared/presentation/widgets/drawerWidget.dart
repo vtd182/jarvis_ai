@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jarvis_ai/core/styles/app_color.dart';
 import 'package:jarvis_ai/const/resource.dart';
+import 'package:jarvis_ai/core/styles/app_color.dart';
 import 'package:jarvis_ai/modules/shared/presentation/controller/drawer_controller.dart';
 import 'package:jarvis_ai/modules/shared/presentation/widgets/history_chat_widget.dart';
+
+import '../../../email/app/email_page.dart';
 
 class FunctionButtonsWidget extends GetView<AppDrawerController> {
   const FunctionButtonsWidget({super.key});
@@ -14,6 +16,9 @@ class FunctionButtonsWidget extends GetView<AppDrawerController> {
       children: [
         _buildButton("Chat", () {
           Get.toNamed("/chat");
+        }),
+        _buildButton("Email", () {
+          Get.to(EmailPage(), transition: Transition.cupertino);
         }),
         _buildButton("Bot", () {
           Get.toNamed("/bots");
