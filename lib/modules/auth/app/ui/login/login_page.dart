@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../chat/presentation/page/chat_page.dart';
+import '../forgot_password/forgot_password_page.dart';
 import '../register/register_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -190,25 +191,39 @@ class _LoginPageViewState extends State<LoginPageView> {
   }
 
   Widget _buildLoginButton() {
-    return Container(
-      margin: const EdgeInsets.only(top: 50),
-      height: 48,
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          _login();
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF612A74),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end, // Căn phải
+      children: [
+        TextButton(
+          onPressed: () {
+            Get.to(() => const ForgotPasswordPage()); // Chuyển hướng tới ForgotPasswordPage
+          },
+          child: const Text(
+            "Forgot password?",
+            style: TextStyle(color: Colors.black54),
           ),
         ),
-        child: const Text(
-          "Login",
-          style: TextStyle(color: Colors.white),
+        Container(
+          margin: const EdgeInsets.only(top: 10),
+          height: 48,
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              _login();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF612A74),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+            ),
+            child: const Text(
+              "Login",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 
