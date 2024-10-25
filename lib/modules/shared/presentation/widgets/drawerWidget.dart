@@ -18,6 +18,9 @@ class FunctionButtonsWidget extends GetView<AppDrawerController> {
         _buildButton("Bot", () {
           Get.toNamed("/bots");
         }),
+        _buildButton("Knowledge Base", () {
+          Get.toNamed("/knowledge");
+        }),
         _buildButton("Settings", () {
           Get.toNamed("/settings");
         }),
