@@ -5,11 +5,11 @@ abstract class AuthRemoteDataSource {
   Future<void> signInWithEmailAndPassword({
     required String email,
     required String password,
-    required String username,
   });
   Future<void> signUpWithEmailAndPassword({
     required String email,
     required String password,
+    required String username,
   });
   Future<dynamic> refreshToken(String refreshToken);
 }
@@ -26,22 +26,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> signUpWithEmailAndPassword({required String email, required String password}) {
+  Future<void> signUpWithEmailAndPassword({required String email, required String password, required String username}) {
     return _authService.signUpWithEmailAndPassword(
       {
         'email': email,
         'password': password,
+        'username': username,
       },
     );
   }
 
   @override
-  Future<void> signInWithEmailAndPassword({required String email, required String password, required String username}) async {
+  Future<void> signInWithEmailAndPassword({required String email, required String password}) async {
     await _authService.signInWithEmailAndPassword(
       {
         'email': email,
         'password': password,
-        'username': username,
       },
     );
   }

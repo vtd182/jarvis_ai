@@ -6,7 +6,7 @@ class SignUpWithEmailAndPasswordUseCase {
   final AuthRepository _authRepository;
   const SignUpWithEmailAndPasswordUseCase({required AuthRepository authRepository}) : _authRepository = authRepository;
 
-  Future<void> run({required String email, required String password}) async {
-    await _authRepository.signUpWithEmailAndPassword(email: email, password: password);
+  Future<void> run({required String email, required String password, required String username}) async {
+    await _authRepository.signUpWithEmailAndPassword(email: email, password: password, username: username);
   }
 }
