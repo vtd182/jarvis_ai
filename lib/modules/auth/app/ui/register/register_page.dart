@@ -2,12 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../chat/presentation/page/chat_page.dart';
-import '../forgot_password/forgot_password_page.dart';
-import '../register/register_page.dart';
+import '../login/login_page.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,43 +23,48 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ),
-      body: const LoginPageView(),
+      body: const RegisterPageView(),
     );
   }
 }
 
-class LoginPageView extends StatefulWidget {
-  const LoginPageView({super.key});
+class RegisterPageView extends StatefulWidget {
+  const RegisterPageView({super.key});
+
   @override
-  State<LoginPageView> createState() => _LoginPageViewState();
+  State<RegisterPageView> createState() => _RegisterPageViewState();
 }
 
-class _LoginPageViewState extends State<LoginPageView> {
+class _RegisterPageViewState extends State<RegisterPageView> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
+  final _confirmPasswordTextController = TextEditingController();
   final usernameFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
+  final confirmPasswordFormKey = GlobalKey<FormState>();
   var _autoValidateMode = AutovalidateMode.disabled;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      top: false,
       child: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(20),
           child: Column(
             children: [
               _buildTextTitle(),
-              _buildFormLogin(),
+              _buildFormRegister(),
               const SizedBox(height: 30),
               _buildFormPassword(),
-              _buildLoginButton(),
+              const SizedBox(height: 30),
+              _buildFormConfirmPassword(),
+              _buildRegisterButton(),
               _buildOrSplitDivider(),
-              _buildLoginWithGoogleButton(),
-              _buildLoginWithAppleButton(),
+              _buildRegisterWithGoogleButton(),
+              _buildRegisterWithAppleButton(),
               const SizedBox(height: 20),
-              _buildDontHaveAccount(),
+              _buildHaveAnAccount(),
+              const SizedBox(height: 30),
             ],
           ),
         ),
@@ -74,7 +77,7 @@ class _LoginPageViewState extends State<LoginPageView> {
       margin: const EdgeInsets.only(bottom: 20),
       alignment: Alignment.centerLeft,
       child: const Text(
-        "Login to your account",
+        "Register",
         style: TextStyle(
           color: Colors.black,
           fontSize: 40,
@@ -84,7 +87,7 @@ class _LoginPageViewState extends State<LoginPageView> {
     );
   }
 
-  Widget _buildFormLogin() {
+  Widget _buildFormRegister() {
     return Form(
       key: usernameFormKey,
       autovalidateMode: _autoValidateMode,
@@ -108,9 +111,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                 if (value == null || value.isEmpty) {
                   return "Please enter some text";
                 }
-                final emailValid = RegExp(
-                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                ).hasMatch(value);
+                final emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
                 if (!emailValid) {
                   return "Please enter a valid email";
                 }
@@ -158,7 +159,6 @@ class _LoginPageViewState extends State<LoginPageView> {
             margin: const EdgeInsets.only(top: 10),
             child: TextFormField(
               controller: _passwordTextController,
-              obscureText: true,
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
                   return "Please enter some text";
@@ -168,6 +168,7 @@ class _LoginPageViewState extends State<LoginPageView> {
                 }
                 return null;
               },
+              obscureText: true,
               style: const TextStyle(
                 color: Colors.black,
               ),
@@ -190,41 +191,81 @@ class _LoginPageViewState extends State<LoginPageView> {
     );
   }
 
-  Widget _buildLoginButton() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end, // Căn phải
-      children: [
-        TextButton(
-          onPressed: () {
-            Get.to(() => const ForgotPasswordPage()); // Chuyển hướng tới ForgotPasswordPage
-          },
-          child: const Text(
-            "Forgot password?",
-            style: TextStyle(color: Colors.black54),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 10),
-          height: 48,
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              _login();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF612A74),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+  Widget _buildFormConfirmPassword() {
+    return Form(
+      key: confirmPasswordFormKey,
+      autovalidateMode: _autoValidateMode,
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            child: const Text(
+              "Confirm Password",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
               ),
             ),
-            child: const Text(
-              "Login",
-              style: TextStyle(color: Colors.white),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            child: TextFormField(
+              controller: _confirmPasswordTextController,
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return "Please enter some text";
+                }
+                if (value.length < 6) {
+                  return "Password must be at least 6 characters";
+                }
+                if (value != _passwordTextController.text) {
+                  return "Password don't match";
+                }
+                return null;
+              },
+              obscureText: true,
+              style: const TextStyle(
+                color: Colors.black,
+              ),
+              decoration: InputDecoration(
+                hintText: "Confirm your password",
+                hintStyle: TextStyle(
+                  color: Colors.black.withOpacity(0.5),
+                  fontSize: 16,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                fillColor: Colors.grey.withOpacity(0.2),
+                filled: true,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
+  }
+
+  Widget _buildRegisterButton() {
+    return Container(
+        margin: const EdgeInsets.only(top: 50),
+        height: 48,
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {
+            _register();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF612A74),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            ),
+          ),
+          child: const Text(
+            "Create Account",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
   }
 
   Widget _buildOrSplitDivider() {
@@ -257,47 +298,14 @@ class _LoginPageViewState extends State<LoginPageView> {
     );
   }
 
-  Widget _buildLoginWithGoogleButton() {
-    return Container(
-        margin: const EdgeInsets.only(top: 20),
-        height: 48,
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            print('Login with Google');
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-              side: BorderSide(
-                color: Colors.white,
-                width: 1,
-              ),
-            ),
-          ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.safety_check, color: Colors.white),
-              SizedBox(width: 10),
-              Text(
-                "Login with Google",
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
-        ));
-  }
-
-  Widget _buildLoginWithAppleButton() {
+  Widget _buildRegisterWithGoogleButton() {
     return Container(
       margin: const EdgeInsets.only(top: 20),
       height: 48,
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          print('Login with Apple');
+          print('Register with Google');
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
@@ -312,10 +320,10 @@ class _LoginPageViewState extends State<LoginPageView> {
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.apple, color: Colors.white),
+            Icon(Icons.safety_check, color: Colors.white),
             SizedBox(width: 10),
             Text(
-              "Login with Apple",
+              "Register with Google",
               style: TextStyle(color: Colors.white),
             ),
           ],
@@ -324,16 +332,49 @@ class _LoginPageViewState extends State<LoginPageView> {
     );
   }
 
-  Widget _buildDontHaveAccount() {
+  Widget _buildRegisterWithAppleButton() {
+    return Container(
+        margin: const EdgeInsets.only(top: 20),
+        height: 48,
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {
+            print('Register with Apple');
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              side: BorderSide(
+                color: Colors.white,
+                width: 1,
+              ),
+            ),
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.apple, color: Colors.white),
+              SizedBox(width: 10),
+              Text(
+                "Register with Apple",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  Widget _buildHaveAnAccount() {
     return RichText(
         text: TextSpan(
-      text: "Don't have account? ",
+      text: "Already have an account? ",
       style: TextStyle(
         color: Colors.black.withOpacity(0.5),
       ),
       children: [
         TextSpan(
-          text: "Register",
+          text: "Login",
           style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -341,7 +382,7 @@ class _LoginPageViewState extends State<LoginPageView> {
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               Get.to(
-                () => const RegisterPage(),
+                () => const LoginPage(),
               );
             },
         ),
@@ -349,24 +390,22 @@ class _LoginPageViewState extends State<LoginPageView> {
     ));
   }
 
-  void _login() {
+  void _register() {
     if (_autoValidateMode == AutovalidateMode.disabled) {
       setState(() {
         _autoValidateMode = AutovalidateMode.always;
       });
     }
+    final email = _emailTextController.text;
+    final password = _passwordTextController.text;
+
     final isEmailValid = usernameFormKey.currentState?.validate() ?? false;
     final isPasswordValid = passwordFormKey.currentState?.validate() ?? false;
-    final isValid = isEmailValid && isPasswordValid;
+    final isConfirmPasswordValid = confirmPasswordFormKey.currentState?.validate() ?? false;
+    final isValid = isEmailValid && isPasswordValid && isConfirmPasswordValid;
+
     if (!isValid) {
       return;
-    } else {
-      final email = _emailTextController.text;
-      final password = _passwordTextController.text;
-
-      Get.to(
-        () => ChatPage(),
-      );
-    }
+    } else {}
   }
 }
