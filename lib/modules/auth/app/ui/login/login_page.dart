@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/locator.dart';
+import 'package:jarvis_ai/modules/auth/app/ui/login/login_page_viewmodel.dart';
+import 'package:suga_core/suga_core.dart';
 
-import '../../../../chat/presentation/page/chat_page.dart';
 import '../forgot_password/forgot_password_page.dart';
 import '../register/register_page.dart';
 
@@ -36,7 +38,7 @@ class LoginPageView extends StatefulWidget {
   State<LoginPageView> createState() => _LoginPageViewState();
 }
 
-class _LoginPageViewState extends State<LoginPageView> {
+class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewModel> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final usernameFormKey = GlobalKey<FormState>();
@@ -363,10 +365,13 @@ class _LoginPageViewState extends State<LoginPageView> {
     } else {
       final email = _emailTextController.text;
       final password = _passwordTextController.text;
-
-      Get.to(
-        () => ChatPage(),
-      );
+      print('email: $email, password: $password');
+      viewModel.login(email, password);
     }
+  }
+
+  @override
+  LoginPageViewModel createViewModel() {
+    return locator<LoginPageViewModel>();
   }
 }

@@ -5,7 +5,7 @@ class ForgotPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _emailTextController = TextEditingController();
+    final emailTextController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +27,7 @@ class ForgotPasswordPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             TextFormField(
-              controller: _emailTextController,
+              controller: emailTextController,
               decoration: InputDecoration(
                 hintText: "Enter your email",
                 hintStyle: TextStyle(color: Colors.black.withOpacity(0.5)),
@@ -57,7 +57,7 @@ class ForgotPasswordPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // Xử lý logic gửi yêu cầu khôi phục mật khẩu
-                  print('Reset password for email: ${_emailTextController.text}');
+                  print('Reset password for email: ${emailTextController.text}');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF612A74),
