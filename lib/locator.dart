@@ -1,10 +1,12 @@
 import 'package:alice_lightweight/alice.dart';
+import 'package:dio/dio.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/locator.config.dart';
+import 'package:jarvis_ai/retrofit/rest_client.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suga_core/suga_core.dart';
@@ -38,4 +40,7 @@ abstract class Locator {
   Alice getAlice() => Alice(
         navigatorKey: Get.key,
       );
+
+  @lazySingleton
+  Dio getDio() => locator<RestClient>().dio;
 }
