@@ -10,11 +10,11 @@ class AuthRepository {
     return _authRemoteDataSource.refreshToken(refreshToken);
   }
 
-  Future<void> signUpWithEmailAndPassword({required String email, required String password}) {
-    return _authRemoteDataSource.signUpWithEmailAndPassword(email: email, password: password);
+  Future<void> signUpWithEmailAndPassword({required String email, required String password, required String username}) {
+    return _authRemoteDataSource.signUpWithEmailAndPassword(email: email, password: password, username: username);
   }
 
-  Future<void> signInWithEmailAndPassword({required String email, required String password, required String username}) {
-    return _authRemoteDataSource.signInWithEmailAndPassword(email: email, password: password, username: username);
+  Future<void> signInWithEmailAndPassword({required String email, required String password}) {
+    return _authRemoteDataSource.signInWithEmailAndPassword(email: email, password: password);
   }
 }
