@@ -4,9 +4,7 @@ import 'package:alice_lightweight/alice.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/config/config.dart';
-import 'package:jarvis_ai/extensions/string_ext.dart';
 import 'package:jarvis_ai/helpers/ui_helper.dart';
-import 'package:jarvis_ai/locale_keys.g.dart';
 import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/retrofit/rest_error.dart';
 import 'package:jarvis_ai/storage/spref.dart';
@@ -57,7 +55,7 @@ class RestClient {
             case DioExceptionType.connectionTimeout:
             case DioExceptionType.sendTimeout:
             case DioExceptionType.receiveTimeout:
-              return handler.next(RestError.fromErrorString(LocaleKeys.shared_network_problem.trans(), null));
+              return handler.next(RestError.fromErrorString("Timeout", null));
             case DioExceptionType.badResponse:
               if (e.response != null) {
                 if (e.response!.statusCode == HttpStatus.unauthorized) {
@@ -73,10 +71,10 @@ class RestClient {
               }
               return handler.next(RestError.fromErrorString(e.message, null));
             case DioExceptionType.connectionError:
-              return handler.next(RestError.fromErrorString(LocaleKeys.shared_problem_connecting_server.trans(), null));
+              return handler.next(RestError.fromErrorString("Connection error", null));
             case DioExceptionType.cancel:
             default:
-              return handler.next(RestError.fromErrorString(LocaleKeys.shared_problem_connecting_server.trans(), null));
+              return handler.next(RestError.fromErrorString("Something went wrong", null));
           }
         },
       ),
