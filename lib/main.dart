@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:jarvis_ai/helpers/utils.dart' as utils;
+import 'package:jarvis_ai/modules/auth/app/ui/login/login_page.dart';
 
 import 'loading.dart';
 import 'locator.dart';
@@ -79,7 +80,7 @@ class _MyAppState extends State<Main> {
         home: LayoutBuilder(
           builder: (context, _) {
             WidgetsBinding.instance.addPostFrameCallback((_) => utils.insertOverlay(context, const ConnectionPage()));
-            return const SplashPage();
+            return const LoginPage();
           },
         ),
       ),
