@@ -1,0 +1,28 @@
+{
+  "auth": {
+    "sign_in": "Sign In",
+    "please_enter_phone_number": "Please enter your phone number to receive a verification code",
+    "enter_phone_description": "Enter Phone Number",
+    "send_verification_code_decription": "Verification code will be sent to this phone number.",
+    "invalid_phone_message": "Please enter a valid phone number.",
+    "voice_call": "Voice Call",
+    "voice_call_only_message": "Voice Call supports Vietnamese language only",
+    "verification_code": "Verification code",
+    "enter_6_digit_code": "Enter the 6-digit code",
+    "resend_in": "Resend in {second}s",
+    "invalid_otp_message": "Verification code is incorrect",
+    "term_and_condition_description": "I accept the Terms & Conditions agreement and I have read the Privacy Policy.",
+    "terms_conditions_agreement": "Terms & Conditions agreement",
+    "privacy_policy": "Privacy Policy",
+    "language_reverse": "Ngôn ngữ",
+    "get_code": "Get code",
+    "vietnamese": "Tiếng Việt",
+    "english": "English",
+    "select_country": "Select Country",
+    "notify_session_expired": "Your session has expired.\nPlease login again.",
+    "got_it": "Got it",
+    "change_language": "Change Language",
+    "cancel": "Cancel",
+    "save": "Save"
+  }
+}

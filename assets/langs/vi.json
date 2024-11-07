@@ -1,0 +1,28 @@
+{
+  "auth": {
+    "sign_in": "Đăng nhập",
+    "please_enter_phone_number": "Vui lòng nhập số điện thoại của bạn để nhận mã xác thực",
+    "enter_phone_description": "Nhập Số Điện Thoại",
+    "send_verification_code_decription": "Mã xác minh sẽ được gửi đến số điện thoại này.",
+    "invalid_phone_message": "Xin vui lòng nhập một số điện thoại hợp lệ.",
+    "voice_call": "Gọi Thoại",
+    "voice_call_only_message": "Gọi thoại chỉ hỗ trợ tiếng Việt",
+    "verification_code": "Mã xác nhận",
+    "enter_6_digit_code": "Nhập mã gồm 6 chữ số",
+    "resend_in": "Gửi lại sau {second} giây",
+    "invalid_otp_message": "Mã xác minh không chính xác",
+    "term_and_condition_description": "Tôi chấp nhận thỏa thuận Điều khoản & Điều kiện và tôi đã đọc Chính sách bảo mật.",
+    "terms_conditions_agreement": "thỏa thuận Điều khoản & Điều kiện",
+    "privacy_policy": "Chính sách bảo mật",
+    "language_reverse": "Language",
+    "get_code": "Lấy mã",
+    "vietnamese": "Tiếng Việt",
+    "english": "English",
+    "select_country": "Chọn quốc gia",
+    "notify_session_expired": "Phiên bản của bạn đã hết hạn.\nVui lòng đăng nhập lại.",
+    "got_it": "Đã hiểu",
+    "change_language": "Đổi ngôn ngữ",
+    "cancel": "Huỷ",
+    "save": "Lưu"
+  }
+}
