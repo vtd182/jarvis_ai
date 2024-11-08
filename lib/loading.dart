@@ -8,6 +8,6 @@ void setupEasyLoading() {
     ..loadingStyle = EasyLoadingStyle.custom
     ..backgroundColor = Colors.white
     ..userInteractions = false
-    ..indicatorColor = Colors.amber
+    ..indicatorColor = Colors.blue
     ..textColor = Colors.black;
 }
