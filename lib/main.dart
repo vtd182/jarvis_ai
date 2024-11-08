@@ -70,6 +70,13 @@ class _MyAppState extends State<Main> {
             cursorColor: Colors.orange,
           ),
           useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+          ).copyWith(
+            primary: Colors.blue,
+            onPrimary: Colors.white,
+            secondary: Colors.green,
+          ),
         ),
         builder: (context, child) {
           return MediaQuery(

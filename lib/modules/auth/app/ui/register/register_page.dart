@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../../gen/assets.gen.dart';
+import '../../../../shared/theme/app_theme.dart';
 import '../login/login_page.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -36,9 +38,11 @@ class RegisterPageView extends StatefulWidget {
 }
 
 class _RegisterPageViewState extends State<RegisterPageView> {
+  final _usernameTextController = TextEditingController();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
   final _confirmPasswordTextController = TextEditingController();
+  final emailFormKey = GlobalKey<FormState>();
   final usernameFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
   final confirmPasswordFormKey = GlobalKey<FormState>();
@@ -49,10 +53,13 @@ class _RegisterPageViewState extends State<RegisterPageView> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.all(20),
+          margin: const EdgeInsets.all(30),
           child: Column(
             children: [
+              _buildLogo(),
               _buildTextTitle(),
+              _buildFormUsername(),
+              const SizedBox(height: 30),
               _buildFormRegister(),
               const SizedBox(height: 30),
               _buildFormPassword(),
@@ -61,7 +68,6 @@ class _RegisterPageViewState extends State<RegisterPageView> {
               _buildRegisterButton(),
               _buildOrSplitDivider(),
               _buildRegisterWithGoogleButton(),
-              _buildRegisterWithAppleButton(),
               const SizedBox(height: 20),
               _buildHaveAnAccount(),
               const SizedBox(height: 30),
@@ -69,6 +75,13 @@ class _RegisterPageViewState extends State<RegisterPageView> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLogo() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Assets.icons.icJarvisLoginPage.image(),
     );
   }
 
@@ -87,22 +100,52 @@ class _RegisterPageViewState extends State<RegisterPageView> {
     );
   }
 
-  Widget _buildFormRegister() {
+  Widget _buildFormUsername() {
     return Form(
       key: usernameFormKey,
       autovalidateMode: _autoValidateMode,
       child: Column(
         children: [
           Container(
-            alignment: Alignment.centerLeft,
-            child: const Text(
-              "Email",
-              style: TextStyle(
+            margin: const EdgeInsets.only(top: 10),
+            child: TextFormField(
+              controller: _usernameTextController,
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return "Please enter some text";
+                }
+                final emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+                if (!emailValid) {
+                  return "Please enter a valid email";
+                }
+                return null;
+              },
+              style: const TextStyle(
                 color: Colors.black,
-                fontSize: 16,
+              ),
+              decoration: InputDecoration(
+                hintText: "Username",
+                hintStyle: TextStyle(
+                  color: Colors.black.withOpacity(0.5),
+                  fontSize: 16,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFormRegister() {
+    return Form(
+      key: emailFormKey,
+      autovalidateMode: _autoValidateMode,
+      child: Column(
+        children: [
           Container(
             margin: const EdgeInsets.only(top: 10),
             child: TextFormField(
@@ -127,10 +170,8 @@ class _RegisterPageViewState extends State<RegisterPageView> {
                   fontSize: 16,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                fillColor: Colors.grey.withOpacity(0.2),
-                filled: true,
               ),
             ),
           ),
@@ -145,16 +186,6 @@ class _RegisterPageViewState extends State<RegisterPageView> {
       autovalidateMode: _autoValidateMode,
       child: Column(
         children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            child: const Text(
-              "Password",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-              ),
-            ),
-          ),
           Container(
             margin: const EdgeInsets.only(top: 10),
             child: TextFormField(
@@ -179,10 +210,8 @@ class _RegisterPageViewState extends State<RegisterPageView> {
                   fontSize: 16,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                fillColor: Colors.grey.withOpacity(0.2),
-                filled: true,
               ),
             ),
           ),
@@ -197,16 +226,6 @@ class _RegisterPageViewState extends State<RegisterPageView> {
       autovalidateMode: _autoValidateMode,
       child: Column(
         children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            child: const Text(
-              "Confirm Password",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-              ),
-            ),
-          ),
           Container(
             margin: const EdgeInsets.only(top: 10),
             child: TextFormField(
@@ -234,10 +253,8 @@ class _RegisterPageViewState extends State<RegisterPageView> {
                   fontSize: 16,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                fillColor: Colors.grey.withOpacity(0.2),
-                filled: true,
               ),
             ),
           ),
@@ -248,24 +265,31 @@ class _RegisterPageViewState extends State<RegisterPageView> {
 
   Widget _buildRegisterButton() {
     return Container(
-        margin: const EdgeInsets.only(top: 50),
-        height: 48,
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            _register();
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF612A74),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
+      margin: const EdgeInsets.only(top: 50),
+      height: 55,
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          _register();
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppTheme.primaryBlue,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(24),
             ),
           ),
-          child: const Text(
-            "Create Account",
-            style: TextStyle(color: Colors.white),
+        ),
+        child: const Text(
+          "Create Account",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _buildOrSplitDivider() {
@@ -281,7 +305,7 @@ class _RegisterPageViewState extends State<RegisterPageView> {
             ),
           ),
           Text(
-            "OR",
+            "Or register with",
             style: TextStyle(
               color: Colors.black.withOpacity(0.5),
             ),
@@ -301,68 +325,37 @@ class _RegisterPageViewState extends State<RegisterPageView> {
   Widget _buildRegisterWithGoogleButton() {
     return Container(
       margin: const EdgeInsets.only(top: 20),
-      height: 48,
+      height: 55,
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
           print('Register with Google');
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          backgroundColor: Colors.grey.withOpacity(0.2),
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
-            side: BorderSide(
-              color: Colors.white,
-              width: 1,
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(24)),
           ),
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.safety_check, color: Colors.white),
-            SizedBox(width: 10),
-            Text(
-              "Register with Google",
-              style: TextStyle(color: Colors.white),
+            Assets.icons.icGoogle.image(width: 24, height: 24),
+            const SizedBox(width: 10),
+            const Text(
+              "Google",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  Widget _buildRegisterWithAppleButton() {
-    return Container(
-        margin: const EdgeInsets.only(top: 20),
-        height: 48,
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            print('Register with Apple');
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-              side: BorderSide(
-                color: Colors.white,
-                width: 1,
-              ),
-            ),
-          ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.apple, color: Colors.white),
-              SizedBox(width: 10),
-              Text(
-                "Register with Apple",
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
-        ));
   }
 
   Widget _buildHaveAnAccount() {
@@ -371,13 +364,15 @@ class _RegisterPageViewState extends State<RegisterPageView> {
       text: "Already have an account? ",
       style: TextStyle(
         color: Colors.black.withOpacity(0.5),
+        fontSize: 16,
       ),
       children: [
         TextSpan(
           text: "Login",
           style: const TextStyle(
-            color: Colors.black,
+            color: AppTheme.primaryBlue,
             fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
