@@ -59,7 +59,7 @@ class _MyAppState extends State<Main> {
       designSize: const Size(375, 812),
       builder: (context, child) => GetMaterialApp(
         themeMode: ThemeMode.light,
-        title: 'SantaPocket',
+        title: 'Jarvis AI',
         locale: context.locale,
         supportedLocales: context.supportedLocales,
         localizationsDelegates: context.localizationDelegates,
@@ -69,7 +69,7 @@ class _MyAppState extends State<Main> {
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: Colors.orange,
           ),
-          useMaterial3: false,
+          useMaterial3: true,
         ),
         builder: (context, child) {
           return MediaQuery(
