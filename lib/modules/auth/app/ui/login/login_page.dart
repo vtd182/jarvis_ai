@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/auth/app/ui/login/login_page_viewmodel.dart';
+import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
 import 'package:suga_core/suga_core.dart';
 
+import '../../../../../gen/assets.gen.dart';
 import '../forgot_password/forgot_password_page.dart';
 import '../register/register_page.dart';
 
@@ -51,23 +53,30 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
       top: false,
       child: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.all(20),
+          margin: const EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 30),
           child: Column(
             children: [
+              _buildLogo(),
               _buildTextTitle(),
+              _buildDontHaveAccount(),
+              const SizedBox(height: 30),
               _buildFormLogin(),
               const SizedBox(height: 30),
               _buildFormPassword(),
               _buildLoginButton(),
               _buildOrSplitDivider(),
               _buildLoginWithGoogleButton(),
-              _buildLoginWithAppleButton(),
-              const SizedBox(height: 20),
-              _buildDontHaveAccount(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLogo() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Assets.icons.icJarvisLoginPage.image(),
     );
   }
 
@@ -76,7 +85,7 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
       margin: const EdgeInsets.only(bottom: 20),
       alignment: Alignment.centerLeft,
       child: const Text(
-        "Login to your account",
+        "Login to your \naccount",
         style: TextStyle(
           color: Colors.black,
           fontSize: 40,
@@ -92,46 +101,31 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
       autovalidateMode: _autoValidateMode,
       child: Column(
         children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            child: const Text(
-              "Email",
-              style: TextStyle(
-                color: Colors.black,
+          TextFormField(
+            controller: _emailTextController,
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter some text";
+              }
+              final emailValid = RegExp(
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+              ).hasMatch(value);
+              if (!emailValid) {
+                return "Please enter a valid email";
+              }
+              return null;
+            },
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+            decoration: InputDecoration(
+              hintText: "Email",
+              hintStyle: TextStyle(
+                color: Colors.black.withOpacity(0.5),
                 fontSize: 16,
               ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: TextFormField(
-              controller: _emailTextController,
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter some text";
-                }
-                final emailValid = RegExp(
-                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                ).hasMatch(value);
-                if (!emailValid) {
-                  return "Please enter a valid email";
-                }
-                return null;
-              },
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                hintText: "Enter your email",
-                hintStyle: TextStyle(
-                  color: Colors.black.withOpacity(0.5),
-                  fontSize: 16,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                fillColor: Colors.grey.withOpacity(0.2),
-                filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
           ),
@@ -146,44 +140,29 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
       autovalidateMode: _autoValidateMode,
       child: Column(
         children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            child: const Text(
-              "Password",
-              style: TextStyle(
-                color: Colors.black,
+          TextFormField(
+            controller: _passwordTextController,
+            obscureText: true,
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return "Please enter some text";
+              }
+              if (value.length < 6) {
+                return "Password must be at least 6 characters";
+              }
+              return null;
+            },
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+            decoration: InputDecoration(
+              hintText: "Password",
+              hintStyle: TextStyle(
+                color: Colors.black.withOpacity(0.5),
                 fontSize: 16,
               ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: TextFormField(
-              controller: _passwordTextController,
-              obscureText: true,
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter some text";
-                }
-                if (value.length < 6) {
-                  return "Password must be at least 6 characters";
-                }
-                return null;
-              },
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                hintText: "Enter your password",
-                hintStyle: TextStyle(
-                  color: Colors.black.withOpacity(0.5),
-                  fontSize: 16,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                fillColor: Colors.grey.withOpacity(0.2),
-                filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
           ),
@@ -194,34 +173,45 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
 
   Widget _buildLoginButton() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end, // Căn phải
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         TextButton(
           onPressed: () {
-            Get.to(() => const ForgotPasswordPage()); // Chuyển hướng tới ForgotPasswordPage
+            Get.to(() => const ForgotPasswordPage());
           },
           child: const Text(
             "Forgot password?",
-            style: TextStyle(color: Colors.black54),
+            style: TextStyle(
+              color: AppTheme.primaryBlue,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         Container(
           margin: const EdgeInsets.only(top: 10),
-          height: 48,
+          height: 55,
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
               _login();
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF612A74),
+              elevation: 0,
+              backgroundColor: AppTheme.primaryBlue,
               shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(24),
+                ),
               ),
             ),
             child: const Text(
               "Login",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -242,7 +232,7 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
             ),
           ),
           Text(
-            "OR",
+            "Or login with",
             style: TextStyle(
               color: Colors.black.withOpacity(0.5),
             ),
@@ -261,64 +251,32 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
 
   Widget _buildLoginWithGoogleButton() {
     return Container(
-        margin: const EdgeInsets.only(top: 20),
-        height: 48,
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            print('Login with Google');
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-              side: BorderSide(
-                color: Colors.white,
-                width: 1,
-              ),
-            ),
-          ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.safety_check, color: Colors.white),
-              SizedBox(width: 10),
-              Text(
-                "Login with Google",
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
-        ));
-  }
-
-  Widget _buildLoginWithAppleButton() {
-    return Container(
       margin: const EdgeInsets.only(top: 20),
-      height: 48,
+      height: 55,
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          print('Login with Apple');
+          print('Login with Google');
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
+          elevation: 0,
+          backgroundColor: Colors.grey.withOpacity(0.2),
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
-            side: BorderSide(
-              color: Colors.white,
-              width: 1,
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(24)),
           ),
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.apple, color: Colors.white),
-            SizedBox(width: 10),
-            Text(
-              "Login with Apple",
-              style: TextStyle(color: Colors.white),
+            Assets.icons.icGoogle.image(width: 24, height: 24),
+            const SizedBox(width: 10),
+            const Text(
+              "Google",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
           ],
         ),
@@ -327,28 +285,33 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
   }
 
   Widget _buildDontHaveAccount() {
-    return RichText(
-        text: TextSpan(
-      text: "Don't have account? ",
-      style: TextStyle(
-        color: Colors.black.withOpacity(0.5),
-      ),
-      children: [
-        TextSpan(
-          text: "Register",
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              Get.to(
-                () => const RegisterPage(),
-              );
-            },
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: RichText(
+          text: TextSpan(
+        text: "Don't have account? ",
+        style: TextStyle(
+          color: Colors.black.withOpacity(0.5),
+          fontSize: 16,
         ),
-      ],
-    ));
+        children: [
+          TextSpan(
+            text: "Register",
+            style: const TextStyle(
+              color: AppTheme.primaryBlue,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                Get.to(
+                  () => const RegisterPage(),
+                );
+              },
+          ),
+        ],
+      )),
+    );
   }
 
   void _login() {
@@ -365,7 +328,6 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
     } else {
       final email = _emailTextController.text;
       final password = _passwordTextController.text;
-      print('email: $email, password: $password');
       viewModel.login(email, password);
     }
   }
