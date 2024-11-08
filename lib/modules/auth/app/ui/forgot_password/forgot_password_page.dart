@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../../../../shared/theme/app_theme.dart';
+
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final emailTextController = TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Forgot Password"),
         backgroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -32,10 +33,8 @@ class ForgotPasswordPage extends StatelessWidget {
                 hintText: "Enter your email",
                 hintStyle: TextStyle(color: Colors.black.withOpacity(0.5)),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                fillColor: Colors.grey.withOpacity(0.2),
-                filled: true,
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -53,21 +52,23 @@ class ForgotPasswordPage extends StatelessWidget {
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
-              height: 48,
+              height: 55,
               child: ElevatedButton(
                 onPressed: () {
                   // Xử lý logic gửi yêu cầu khôi phục mật khẩu
                   print('Reset password for email: ${emailTextController.text}');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF612A74),
+                  backgroundColor: AppTheme.primaryBlue,
                   shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(25),
+                    ),
                   ),
                 ),
                 child: const Text(
                   "Send Reset Link",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),

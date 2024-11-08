@@ -264,6 +264,7 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(24)),
           ),
+          shadowColor: Colors.transparent,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
