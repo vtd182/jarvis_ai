@@ -14,12 +14,12 @@ import 'locator.dart';
 import 'modules/connection/app/ui/connection_page.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await setupLocator();
-  setupEasyLoading();
   await runZonedGuarded(
     () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await EasyLocalization.ensureInitialized();
+      await setupLocator();
+      setupEasyLoading();
       runApp(
         EasyLocalization(
           supportedLocales: const [Locale('en'), Locale('vi')],
@@ -80,7 +80,8 @@ class _MyAppState extends State<Main> {
         ),
         builder: (context, child) {
           return MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1)),
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: const TextScaler.linear(1)),
             child: FlutterEasyLoading(child: child),
           );
         },
