@@ -54,12 +54,6 @@ dependencies:
   # Flutter library to load and cache network images. Can also be used with placeholder and error widgets.
   cached_network_image: ^3.2.3
 
-  # Flutter plugin for accepting incoming links - App/Deep Links (Android), Universal Links and Custom URL schemes (iOS).
-  uni_links: ^0.5.1
-
-  # A Flutter plugin to assist in leaving user reviews/ratings in Google Play Store and Apple App Store.
-  launch_review: ^3.0.1
-
   # Flutter package for day, week, range and month date pickers.
   flutter_date_pickers: ^0.4.0
 
