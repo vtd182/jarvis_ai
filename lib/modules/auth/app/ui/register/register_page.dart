@@ -1,8 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/helpers/ui_helper.dart';
+import 'package:jarvis_ai/modules/auth/app/ui/register/register_page_viewmodel.dart';
+import 'package:suga_core/suga_core.dart';
 
 import '../../../../../gen/assets.gen.dart';
+import '../../../../../locator.dart';
 import '../../../../shared/theme/app_theme.dart';
 import '../login/login_page.dart';
 
@@ -37,7 +41,7 @@ class RegisterPageView extends StatefulWidget {
   State<RegisterPageView> createState() => _RegisterPageViewState();
 }
 
-class _RegisterPageViewState extends State<RegisterPageView> {
+class _RegisterPageViewState extends BaseViewState<RegisterPageView, RegisterPageViewModel> {
   final _usernameTextController = TextEditingController();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
@@ -113,10 +117,6 @@ class _RegisterPageViewState extends State<RegisterPageView> {
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
                   return "Please enter some text";
-                }
-                final emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
-                if (!emailValid) {
-                  return "Please enter a valid email";
                 }
                 return null;
               },
@@ -197,6 +197,15 @@ class _RegisterPageViewState extends State<RegisterPageView> {
                 if (value.length < 6) {
                   return "Password must be at least 6 characters";
                 }
+                if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                  return "Password must have at least one uppercase letter";
+                }
+                if (!RegExp(r'[a-z]').hasMatch(value)) {
+                  return "Password must have at least one lowercase letter";
+                }
+                if (!RegExp(r'\d').hasMatch(value)) {
+                  return "Password must have at least one number";
+                }
                 return null;
               },
               obscureText: true,
@@ -236,6 +245,15 @@ class _RegisterPageViewState extends State<RegisterPageView> {
                 }
                 if (value.length < 6) {
                   return "Password must be at least 6 characters";
+                }
+                if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                  return "Password must have at least one uppercase letter";
+                }
+                if (!RegExp(r'[a-z]').hasMatch(value)) {
+                  return "Password must have at least one lowercase letter";
+                }
+                if (!RegExp(r'\d').hasMatch(value)) {
+                  return "Password must have at least one number";
                 }
                 if (value != _passwordTextController.text) {
                   return "Password don't match";
@@ -391,8 +409,10 @@ class _RegisterPageViewState extends State<RegisterPageView> {
         _autoValidateMode = AutovalidateMode.always;
       });
     }
+
     final email = _emailTextController.text;
     final password = _passwordTextController.text;
+    final username = _usernameTextController.text;
 
     final isEmailValid = usernameFormKey.currentState?.validate() ?? false;
     final isPasswordValid = passwordFormKey.currentState?.validate() ?? false;
@@ -400,7 +420,15 @@ class _RegisterPageViewState extends State<RegisterPageView> {
     final isValid = isEmailValid && isPasswordValid && isConfirmPasswordValid;
 
     if (!isValid) {
+      showToast("Please fill in all the fields");
       return;
-    } else {}
+    } else {
+      viewModel.register(username: username, email: email, password: password);
+    }
+  }
+
+  @override
+  RegisterPageViewModel createViewModel() {
+    return locator<RegisterPageViewModel>();
   }
 }

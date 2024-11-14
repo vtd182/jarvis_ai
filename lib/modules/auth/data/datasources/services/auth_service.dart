@@ -22,6 +22,12 @@ abstract class AuthService {
     @Body() Map<String, dynamic> body,
   );
 
-  @GET("")
-  Future<dynamic> refreshToken(@Part(name: "refreshToken") String refreshToken);
+  @GET("/sign-out")
+  Future<dynamic> signOut();
+
+  @GET("/refresh")
+  Future<dynamic> refreshToken(@Query("refreshToken") String refreshToken);
+
+  @POST("google-sign-in")
+  Future<dynamic> signInWithGoogle(@Body() Map<String, dynamic> body);
 }

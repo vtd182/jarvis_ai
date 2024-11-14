@@ -7,11 +7,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:jarvis_ai/helpers/utils.dart' as utils;
-import 'package:jarvis_ai/modules/home/app/ui/home_page.dart';
 
 import 'loading.dart';
 import 'locator.dart';
 import 'modules/connection/app/ui/connection_page.dart';
+import 'modules/onboarding/app/ui/splash/splash_page.dart';
 
 Future<void> main() async {
   await runZonedGuarded(
@@ -80,31 +80,17 @@ class _MyAppState extends State<Main> {
         ),
         builder: (context, child) {
           return MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: const TextScaler.linear(1)),
+            data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1)),
             child: FlutterEasyLoading(child: child),
           );
         },
         home: LayoutBuilder(
           builder: (context, _) {
             WidgetsBinding.instance.addPostFrameCallback((_) => utils.insertOverlay(context, const ConnectionPage()));
-            return HomePage();
+            return const SplashPage();
           },
         ),
       ),
     );
-  }
-}
-
-// homepage
-class SplashPage extends StatelessWidget {
-  const SplashPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-        body: Center(
-      child: CircularProgressIndicator(),
-    ));
   }
 }
