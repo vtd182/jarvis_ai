@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:santapocket/extensions/string_ext.dart';
-import 'package:santapocket/gen/assets.gen.dart';
-import 'package:santapocket/locale_keys.g.dart';
-import 'package:santapocket/modules/auth/app/ui/login/enter_phone_page.dart';
-import 'package:santapocket/shared/theme/app_theme.dart';
+import 'package:jarvis_ai/extensions/string_ext.dart';
+import 'package:jarvis_ai/gen/assets.gen.dart';
+import 'package:jarvis_ai/locale_keys.g.dart';
+import 'package:jarvis_ai/modules/auth/app/ui/login/login_page.dart';
+
+import '../../../../shared/theme/app_theme.dart';
 
 class SessionExpiredWidget extends StatelessWidget {
   const SessionExpiredWidget({super.key});
@@ -48,7 +49,7 @@ class SessionExpiredWidget extends StatelessWidget {
           TextButton(
             onPressed: () {
               Get.back();
-              Get.off(() => const EnterPhonePage());
+              Get.off(() => const LoginPage());
             },
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(

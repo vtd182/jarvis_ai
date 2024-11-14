@@ -315,7 +315,7 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
     );
   }
 
-  void _login() {
+  Future<void> _login() async {
     if (_autoValidateMode == AutovalidateMode.disabled) {
       setState(() {
         _autoValidateMode = AutovalidateMode.always;
@@ -329,7 +329,8 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
     } else {
       final email = _emailTextController.text;
       final password = _passwordTextController.text;
-      viewModel.login(email, password);
+      await viewModel.login(email, password);
+      return;
     }
   }
 

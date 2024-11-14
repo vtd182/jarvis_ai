@@ -10,11 +10,19 @@ class AuthRepository {
     return _authRemoteDataSource.refreshToken(refreshToken);
   }
 
-  Future<void> signUpWithEmailAndPassword({required String email, required String password, required String username}) {
+  Future<dynamic> signUpWithEmailAndPassword({required String email, required String password, required String username}) {
     return _authRemoteDataSource.signUpWithEmailAndPassword(email: email, password: password, username: username);
   }
 
-  Future<void> signInWithEmailAndPassword({required String email, required String password}) {
+  Future<dynamic> signInWithEmailAndPassword({required String email, required String password}) {
     return _authRemoteDataSource.signInWithEmailAndPassword(email: email, password: password);
+  }
+
+  Future<dynamic> signInWithGoogle({required String token}) {
+    return _authRemoteDataSource.signInWithGoogle(token: token);
+  }
+
+  Future<dynamic> signOut() {
+    return _authRemoteDataSource.signOut();
   }
 }
