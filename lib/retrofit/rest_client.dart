@@ -22,7 +22,6 @@ class RestClient {
   Dio dio = Dio(_options);
 
   bool onRefreshToken = false;
-  bool onRefreshLockerToken = false;
 
   Future<Unit> _configDioInterceptors() async {
     if (Config.aliceEnable) {
@@ -35,10 +34,12 @@ class RestClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           var token = await SPref.instance.getAccessToken();
-          // todo: check login
-          options.headers["Authorization"] = "Bearer $token";
-          options.headers["Accept"] = "application/json";
+          if (!options.path.endsWith("refresh")) {
+            options.headers["Authorization"] = "Bearer $token";
+          }
           options.headers["X-Language"] = await SPref.instance.getLanguage() ?? Platform.localeName.substring(0, 2);
+          options.headers["Accept"] = "application/json";
+          options.headers["x-jarvis-guid"] = "";
           handler.next(options);
         },
         onResponse: (e, handler) async {
