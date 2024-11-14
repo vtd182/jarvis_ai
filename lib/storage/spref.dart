@@ -56,6 +56,16 @@ class SPref {
     await prefs.setInt("permissionNotificationAskTime", time);
   }
 
+  Future<int?> getExpiresAt() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(SPrefKey.keyExpiresAt);
+  }
+
+  Future setExpiresAt(int expiresAt) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(SPrefKey.keyExpiresAt, expiresAt);
+  }
+
   dynamic deleteAll() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final strLocale = prefs.getString('locale');
