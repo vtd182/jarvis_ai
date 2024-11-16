@@ -45,7 +45,6 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
   final _passwordTextController = TextEditingController();
   final usernameFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
-  var _autoValidateMode = AutovalidateMode.disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -96,79 +95,79 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
   }
 
   Widget _buildFormLogin() {
-    return Form(
-      key: usernameFormKey,
-      autovalidateMode: _autoValidateMode,
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _emailTextController,
-            validator: (String? value) {
-              if (value == null || value.isEmpty) {
-                return "Please enter some text";
-              }
-              final emailValid = RegExp(
-                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-              ).hasMatch(value);
-              if (!emailValid) {
-                return "Please enter a valid email";
-              }
-              return null;
-            },
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-            decoration: InputDecoration(
-              hintText: "Email",
-              hintStyle: TextStyle(
-                color: Colors.black.withOpacity(0.5),
-                fontSize: 16,
+    return Obx(() => Form(
+          key: usernameFormKey,
+          autovalidateMode: viewModel.autoValidateMode.value,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _emailTextController,
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter some text";
+                  }
+                  final emailValid = RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                  ).hasMatch(value);
+                  if (!emailValid) {
+                    return "Please enter a valid email";
+                  }
+                  return null;
+                },
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+                decoration: InputDecoration(
+                  hintText: "Email",
+                  hintStyle: TextStyle(
+                    color: Colors.black.withOpacity(0.5),
+                    fontSize: 16,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _buildFormPassword() {
-    return Form(
-      key: passwordFormKey,
-      autovalidateMode: _autoValidateMode,
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _passwordTextController,
-            obscureText: true,
-            validator: (String? value) {
-              if (value == null || value.isEmpty) {
-                return "Please enter some text";
-              }
-              if (value.length < 6) {
-                return "Password must be at least 6 characters";
-              }
-              return null;
-            },
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-            decoration: InputDecoration(
-              hintText: "Password",
-              hintStyle: TextStyle(
-                color: Colors.black.withOpacity(0.5),
-                fontSize: 16,
+    return Obx(() => Form(
+          key: passwordFormKey,
+          autovalidateMode: viewModel.autoValidateMode.value,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _passwordTextController,
+                obscureText: true,
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter some text";
+                  }
+                  if (value.length < 6) {
+                    return "Password must be at least 6 characters";
+                  }
+                  return null;
+                },
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+                decoration: InputDecoration(
+                  hintText: "Password",
+                  hintStyle: TextStyle(
+                    color: Colors.black.withOpacity(0.5),
+                    fontSize: 16,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _buildLoginButton() {
@@ -316,10 +315,8 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
   }
 
   Future<void> _login() async {
-    if (_autoValidateMode == AutovalidateMode.disabled) {
-      setState(() {
-        _autoValidateMode = AutovalidateMode.always;
-      });
+    if (viewModel.autoValidateMode.value == AutovalidateMode.disabled) {
+      viewModel.autoValidateMode.value = AutovalidateMode.always;
     }
     final isEmailValid = usernameFormKey.currentState?.validate() ?? false;
     final isPasswordValid = passwordFormKey.currentState?.validate() ?? false;
