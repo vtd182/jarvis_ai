@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
     SearchPage(),
     OCRPage(),
     GrammarPage(),
-    AskPage(),
+    SettingPage(),
   ];
 
   void _onNavItemTapped(int index) {
@@ -28,76 +29,79 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Center(
-                child: Text(
-                  'Jarvis AI',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Center(
+                  child: Text(
+                    'Jarvis AI',
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
                 ),
               ),
-            ),
-            NavDrawerItem(
-              icon: Icons.chat,
-              label: "Chat",
-              index: 0,
-              selectedIndex: _selectedIndex,
-              onTap: _onNavItemTapped,
-            ),
-            NavDrawerItem(
-              icon: Icons.edit,
-              label: "Write",
-              index: 1,
-              selectedIndex: _selectedIndex,
-              onTap: _onNavItemTapped,
-            ),
-            NavDrawerItem(
-              icon: Icons.translate,
-              label: "Translate",
-              index: 2,
-              selectedIndex: _selectedIndex,
-              onTap: _onNavItemTapped,
-            ),
-            NavDrawerItem(
-              icon: Icons.search,
-              label: "Search",
-              index: 3,
-              selectedIndex: _selectedIndex,
-              onTap: _onNavItemTapped,
-            ),
-            NavDrawerItem(
-              icon: Icons.camera,
-              label: "OCR",
-              index: 4,
-              selectedIndex: _selectedIndex,
-              onTap: _onNavItemTapped,
-            ),
-            NavDrawerItem(
-              icon: Icons.spellcheck,
-              label: "Grammar",
-              index: 5,
-              selectedIndex: _selectedIndex,
-              onTap: _onNavItemTapped,
-            ),
-            NavDrawerItem(
-              icon: Icons.question_answer,
-              label: "Ask",
-              index: 6,
-              selectedIndex: _selectedIndex,
-              onTap: _onNavItemTapped,
-            ),
-          ],
+              NavDrawerItem(
+                icon: Icons.chat,
+                label: "Chat",
+                index: 0,
+                selectedIndex: _selectedIndex,
+                onTap: _onNavItemTapped,
+              ),
+              NavDrawerItem(
+                icon: Icons.edit,
+                label: "Write",
+                index: 1,
+                selectedIndex: _selectedIndex,
+                onTap: _onNavItemTapped,
+              ),
+              NavDrawerItem(
+                icon: Icons.translate,
+                label: "Translate",
+                index: 2,
+                selectedIndex: _selectedIndex,
+                onTap: _onNavItemTapped,
+              ),
+              NavDrawerItem(
+                icon: Icons.search,
+                label: "Search",
+                index: 3,
+                selectedIndex: _selectedIndex,
+                onTap: _onNavItemTapped,
+              ),
+              NavDrawerItem(
+                icon: Icons.camera,
+                label: "OCR",
+                index: 4,
+                selectedIndex: _selectedIndex,
+                onTap: _onNavItemTapped,
+              ),
+              NavDrawerItem(
+                icon: Icons.spellcheck,
+                label: "Grammar",
+                index: 5,
+                selectedIndex: _selectedIndex,
+                onTap: _onNavItemTapped,
+              ),
+              const Divider(height: 1, color: Colors.grey),
+              NavDrawerItem(
+                icon: Icons.settings,
+                label: "Settings",
+                index: 6,
+                selectedIndex: _selectedIndex,
+                onTap: _onNavItemTapped,
+              ),
+            ],
+          ),
         ),
+        body: _pages[_selectedIndex],
       ),
-      body: _pages[_selectedIndex],
     );
   }
 }
@@ -171,12 +175,5 @@ class GrammarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(child: Text("Grammar Page"));
-  }
-}
-
-class AskPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text("Ask Page"));
   }
 }
