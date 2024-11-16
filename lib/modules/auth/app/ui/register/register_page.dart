@@ -50,7 +50,6 @@ class _RegisterPageViewState extends BaseViewState<RegisterPageView, RegisterPag
   final usernameFormKey = GlobalKey<FormState>();
   final passwordFormKey = GlobalKey<FormState>();
   final confirmPasswordFormKey = GlobalKey<FormState>();
-  var _autoValidateMode = AutovalidateMode.disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -105,180 +104,180 @@ class _RegisterPageViewState extends BaseViewState<RegisterPageView, RegisterPag
   }
 
   Widget _buildFormUsername() {
-    return Form(
-      key: usernameFormKey,
-      autovalidateMode: _autoValidateMode,
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: TextFormField(
-              controller: _usernameTextController,
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter some text";
-                }
-                return null;
-              },
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                hintText: "Username",
-                hintStyle: TextStyle(
-                  color: Colors.black.withOpacity(0.5),
-                  fontSize: 16,
+    return Obx(() => Form(
+          key: usernameFormKey,
+          autovalidateMode: viewModel.autoValidateMode.value,
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: TextFormField(
+                  controller: _usernameTextController,
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter some text";
+                    }
+                    return null;
+                  },
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: "Username",
+                    hintStyle: TextStyle(
+                      color: Colors.black.withOpacity(0.5),
+                      fontSize: 16,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _buildFormRegister() {
-    return Form(
-      key: emailFormKey,
-      autovalidateMode: _autoValidateMode,
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: TextFormField(
-              controller: _emailTextController,
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter some text";
-                }
-                final emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
-                if (!emailValid) {
-                  return "Please enter a valid email";
-                }
-                return null;
-              },
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                hintText: "Enter your email",
-                hintStyle: TextStyle(
-                  color: Colors.black.withOpacity(0.5),
-                  fontSize: 16,
+    return Obx(() => Form(
+          key: emailFormKey,
+          autovalidateMode: viewModel.autoValidateMode.value,
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: TextFormField(
+                  controller: _emailTextController,
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter some text";
+                    }
+                    final emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+                    if (!emailValid) {
+                      return "Please enter a valid email";
+                    }
+                    return null;
+                  },
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: "Enter your email",
+                    hintStyle: TextStyle(
+                      color: Colors.black.withOpacity(0.5),
+                      fontSize: 16,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _buildFormPassword() {
-    return Form(
-      key: passwordFormKey,
-      autovalidateMode: _autoValidateMode,
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: TextFormField(
-              controller: _passwordTextController,
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter some text";
-                }
-                if (value.length < 6) {
-                  return "Password must be at least 6 characters";
-                }
-                if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                  return "Password must have at least one uppercase letter";
-                }
-                if (!RegExp(r'[a-z]').hasMatch(value)) {
-                  return "Password must have at least one lowercase letter";
-                }
-                if (!RegExp(r'\d').hasMatch(value)) {
-                  return "Password must have at least one number";
-                }
-                return null;
-              },
-              obscureText: true,
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                hintText: "Enter your password",
-                hintStyle: TextStyle(
-                  color: Colors.black.withOpacity(0.5),
-                  fontSize: 16,
+    return Obx(() => Form(
+          key: passwordFormKey,
+          autovalidateMode: viewModel.autoValidateMode.value,
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: TextFormField(
+                  controller: _passwordTextController,
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter some text";
+                    }
+                    if (value.length < 6) {
+                      return "Password must be at least 6 characters";
+                    }
+                    if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                      return "Password must have at least one uppercase letter";
+                    }
+                    if (!RegExp(r'[a-z]').hasMatch(value)) {
+                      return "Password must have at least one lowercase letter";
+                    }
+                    if (!RegExp(r'\d').hasMatch(value)) {
+                      return "Password must have at least one number";
+                    }
+                    return null;
+                  },
+                  obscureText: true,
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: "Enter your password",
+                    hintStyle: TextStyle(
+                      color: Colors.black.withOpacity(0.5),
+                      fontSize: 16,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _buildFormConfirmPassword() {
-    return Form(
-      key: confirmPasswordFormKey,
-      autovalidateMode: _autoValidateMode,
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: TextFormField(
-              controller: _confirmPasswordTextController,
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter some text";
-                }
-                if (value.length < 6) {
-                  return "Password must be at least 6 characters";
-                }
-                if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                  return "Password must have at least one uppercase letter";
-                }
-                if (!RegExp(r'[a-z]').hasMatch(value)) {
-                  return "Password must have at least one lowercase letter";
-                }
-                if (!RegExp(r'\d').hasMatch(value)) {
-                  return "Password must have at least one number";
-                }
-                if (value != _passwordTextController.text) {
-                  return "Password don't match";
-                }
-                return null;
-              },
-              obscureText: true,
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                hintText: "Confirm your password",
-                hintStyle: TextStyle(
-                  color: Colors.black.withOpacity(0.5),
-                  fontSize: 16,
+    return Obx(() => Form(
+          key: confirmPasswordFormKey,
+          autovalidateMode: viewModel.autoValidateMode.value,
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: TextFormField(
+                  controller: _confirmPasswordTextController,
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter some text";
+                    }
+                    if (value.length < 6) {
+                      return "Password must be at least 6 characters";
+                    }
+                    if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                      return "Password must have at least one uppercase letter";
+                    }
+                    if (!RegExp(r'[a-z]').hasMatch(value)) {
+                      return "Password must have at least one lowercase letter";
+                    }
+                    if (!RegExp(r'\d').hasMatch(value)) {
+                      return "Password must have at least one number";
+                    }
+                    if (value != _passwordTextController.text) {
+                      return "Password don't match";
+                    }
+                    return null;
+                  },
+                  obscureText: true,
+                  style: const TextStyle(
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: "Confirm your password",
+                    hintStyle: TextStyle(
+                      color: Colors.black.withOpacity(0.5),
+                      fontSize: 16,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _buildRegisterButton() {
@@ -404,10 +403,8 @@ class _RegisterPageViewState extends BaseViewState<RegisterPageView, RegisterPag
   }
 
   void _register() {
-    if (_autoValidateMode == AutovalidateMode.disabled) {
-      setState(() {
-        _autoValidateMode = AutovalidateMode.always;
-      });
+    if (viewModel.autoValidateMode.value == AutovalidateMode.disabled) {
+      viewModel.autoValidateMode.value = AutovalidateMode.always;
     }
 
     final email = _emailTextController.text;
