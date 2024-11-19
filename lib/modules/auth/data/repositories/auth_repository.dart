@@ -1,6 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/auth/data/datasources/auth_remote_datasource.dart';
 
+import '../../domain/models/user_model.dart';
+
 @lazySingleton
 class AuthRepository {
   final AuthRemoteDataSource _authRemoteDataSource;
@@ -24,5 +26,9 @@ class AuthRepository {
 
   Future<dynamic> signOut() {
     return _authRemoteDataSource.signOut();
+  }
+
+  Future<UserModel> getCurrentUser() {
+    return _authRemoteDataSource.getCurrentUser();
   }
 }
