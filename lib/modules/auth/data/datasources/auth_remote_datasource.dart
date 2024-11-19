@@ -1,6 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/auth/data/datasources/services/auth_service.dart';
 
+import '../../domain/models/user_model.dart';
+
 abstract class AuthRemoteDataSource {
   Future<dynamic> signInWithEmailAndPassword({
     required String email,
@@ -14,6 +16,7 @@ abstract class AuthRemoteDataSource {
   Future<dynamic> refreshToken(String refreshToken);
   Future<dynamic> signOut();
   Future<dynamic> signInWithGoogle({required String token});
+  Future<UserModel> getCurrentUser();
 }
 
 @LazySingleton(as: AuthRemoteDataSource)
@@ -58,5 +61,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future signOut() {
     return _authService.signOut();
+  }
+
+  @override
+  Future<UserModel> getCurrentUser() {
+    return _authService.getCurrentUser();
   }
 }
