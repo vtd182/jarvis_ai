@@ -17,9 +17,7 @@ abstract class AppViewModel extends BaseViewModel {
 
   @override
   Future<Unit> handleError(dynamic error) async {
-    if (error is ShouldRefreshTokenError) {
-      print("ShouldRefreshTokenError");
-    } else if (error is RestError) {
+    if (error is RestError) {
       final errorCode = error.getHeader('X-Error-Code');
       await handleRestError(error, errorCode);
     } else {

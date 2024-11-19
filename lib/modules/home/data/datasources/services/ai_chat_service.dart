@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:retrofit/http.dart';
+import 'package:jarvis_ai/modules/home/domain/models/ai_chat_response.dart';
+import 'package:jarvis_ai/modules/home/domain/models/get_conversation_history_response.dart';
+import 'package:jarvis_ai/modules/home/domain/models/get_conversations_response.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../../../config/config.dart';
@@ -13,25 +15,29 @@ abstract class AIChatService {
   @factoryMethod
   factory AIChatService(Dio dio) = _AIChatService;
 
+  // Chat moi
   @POST("")
-  Future<dynamic> doAIChat(@Body() Map<String, dynamic> body);
+  Future<AIChatResponse> doAIChat(@Body() Map<String, dynamic> body);
 
+  // Lay ra cac title trong lich su chat
   @GET("/conversations")
-  Future<dynamic> getConversations(
+  Future<GetConversationsResponse> getConversations(
     @Query("cursor") String? cursor,
     @Query("limit") int? limit,
     @Query("assistantId") String assistantId,
     @Query("assistantModel") String assistantModel,
   );
 
+  // Lay ra cac tin nhan cu trong hoi thoai
   @GET("conversations/{conversationId}/messages")
-  Future<dynamic> getMessages(
+  Future<GetConversationsHistoryResponse> getMessages(
     @Query("cursor") String? cursor,
     @Query("limit") int? limit,
     @Query("assistantId") String assistantId,
     @Query("assistantModel") String assistantModel,
   );
 
+  // chat tren lich su cu
   @POST("/messages")
-  Future<dynamic> sendMessage(@Body() Map<String, dynamic> body);
+  Future<AIChatResponse> sendMessage(@Body() Map<String, dynamic> body);
 }
