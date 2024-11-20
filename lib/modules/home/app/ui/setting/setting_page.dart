@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:jarvis_ai/locator.dart';
+import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page_viewmodel.dart';
+import 'package:suga_core/suga_core.dart';
 
 class SettingPage extends StatefulWidget {
   @override
   _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SettingPageState extends BaseViewState<SettingPage, SettingPageViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(0xFFF3F4F6),
+        color: const Color(0xFFF3F4F6),
         child: Column(
           children: [
             _buildSettingSection([
@@ -26,7 +29,7 @@ class _SettingPageState extends State<SettingPage> {
               _buildSettingItem(Icons.account_circle, 'Account', onTap: () => _onSettingItemTap('Account')),
               _buildSettingItem(Icons.logout, 'Log out', onTap: () => _onSettingItemTap('Log out')),
             ]),
-            Spacer(),
+            const Spacer(),
             _buildVersionInfo(),
           ],
         ),
@@ -112,11 +115,15 @@ class _SettingPageState extends State<SettingPage> {
         print('Cài đặt tài khoản');
         break;
       case 'Log out':
-        // Đăng xuất
-        print('Đăng xuất');
+        viewModel.signOut();
         break;
       default:
         break;
     }
+  }
+
+  @override
+  SettingPageViewModel createViewModel() {
+    return locator<SettingPageViewModel>();
   }
 }
