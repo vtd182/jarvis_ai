@@ -2,6 +2,7 @@ import 'package:alice_lightweight/alice.dart';
 import 'package:dio/dio.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -12,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suga_core/suga_core.dart';
 
 import 'config/config.dart';
+import 'modules/home/app/controller/appbar_controller.dart';
 
 final locator = GetIt.instance;
 
@@ -43,4 +45,7 @@ abstract class Locator {
 
   @lazySingleton
   Dio getDio() => locator<RestClient>().dio;
+
+  @lazySingleton
+  AppBarController getAppController() => AppBarController();
 }
