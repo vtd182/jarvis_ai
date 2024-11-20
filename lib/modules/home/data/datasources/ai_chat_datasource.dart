@@ -19,7 +19,7 @@ abstract class AIChatDatasource {
   Future<GetConversationsResponse> getConversations(
     String? cursor,
     int? limit,
-    String assistantId,
+    String? assistantId,
     String assistantModel,
   );
 
@@ -57,7 +57,7 @@ class AIChatDatasourceImpl implements AIChatDatasource {
   }
 
   @override
-  Future<GetConversationsResponse> getConversations(String? cursor, int? limit, String assistantId, String assistantModel) {
+  Future<GetConversationsResponse> getConversations(String? cursor, int? limit, String? assistantId, String assistantModel) {
     return _aiChatService.getConversations(cursor, limit, assistantId, assistantModel);
   }
 

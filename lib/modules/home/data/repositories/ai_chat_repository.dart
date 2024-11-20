@@ -25,7 +25,7 @@ class AIChatRepository {
   Future<GetConversationsResponse> getConversations(
     String? cursor,
     int? limit,
-    String assistantId,
+    String? assistantId,
     String assistantModel,
   ) {
     return _aiChatDatasource.getConversations(cursor, limit, assistantId, assistantModel);

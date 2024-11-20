@@ -24,12 +24,12 @@ abstract class AIChatService {
   Future<GetConversationsResponse> getConversations(
     @Query("cursor") String? cursor,
     @Query("limit") int? limit,
-    @Query("assistantId") String assistantId,
+    @Query("assistantId") String? assistantId,
     @Query("assistantModel") String assistantModel,
   );
 
   // Lay ra cac tin nhan cu trong hoi thoai
-  @GET("conversations/{conversationId}/messages")
+  @GET("/conversations/{conversationId}/messages")
   Future<GetConversationsHistoryResponse> getMessages(
     @Query("cursor") String? cursor,
     @Query("limit") int? limit,

@@ -1,6 +1,7 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:jarvis_ai/modules/home/domain/usecases/get_history_conversation_usecase.dart';
 import 'package:jarvis_ai/modules/home/domain/usecases/get_token_usage_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -12,6 +13,7 @@ import '../../domain/models/token_usage.dart';
 class HomePageViewModel extends AppViewModel {
   final GetTokenUsageUseCase _getTokenUsageUseCase;
   final GetCurrentUserUseCase _getCurrentUserUseCase;
+  final GetHistoryConversationUseCase _getHistoryConversationUseCase;
 
   Rx<TokenUsage> tokenUsage = TokenUsage(
     availableTokens: 0,
@@ -25,6 +27,7 @@ class HomePageViewModel extends AppViewModel {
   HomePageViewModel(
     this._getTokenUsageUseCase,
     this._getCurrentUserUseCase,
+    this._getHistoryConversationUseCase,
   );
 
   Future<Unit> getTokenUsage() async {
@@ -45,6 +48,16 @@ class HomePageViewModel extends AppViewModel {
   @override
   void initState() {
     getTokenUsage();
+    getHistoryConversation();
     super.initState();
+  }
+
+  Future<void> getHistoryConversation() async {
+    await _getHistoryConversationUseCase.run(
+      cursor: null,
+      limit: null,
+      assistantId: null,
+      assistantModel: 'dify',
+    );
   }
 }
