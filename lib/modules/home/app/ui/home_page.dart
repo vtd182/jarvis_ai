@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page.dart';
+import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,7 +13,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     ChatPage(),
-    WritePage(),
+    PromptPage(),
     TranslatePage(),
     SearchPage(),
     OCRPage(),
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
               ),
               NavDrawerItem(
                 icon: Icons.edit,
-                label: "Write",
+                label: "Prompt",
                 index: 1,
                 selectedIndex: _selectedIndex,
                 onTap: _onNavItemTapped,
