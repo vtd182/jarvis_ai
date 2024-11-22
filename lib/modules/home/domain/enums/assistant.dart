@@ -34,6 +34,25 @@ extension AssistantExtension on Assistant {
         return 'gpt-4o-mini';
     }
   }
+
+  String get label {
+    switch (this) {
+      case Assistant.claude_3_haiku_20240307:
+        return 'Claude 3 Haiku';
+      case Assistant.claude_3_5_sonet_20240620:
+        return 'Claude 3.5 Sonet';
+      case Assistant.gemini_1_5_flash_latest:
+        return 'Gemini 1.5 Flash';
+      case Assistant.gemini_1_5_pro_latest:
+        return 'Gemini 1.5 Pro';
+      case Assistant.gpt_4o:
+        return 'GPT-4o';
+      case Assistant.gpt_4o_mini:
+        return 'GPT-4o mini';
+      default:
+        return 'GPT-4o mini';
+    }
+  }
 }
 
 extension AssistantStringExtension on String {
