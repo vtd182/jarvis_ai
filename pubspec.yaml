@@ -168,6 +168,8 @@ dependencies:
   # A dart implementation of the famous javascript library 'jsonwebtoken' (JWT).
   dart_jsonwebtoken: ^2.14.1
 
+  # A Flutter plugin for easily adding a loading indicator to your app.
+  loading_animation_widget: ^1.3.0
 
 dev_dependencies:
   flutter_test:
