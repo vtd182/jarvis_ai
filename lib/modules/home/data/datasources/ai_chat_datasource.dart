@@ -25,6 +25,7 @@ abstract class AIChatDatasource {
 
   // Lay ra cac tin nhan cu trong hoi thoai
   Future<GetConversationsHistoryResponse> getMessages(
+    String conversationId,
     String? cursor,
     int? limit,
     String assistantId,
@@ -57,13 +58,24 @@ class AIChatDatasourceImpl implements AIChatDatasource {
   }
 
   @override
-  Future<GetConversationsResponse> getConversations(String? cursor, int? limit, String? assistantId, String assistantModel) {
+  Future<GetConversationsResponse> getConversations(
+    String? cursor,
+    int? limit,
+    String? assistantId,
+    String assistantModel,
+  ) {
     return _aiChatService.getConversations(cursor, limit, assistantId, assistantModel);
   }
 
   @override
-  Future<GetConversationsHistoryResponse> getMessages(String? cursor, int? limit, String assistantId, String assistantModel) {
-    return _aiChatService.getMessages(cursor, limit, assistantId, assistantModel);
+  Future<GetConversationsHistoryResponse> getMessages(
+    String conversationId,
+    String? cursor,
+    int? limit,
+    String assistantId,
+    String assistantModel,
+  ) {
+    return _aiChatService.getMessages(conversationId, cursor, limit, assistantId, assistantModel);
   }
 
   @override

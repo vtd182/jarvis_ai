@@ -24,8 +24,8 @@ class RefreshTokenUseCase extends Usecase {
           // Decode the JWT to get the expiration time
           final jwt = JWT.decode(accessToken);
           final expiresAt = jwt.payload["exp"];
+          print("refresh token: " + accessToken);
           await SPref.instance.setExpiresAt(expiresAt);
-
           await SPref.instance.setAccessToken(accessToken);
         }
         return true;

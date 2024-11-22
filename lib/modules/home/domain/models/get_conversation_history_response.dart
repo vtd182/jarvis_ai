@@ -1,7 +1,10 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
+import 'package:jarvis_ai/modules/home/domain/models/assistant_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'conversation_history_item_model.dart';
+import 'message_model.dart';
 
 part 'get_conversation_history_response.g.dart';
 
@@ -29,4 +32,35 @@ class GetConversationsHistoryResponse {
   factory GetConversationsHistoryResponse.fromJson(Map<String, dynamic> json) => _$GetConversationsHistoryResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$GetConversationsHistoryResponseToJson(this);
+}
+
+extension GetConversationsHistoryResponseExtension on GetConversationsHistoryResponse {
+  List<MessageModel> toMessageModels() {
+    List<MessageModel> messages = [];
+    for (final item in items) {
+      final userMessage = MessageModel(
+        role: "user",
+        content: item.query,
+        assistant: AssistantModel(
+          id: Assistant.gpt_4o_mini,
+          model: "dify",
+          name: "GPT-4o mini",
+        ),
+        isErrored: false,
+      );
+      final assistantMessage = MessageModel(
+        role: "model",
+        content: item.answer,
+        assistant: AssistantModel(
+          id: Assistant.gpt_4o_mini,
+          model: "dify",
+          name: "GPT-4o mini",
+        ),
+        isErrored: false,
+      );
+      messages.add(userMessage);
+      messages.add(assistantMessage);
+    }
+    return messages;
+  } // ignore: avoid_redundant_argument_values>
 }

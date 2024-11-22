@@ -31,6 +31,7 @@ abstract class AIChatService {
   // Lay ra cac tin nhan cu trong hoi thoai
   @GET("/conversations/{conversationId}/messages")
   Future<GetConversationsHistoryResponse> getMessages(
+    @Path("conversationId") String conversationId,
     @Query("cursor") String? cursor,
     @Query("limit") int? limit,
     @Query("assistantId") String assistantId,

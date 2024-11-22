@@ -33,12 +33,13 @@ class AIChatRepository {
 
   // Lay ra cac tin nhan cu trong hoi thoai
   Future<GetConversationsHistoryResponse> getMessages(
+    String conversationId,
     String? cursor,
     int? limit,
     String assistantId,
     String assistantModel,
   ) {
-    return _aiChatDatasource.getMessages(cursor, limit, assistantId, assistantModel);
+    return _aiChatDatasource.getMessages(conversationId, cursor, limit, assistantId, assistantModel);
   }
 
   // chat tren lich su cu

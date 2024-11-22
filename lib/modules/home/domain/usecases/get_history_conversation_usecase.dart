@@ -3,7 +3,7 @@ import 'package:jarvis_ai/modules/home/data/repositories/ai_chat_repository.dart
 import 'package:jarvis_ai/modules/home/domain/models/get_conversations_response.dart';
 import 'package:suga_core/suga_core.dart';
 
-@injectable
+@lazySingleton
 class GetHistoryConversationUseCase extends Usecase {
   final AIChatRepository _aiChatRepository;
 
