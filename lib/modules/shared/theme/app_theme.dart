@@ -15,7 +15,7 @@ class AppTheme {
   static const Color blue = Color(0xFF23D1ED);
   static const Color blueDark = Color(0xFF1F4AF8);
   static const Color green = Color(0xFF2FAF09);
-  static const Color grey = Color(0xFF9B9CAA);
+  static const Color grey = Color(0xFFF1F5F9);
   static const Color grey1 = Color(0x99010101);
   static const Color greyIcon = Color(0xFF545454);
   static const Color greyText = Color(0xFFCDCDCD);
@@ -95,6 +95,12 @@ class AppTheme {
   static const Color moccasinOrange = Color(0xFFFEE6B6);
   static const Color sunsparkOrange = Color(0xFFFBCA66);
   static const Color success = Color(0xFF67C23A);
+
+  static const primaryLinearGradient = [
+    Color(0xFF9692FF),
+    Color(0xFF0078D4),
+  ];
+
 
   static TextStyle white_12 = TextStyle(
     fontWeight: FontWeight.normal,

@@ -10,6 +10,8 @@ import 'package:suga_core/suga_core.dart';
 import '../../../../locator.dart';
 import 'chat/chat_page.dart';
 
+import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -19,8 +21,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
   final List<Widget> _pages = [
-    const ChatPage(),
-    WritePage(),
+    ChatPage(),
+    PromptPage(),
     SettingPage(),
   ];
 
@@ -74,6 +76,13 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                               selectedIndex: viewModel.selectedIndex,
                               onTap: _onNavItemTapped,
                             ),
+				              NavDrawerItem(
+				                icon: Icons.edit,
+				                label: "Prompt",
+				                index: 2,
+				                selectedIndex: viewModel.selectedIndex,
+				                onTap: _onNavItemTapped,
+				              ),
                             const Divider(height: 1, color: Colors.grey),
                             ...viewModel.conversationSummaries.map(
                               (item) => ListTile(
@@ -88,10 +97,10 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                         )),
                   ),
                 ),
-                NavDrawerItem(
+                 NavDrawerItem(
                   icon: Icons.settings,
                   label: "Settings",
-                  index: 2,
+                  index: 3,
                   selectedIndex: viewModel.selectedIndex,
                   onTap: _onNavItemTapped,
                 ),
