@@ -25,12 +25,12 @@ class MessageModel {
   @JsonKey(name: 'assistant')
   final AssistantModel assistant;
   @JsonKey(name: "isErrored")
-  bool? isErrored = false;
+  bool isErrored = false;
   MessageModel({
     required this.role,
     required this.content,
     required this.assistant,
-    this.isErrored,
+    required this.isErrored,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) => _$MessageModelFromJson(json);

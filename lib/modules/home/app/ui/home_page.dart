@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:jarvis_ai/modules/home/app/ui/chat/chat_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/home_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page.dart';
+import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
 import 'package:suga_core/suga_core.dart';
 
 import '../../../../locator.dart';
@@ -15,139 +18,137 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
-  int _selectedIndex = 0;
-
   final List<Widget> _pages = [
-    ChatPage(),
+    const ChatPage(),
     WritePage(),
     SettingPage(),
   ];
 
   void _onNavItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    viewModel.selectedIndex = index;
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: _buildAppBar(),
-        drawer: Drawer(
-          child: Column(
-            children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Colors.grey,
-                ),
-                child: Center(
-                  child: Obx(
-                    () => Text(
-                      "Token available: ${viewModel.tokenUsage.value.availableTokens}",
-                      style: const TextStyle(color: Colors.white, fontSize: 24),
+      child: Obx(
+        () => Scaffold(
+          appBar: _buildAppBar(),
+          drawer: Drawer(
+            child: Column(
+              children: [
+                DrawerHeader(
+                  decoration: const BoxDecoration(
+                    color: Colors.grey,
+                  ),
+                  child: Center(
+                    child: Obx(
+                      () => Text(
+                        "Token available: ${viewModel.tokenUsage.value.availableTokens}",
+                        style: const TextStyle(color: Colors.white, fontSize: 24),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    await viewModel.getTokenUsage();
-                  },
-                  child: Obx(() => ListView(
-                        padding: EdgeInsets.zero,
-                        children: [
-                          // Nav Items
-                          NavDrawerItem(
-                            icon: Icons.chat,
-                            label: "Chat",
-                            index: 0,
-                            selectedIndex: _selectedIndex,
-                            onTap: _onNavItemTapped,
-                          ),
-                          NavDrawerItem(
-                            icon: Icons.edit,
-                            label: "Write",
-                            index: 1,
-                            selectedIndex: _selectedIndex,
-                            onTap: _onNavItemTapped,
-                          ),
-                          const Divider(height: 1, color: Colors.grey),
-                          ...viewModel.conversationSummaries.map(
-                            (item) => ListTile(
-                              title: Text(item.title),
-                              onTap: () {
-                                Navigator.of(context).pop();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Bạn đã nhấn vào: ${item.title}")),
-                                );
-                              },
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      await viewModel.getTokenUsage();
+                    },
+                    child: Obx(() => ListView(
+                          padding: EdgeInsets.zero,
+                          children: [
+                            // Nav Items
+                            NavDrawerItem(
+                              icon: Icons.chat,
+                              label: "Chat",
+                              index: 0,
+                              selectedIndex: viewModel.selectedIndex,
+                              onTap: _onNavItemTapped,
                             ),
-                          ),
-                        ],
-                      )),
+                            NavDrawerItem(
+                              icon: Icons.edit,
+                              label: "Write",
+                              index: 1,
+                              selectedIndex: viewModel.selectedIndex,
+                              onTap: _onNavItemTapped,
+                            ),
+                            const Divider(height: 1, color: Colors.grey),
+                            ...viewModel.conversationSummaries.map(
+                              (item) => ListTile(
+                                title: Text(item.title),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                  locator<ChatPageViewModel>().conversationId = item.id;
+                                },
+                              ),
+                            ),
+                          ],
+                        )),
+                  ),
                 ),
-              ),
-              NavDrawerItem(
-                icon: Icons.settings,
-                label: "Settings",
-                index: 2,
-                selectedIndex: _selectedIndex,
-                onTap: _onNavItemTapped,
-              ),
-            ],
+                NavDrawerItem(
+                  icon: Icons.settings,
+                  label: "Settings",
+                  index: 2,
+                  selectedIndex: viewModel.selectedIndex,
+                  onTap: _onNavItemTapped,
+                ),
+              ],
+            ),
           ),
+          body: _pages[viewModel.selectedIndex],
         ),
-        body: _pages[_selectedIndex],
       ),
     );
   }
 
   AppBar _buildAppBar() {
-    // Tuỳ chỉnh AppBar theo từng page
-    if (_selectedIndex == 0) {
-      // AppBar của ChatPage
+    if (viewModel.selectedIndex == 0) {
       return AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
-          "Chat với AI",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        actions: [
-          // Dropdown chọn AI model
-          DropdownButton<String>(
-            value: "GPT-3", // Dữ liệu mẫu
-            items: ["GPT-3", "GPT-4", "Bard", "Claude"].map((model) {
-              return DropdownMenuItem(
-                value: model,
-                child: Text(model),
+        title: DropdownButton<String>(
+          value: viewModel.currentAssistant.value.label,
+          items: viewModel.models.map((model) {
+            return DropdownMenuItem(
+              value: model.label,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(model.label),
+                  if (model.label == viewModel.currentAssistant.value.label) const Icon(Icons.check, color: Colors.blue),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (value) {
+            if (value != null) {
+              viewModel.currentAssistant.value = viewModel.models.firstWhere(
+                (model) => model.label == value,
               );
-            }).toList(),
-            onChanged: (value) {
-              // Xử lý khi chọn model
-            },
-            underline: Container(),
-            icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-          ),
+            }
+          },
+          underline: Container(),
+          icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
+        ),
+        actions: [
           IconButton(
             icon: const Icon(Icons.add, color: Colors.black),
             onPressed: () {
-              // Xử lý nút thêm mới
+              if (locator<ChatPageViewModel>().conversationId != null) {
+                locator<ChatPageViewModel>().conversationId = null;
+              }
             },
           ),
         ],
       );
-    } else if (_selectedIndex == 1) {
-      // AppBar của WritePage
+    } else if (viewModel.selectedIndex == 1) {
       return AppBar(
         title: const Text("Write Page"),
       );
     } else {
-      // AppBar của SettingPage
       return AppBar(
         title: const Text("Settings"),
       );
