@@ -5,7 +5,7 @@ import 'package:suga_core/suga_core.dart';
 import '../enums/assistant.dart';
 import '../models/ai_chat_response.dart';
 
-@injectable
+@lazySingleton
 class DoAIChatUseCase extends Usecase {
   final AIChatRepository _aiChatRepository;
 

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:suga_core/suga_core.dart';
+
+import '../../../../../locator.dart';
+import 'chat_page_viewmodel.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -7,9 +12,8 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
-  String? _selectedModel = "GPT-3"; // Model AI hiện tại
-  final List<String> _aiModels = ["GPT-3", "GPT-4", "Bard", "Claude"]; // Danh sách model
+class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
+  final TextEditingController _messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,27 +22,57 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           // Nội dung chính
           Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Tôi có thể giúp gì cho bạn?",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
-                  alignment: WrapAlignment.center,
-                  children: [
-                    _buildActionButton(Icons.image, "Tạo hình ảnh", Colors.green),
-                    _buildActionButton(Icons.article, "Tóm tắt văn bản", Colors.orange),
-                    _buildActionButton(Icons.lightbulb, "Lên kế hoạch", Colors.yellow),
-                    _buildActionButton(Icons.more_horiz, "Thêm", Colors.grey),
-                  ],
-                ),
-              ],
-            ),
+            child: Obx(() {
+              final chatMessages = viewModel.messages;
+
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: chatMessages.length,
+                itemBuilder: (context, index) {
+                  final message = chatMessages[index];
+                  final isUserMessage = message.role == 'user';
+
+                  return Align(
+                    alignment: isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: isUserMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                      children: [
+                        if (!isUserMessage) // Tên model chỉ hiển thị với tin nhắn từ model
+                          Text(
+                            message.assistant.name,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          decoration: BoxDecoration(
+                            color: isUserMessage ? Colors.blue.shade100 : Colors.grey.shade200,
+                            borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(16),
+                              topRight: const Radius.circular(16),
+                              bottomLeft: isUserMessage ? const Radius.circular(16) : Radius.zero,
+                              bottomRight: isUserMessage ? Radius.zero : const Radius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            message.content,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: isUserMessage ? Colors.black : Colors.grey.shade800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }),
           ),
           // Bottom Navigation
           Container(
@@ -71,6 +105,7 @@ class _ChatPageState extends State<ChatPage> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
+                    controller: _messageController,
                     decoration: InputDecoration(
                       hintText: "Tin nhắn",
                       border: OutlineInputBorder(
@@ -96,7 +131,11 @@ class _ChatPageState extends State<ChatPage> {
                 IconButton(
                   icon: const Icon(Icons.send, color: Colors.black),
                   onPressed: () {
-                    // Xử lý gửi
+                    final content = _messageController.text.trim();
+                    if (content.isNotEmpty) {
+                      viewModel.sendMessage(content);
+                      _messageController.clear();
+                    }
                   },
                 ),
               ],
@@ -107,17 +146,8 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  Widget _buildActionButton(IconData icon, String label, Color color) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 24,
-          backgroundColor: color.withOpacity(0.2),
-          child: Icon(icon, color: color),
-        ),
-        const SizedBox(height: 8),
-        Text(label, style: const TextStyle(fontSize: 12)),
-      ],
-    );
+  @override
+  ChatPageViewModel createViewModel() {
+    return locator<ChatPageViewModel>();
   }
 }

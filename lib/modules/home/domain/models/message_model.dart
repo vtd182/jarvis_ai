@@ -25,7 +25,7 @@ class MessageModel {
   @JsonKey(name: 'assistant')
   final AssistantModel assistant;
   @JsonKey(name: "isErrored")
-  bool? isErrored;
+  bool? isErrored = false;
   MessageModel({
     required this.role,
     required this.content,
