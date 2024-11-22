@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:suga_core/suga_core.dart';
 
 import '../../../../../locator.dart';
 import 'chat_page_viewmodel.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  const ChatPage({super.key});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -20,59 +21,86 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
     return Scaffold(
       body: Column(
         children: [
-          // Nội dung chính
           Expanded(
-            child: Obx(() {
-              final chatMessages = viewModel.messages;
-
-              return ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: chatMessages.length,
-                itemBuilder: (context, index) {
-                  final message = chatMessages[index];
-                  final isUserMessage = message.role == 'user';
-
-                  return Align(
-                    alignment: isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
-                    child: Column(
-                      crossAxisAlignment: isUserMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                      children: [
-                        if (!isUserMessage) // Tên model chỉ hiển thị với tin nhắn từ model
-                          Text(
-                            message.assistant.name,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
+            child: Obx(
+              () {
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: viewModel.messages.length + (viewModel.isLoading.value ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == viewModel.messages.length && viewModel.isLoading.value) {
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Model đang trả lời...",
+                              style: TextStyle(fontSize: 12, color: Colors.grey),
                             ),
-                          ),
-                        const SizedBox(height: 4),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          margin: const EdgeInsets.symmetric(vertical: 4),
-                          decoration: BoxDecoration(
-                            color: isUserMessage ? Colors.blue.shade100 : Colors.grey.shade200,
-                            borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(16),
-                              topRight: const Radius.circular(16),
-                              bottomLeft: isUserMessage ? const Radius.circular(16) : Radius.zero,
-                              bottomRight: isUserMessage ? Radius.zero : const Radius.circular(16),
+                            const SizedBox(height: 4),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: LoadingAnimationWidget.waveDots(
+                                size: 20,
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            message.content,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: isUserMessage ? Colors.black : Colors.grey.shade800,
-                            ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }),
+                      );
+                    }
+
+                    final message = viewModel.messages[index];
+                    final isUserMessage = message.role == 'user';
+
+                    return Align(
+                      alignment: isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
+                      child: Column(
+                        crossAxisAlignment: isUserMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                        children: [
+                          if (!isUserMessage)
+                            Text(
+                              message.assistant.name,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            margin: const EdgeInsets.symmetric(vertical: 4),
+                            decoration: BoxDecoration(
+                              color: isUserMessage ? Colors.blue.shade100 : Colors.grey.shade200,
+                              borderRadius: BorderRadius.only(
+                                topLeft: const Radius.circular(16),
+                                topRight: const Radius.circular(16),
+                                bottomLeft: isUserMessage ? const Radius.circular(16) : Radius.zero,
+                                bottomRight: isUserMessage ? Radius.zero : const Radius.circular(16),
+                              ),
+                            ),
+                            child: Text(
+                              message.content,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: isUserMessage ? Colors.black : Colors.grey.shade800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
           // Bottom Navigation
           Container(
@@ -122,12 +150,6 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                IconButton(
-                  icon: const Icon(Icons.mic, color: Colors.black),
-                  onPressed: () {
-                    // Xử lý mic
-                  },
-                ),
                 IconButton(
                   icon: const Icon(Icons.send, color: Colors.black),
                   onPressed: () {
