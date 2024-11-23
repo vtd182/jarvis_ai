@@ -114,19 +114,19 @@ class _UsePromptBottomSheetState extends State<UsePromptBottomSheet> {
                               style: AppTheme.black_16w600,
                             ),
                             const Spacer(),
-                            InkWell(
-                              onTap: () {
-                                // callback to add to chat
-                                controller.sendMessageToChat();
-                              },
-                              child: const Text(
-                                "Add to chat input",
-                                style: TextStyle(
-                                  color: AppTheme.primaryBlue,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     // callback to add to chat
+                            //     controller.sendMessageToChat();
+                            //   },
+                            //   child: const Text(
+                            //     "Add to chat input",
+                            //     style: TextStyle(
+                            //       color: AppTheme.primaryBlue,
+                            //       fontSize: 14,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                         Container(
