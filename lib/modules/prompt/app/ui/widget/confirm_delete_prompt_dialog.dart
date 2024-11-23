@@ -54,9 +54,7 @@ class ConfirmDeletePromptDialog extends GetWidget<PromptViewModel> {
                     child: Text(
                       "Delete",
                       style: TextStyle(
-                        color: controller.isLoading.value
-                            ? AppTheme.greyText
-                            : Colors.red,
+                        color: controller.isLoading.value ? AppTheme.greyText : Colors.red,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),

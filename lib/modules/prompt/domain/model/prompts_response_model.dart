@@ -18,6 +18,5 @@ class PromptsResponseModel {
   final int? total;
   final List<PromptItemModel>? items;
 
-  factory PromptsResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$PromptsResponseModelFromJson(json);
+  factory PromptsResponseModel.fromJson(Map<String, dynamic> json) => _$PromptsResponseModelFromJson(json);
 }

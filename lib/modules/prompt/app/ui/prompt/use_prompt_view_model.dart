@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class UsePromptViewModel extends GetxController{
+class UsePromptViewModel extends GetxController {
   final listTextEditController = <TextEditingController>[].obs;
 
   final RegExp regExp = RegExp(r'\[(.*?)\]');
@@ -12,8 +12,6 @@ class UsePromptViewModel extends GetxController{
 
   final isViewPrompt = false.obs;
 
-
-
   void initializeTextControllers(String content) {
     listMatches.value = regExp.allMatches(content).toList();
     for (var match in listMatches) {
@@ -21,7 +19,7 @@ class UsePromptViewModel extends GetxController{
     }
   }
 
-  void onTapSendButton(){
+  void onTapSendButton() {
     for (int i = 0; i < listMatches.length; i++) {
       newMessage.value = newMessage.value.replaceFirst(listMatches[i].group(0)!, listTextEditController[i].text);
     }
@@ -29,9 +27,8 @@ class UsePromptViewModel extends GetxController{
     sendMessageToChat();
   }
 
-
-  void sendMessageToChat(){
-    print ("Send message to chat: ${newMessage.value}");
+  void sendMessageToChat() {
+    print("Send message to chat: ${newMessage.value}");
     // TODO
   }
 }

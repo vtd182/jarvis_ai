@@ -25,8 +25,7 @@ class _UsePromptBottomSheetState extends State<UsePromptBottomSheet> {
   }
 
   List<Widget> _buildTextFields() {
-    final matches =
-        controller.regExp.allMatches(widget.promptItem.content ?? "");
+    final matches = controller.regExp.allMatches(widget.promptItem.content ?? "");
     int index = 0;
     return matches.map((match) {
       final hintText = match.group(1);
@@ -35,8 +34,7 @@ class _UsePromptBottomSheetState extends State<UsePromptBottomSheet> {
         child: TextField(
           controller: controller.listTextEditController[index++],
           decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             hintText: hintText,
             hintStyle: TextStyle(
               color: Colors.black.withOpacity(0.5),
@@ -93,11 +91,8 @@ class _UsePromptBottomSheetState extends State<UsePromptBottomSheet> {
               "${widget.promptItem.category ?? "Other"} - ${widget.promptItem.userName ?? "Anonymous"}",
               style: AppTheme.blackDark_16w400,
             ),
-            if (widget.promptItem.description != null &&
-                widget.promptItem.description!.isNotEmpty)
-              const SizedBox(height: 4),
-            if (widget.promptItem.description != null &&
-                widget.promptItem.description!.isNotEmpty)
+            if (widget.promptItem.description != null && widget.promptItem.description!.isNotEmpty) const SizedBox(height: 4),
+            if (widget.promptItem.description != null && widget.promptItem.description!.isNotEmpty)
               Text(
                 widget.promptItem.description!,
                 style: AppTheme.greyText_14w400,
@@ -169,8 +164,7 @@ class _UsePromptBottomSheetState extends State<UsePromptBottomSheet> {
                 controller.onTapSendButton();
               },
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(

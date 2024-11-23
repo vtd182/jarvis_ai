@@ -107,8 +107,7 @@ class CreatePrivatePromptDialog extends GetWidget<PromptViewModel> {
                   fillColor: AppTheme.grey,
                   filled: true,
                   hintMaxLines: 2,
-                  hintText:
-                      "e.g: Write an article [TOPIC], make sure to inclue these keywords: [KEYWORDS]",
+                  hintText: "e.g: Write an article [TOPIC], make sure to inclue these keywords: [KEYWORDS]",
                   hintStyle: AppTheme.grey1_14w400,
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 8),
@@ -168,14 +167,12 @@ class CreatePrivatePromptDialog extends GetWidget<PromptViewModel> {
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            colors: AppTheme.primaryLinearGradient),
+                        gradient: const LinearGradient(colors: AppTheme.primaryLinearGradient),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Obx(
                         () => controller.isLoading.value
-                            ? const CircularProgressIndicator(
-                                color: Colors.white)
+                            ? const CircularProgressIndicator(color: Colors.white)
                             : Text(
                                 "Save",
                                 style: AppTheme.white_14w600,
