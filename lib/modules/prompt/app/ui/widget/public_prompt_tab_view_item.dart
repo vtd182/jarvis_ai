@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/extensions/context_ext.dart';
+import 'package:jarvis_ai/modules/home/app/ui/chat/chat_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_view_model.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/widget/use_prompt_bottom_sheet.dart';
 import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
+
+import '../../../../../locator.dart';
+import '../../../../home/app/ui/home_page_viewmodel.dart';
 
 class PublicPromptTabViewItem extends StatefulWidget {
   const PublicPromptTabViewItem({super.key});
@@ -177,7 +181,8 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                                       UsePromptBottomSheet(
                                         promptItem: item,
                                         onMessageSent: (message) {
-                                          print("onMessageSent");
+                                          locator<HomePageViewModel>().selectedIndex = 0;
+                                          locator<ChatPageViewModel>().sendMessage(message);
                                         },
                                       ),
                                       isScrollControlled: true,

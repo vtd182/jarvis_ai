@@ -5,12 +5,11 @@ import 'package:jarvis_ai/modules/home/app/ui/chat/chat_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/home_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page.dart';
 import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
+import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_page.dart';
 import 'package:suga_core/suga_core.dart';
 
 import '../../../../locator.dart';
 import 'chat/chat_page.dart';
-
-import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,7 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
   final List<Widget> _pages = [
-    ChatPage(),
+    const ChatPage(),
     PromptPage(),
     SettingPage(),
   ];
@@ -71,15 +70,8 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                             ),
                             NavDrawerItem(
                               icon: Icons.edit,
-                              label: "Write",
-                              index: 1,
-                              selectedIndex: viewModel.selectedIndex,
-                              onTap: _onNavItemTapped,
-                            ),
-                            NavDrawerItem(
-                              icon: Icons.edit,
                               label: "Prompt",
-                              index: 2,
+                              index: 1,
                               selectedIndex: viewModel.selectedIndex,
                               onTap: _onNavItemTapped,
                             ),
@@ -100,7 +92,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                 NavDrawerItem(
                   icon: Icons.settings,
                   label: "Settings",
-                  index: 3,
+                  index: 2,
                   selectedIndex: viewModel.selectedIndex,
                   onTap: _onNavItemTapped,
                 ),
@@ -155,7 +147,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
       );
     } else if (viewModel.selectedIndex == 1) {
       return AppBar(
-        title: const Text("Write Page"),
+        title: const Text("Prompt Library"),
       );
     } else {
       return AppBar(
@@ -197,12 +189,5 @@ class NavDrawerItem extends StatelessWidget {
       selected: index == selectedIndex,
       onTap: () => onTap(index),
     );
-  }
-}
-
-class WritePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text("Write Page"));
   }
 }

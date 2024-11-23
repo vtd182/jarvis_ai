@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_view_model.dart';
-import 'package:jarvis_ai/modules/prompt/app/ui/widget/create_private_prompt_dialog.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/widget/private_prompt_tab_view_item.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/widget/prompt_tab_bar_item.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/widget/public_prompt_tab_view_item.dart';
@@ -32,15 +31,10 @@ class PromptPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Prompt Library",
-              style: AppTheme.black_20w600,
-            ),
-            const SizedBox(height: 8),
             Container(
               decoration: BoxDecoration(
                 color: AppTheme.grey,
