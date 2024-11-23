@@ -20,7 +20,6 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
 
   @override
   void initState() {
-    controller.isFetchingNewData.value = false;
     controller.getPublicPrompt(query: "");
     _scrollController.addListener(_scrollListener);
     super.initState();
@@ -174,7 +173,7 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                     ),
                   )
                 : Expanded(
-                    child: controller.listPrompt.isEmpty
+                    child: controller.listPublicPrompt.isEmpty
                         ? const Center(
                             child: Text(
                                 "No prompts found 🥺. Try another or make your prompt"))
@@ -182,12 +181,12 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                             () => ListView.separated(
                               controller: _scrollController,
                               itemBuilder: (context, index) {
-                                if (index == controller.listPrompt.length) {
+                                if (index == controller.listPublicPrompt.length) {
                                   return const Center(
                                     child: CircularProgressIndicator(),
                                   );
                                 }
-                                final item = controller.listPrompt[index];
+                                final item = controller.listPublicPrompt[index];
                                 return InkWell(
                                   onTap: () {
                                     Get.bottomSheet(
@@ -251,7 +250,7 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                               separatorBuilder: (context, index) {
                                 return const Divider();
                               },
-                              itemCount: controller.listPrompt.length +
+                              itemCount: controller.listPublicPrompt.length +
                                   (controller.isFetchingNewData.value ? 1 : 0),
                             ),
                           ),

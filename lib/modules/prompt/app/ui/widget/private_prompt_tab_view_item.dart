@@ -24,7 +24,6 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
   @override
   void initState() {
     print("tpoo init private");
-    controller.isFetchingNewData.value = false;
     controller.getPrivatePrompt();
     _scrollController.addListener(_scrollListener);
     super.initState();
@@ -122,19 +121,20 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                     ),
                   )
                 : Expanded(
-                    child: controller.listPrompt.isEmpty
+                    child: controller.listPrivatePrompt.isEmpty
                         ? const Center(
                             child: Text(
                                 "No prompts found 🥺. Try another or make your prompt"))
                         : ListView.separated(
                             controller: _scrollController,
                             itemBuilder: (context, index) {
-                              if (index == controller.listPrompt.length) {
+                              if (index ==
+                                  controller.listPrivatePrompt.length) {
                                 return const Center(
                                   child: CircularProgressIndicator(),
                                 );
                               }
-                              final item = controller.listPrompt[index];
+                              final item = controller.listPrivatePrompt[index];
                               return InkWell(
                                 onTap: () {
                                   Get.bottomSheet(
@@ -184,7 +184,7 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                             separatorBuilder: (context, index) {
                               return const Divider();
                             },
-                            itemCount: controller.listPrompt.length +
+                            itemCount: controller.listPrivatePrompt.length +
                                 (controller.isFetchingNewData.value ? 1 : 0),
                           ),
                   ),

@@ -28,7 +28,8 @@ class PromptViewModel extends GetxController {
 
   final indexTabPromt = 0.obs;
   final isLoading = false.obs;
-  final listPrompt = <PromptItemModel>[].obs;
+  final listPrivatePrompt = <PromptItemModel>[].obs;
+  final listPublicPrompt = <PromptItemModel>[].obs;
   final isGetFavorite = false.obs;
   final indexCategory = 0.obs;
 
@@ -59,7 +60,11 @@ class PromptViewModel extends GetxController {
 
     if (!isLoadMore) {
       isLoading.value = true;
-      listPrompt.clear();
+      if (indexTabPromt.value == 0) {
+        listPrivatePrompt.clear();
+      } else {
+        listPublicPrompt.clear();
+      }
       pageIndex.value = 0;
       hasNext.value = true;
     } else {
@@ -79,7 +84,6 @@ class PromptViewModel extends GetxController {
     bool isLoadMore = false,
   }) async {
     try {
-
       bool canLoad = isCanLoadMore(isLoadMore);
       if (!canLoad) {
         return unit;
@@ -104,12 +108,10 @@ class PromptViewModel extends GetxController {
 
       final promptResponse = PromptsResponseModel.fromJson(result);
       hasNext.value = promptResponse.hasNext ?? true;
-      if (indexTabPromt.value == 1) {
-        if (isLoadMore) {
-          listPrompt.addAll(promptResponse.items ?? []);
-        } else {
-          listPrompt.value = promptResponse.items ?? [];
-        }
+      if (isLoadMore) {
+        listPublicPrompt.addAll(promptResponse.items ?? []);
+      } else {
+        listPublicPrompt.value = promptResponse.items ?? [];
       }
 
       isLoading.value = false;
@@ -144,12 +146,10 @@ class PromptViewModel extends GetxController {
 
       final promptResponse = PromptsResponseModel.fromJson(result);
       hasNext.value = promptResponse.hasNext ?? true;
-      if (indexTabPromt.value == 0) {
-        if (isLoadMore) {
-          listPrompt.addAll(promptResponse.items ?? []);
-        } else {
-          listPrompt.value = promptResponse.items ?? [];
-        }
+      if (isLoadMore) {
+        listPrivatePrompt.addAll(promptResponse.items ?? []);
+      } else {
+        listPrivatePrompt.value = promptResponse.items ?? [];
       }
 
       isLoading.value = false;
@@ -209,14 +209,16 @@ class PromptViewModel extends GetxController {
     required String id,
   }) async {
     try {
-      final index = listPrompt.indexWhere((element) => element.id == id);
+      final index = listPublicPrompt.indexWhere((element) => element.id == id);
       if (index != -1) {
-        if (listPrompt[index].isFavorite == true) {
+        if (listPublicPrompt[index].isFavorite == true) {
           await _removePromptFavoriteUsecase.run(id: id);
-          listPrompt[index] = listPrompt[index].copyWith(isFavorite: false);
+          listPublicPrompt[index] =
+              listPublicPrompt[index].copyWith(isFavorite: false);
         } else {
           await _addPromptFavoriteUsecase.run(id: id);
-          listPrompt[index] = listPrompt[index].copyWith(isFavorite: true);
+          listPublicPrompt[index] =
+              listPublicPrompt[index].copyWith(isFavorite: true);
         }
       }
     } catch (e) {
