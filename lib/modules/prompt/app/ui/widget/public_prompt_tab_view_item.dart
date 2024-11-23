@@ -13,7 +13,8 @@ class PublicPromptTabViewItem extends StatefulWidget {
   const PublicPromptTabViewItem({super.key});
 
   @override
-  State<PublicPromptTabViewItem> createState() => _PublicPromptTabViewItemState();
+  State<PublicPromptTabViewItem> createState() =>
+      _PublicPromptTabViewItemState();
 }
 
 class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
@@ -31,9 +32,11 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
 
   void _scrollListener() {
     /// end of list listener
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        controller.getPublicPrompt(query: _publicSearchController.text, isLoadMore: true);
+        controller.getPublicPrompt(
+            query: _publicSearchController.text, isLoadMore: true);
       });
     }
   }
@@ -76,7 +79,10 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                       ),
                     ),
                     hintText: "Search",
-                    hintStyle: const TextStyle(fontWeight: FontWeight.w600, color: AppTheme.greyText, fontSize: 14),
+                    hintStyle: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.greyText,
+                        fontSize: 14),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 4,
@@ -89,7 +95,8 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
               const SizedBox(width: 8),
               InkWell(
                 onTap: () {
-                  controller.isGetFavorite.value = !controller.isGetFavorite.value;
+                  controller.isGetFavorite.value =
+                      !controller.isGetFavorite.value;
                   controller.getPublicPrompt(
                     query: _publicSearchController.text,
                   );
@@ -107,7 +114,9 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                   child: Obx(
                     () => Icon(
                       Icons.favorite,
-                      color: controller.isGetFavorite.value ? Colors.red : Colors.grey,
+                      color: controller.isGetFavorite.value
+                          ? Colors.red
+                          : Colors.grey,
                       size: 22,
                     ),
                   ),
@@ -141,12 +150,18 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(24),
-                        color: controller.indexCategory.value == index ? AppTheme.primaryBlue : AppTheme.grey,
+                        color: controller.indexCategory.value == index
+                            ? AppTheme.primaryBlue
+                            : AppTheme.grey,
                       ),
                       child: Text(
                         controller.listPromptCategory[index],
                         style: TextStyle(
-                            color: controller.indexCategory.value == index ? Colors.white : Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
+                            color: controller.indexCategory.value == index
+                                ? Colors.white
+                                : Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   );
@@ -164,7 +179,9 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                   )
                 : Expanded(
                     child: controller.listPrompt.isEmpty
-                        ? const Center(child: Text("No prompts found 🥺. Try another or make your prompt"))
+                        ? const Center(
+                            child: Text(
+                                "No prompts found 🥺. Try another or make your prompt"))
                         : Obx(
                             () => ListView.separated(
                               controller: _scrollController,
@@ -181,8 +198,10 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                                       UsePromptBottomSheet(
                                         promptItem: item,
                                         onMessageSent: (message) {
-                                          locator<HomePageViewModel>().selectedIndex = 0;
-                                          locator<ChatPageViewModel>().sendMessage(message);
+                                          locator<HomePageViewModel>()
+                                              .selectedIndex = 0;
+                                          locator<ChatPageViewModel>()
+                                              .sendMessage(message);
                                         },
                                       ),
                                       isScrollControlled: true,
@@ -192,7 +211,8 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                                     children: [
                                       Expanded(
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               maxLines: 1,
@@ -215,19 +235,17 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                                       const SizedBox(width: 8),
                                       IconButton(
                                         icon: Icon(
-                                          item.isFavorite == true ? Icons.favorite : Icons.favorite_border,
-                                          color: item.isFavorite == true ? Colors.red : AppTheme.greyText,
+                                          item.isFavorite == true
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color: item.isFavorite == true
+                                              ? Colors.red
+                                              : AppTheme.greyText,
                                         ),
                                         onPressed: () {
-                                          controller.toggleFavoritePrompt(id: item.id!);
+                                          controller.toggleFavoritePrompt(
+                                              id: item.id!);
                                         },
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.info_outline,
-                                          color: AppTheme.greyText,
-                                        ),
-                                        onPressed: () {},
                                       ),
                                     ],
                                   ),
@@ -236,7 +254,8 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                               separatorBuilder: (context, index) {
                                 return const Divider();
                               },
-                              itemCount: controller.listPrompt.length + (controller.isFetchingNewData.value ? 1 : 0),
+                              itemCount: controller.listPrompt.length +
+                                  (controller.isFetchingNewData.value ? 1 : 0),
                             ),
                           ),
                   ),
