@@ -44,7 +44,7 @@ extension GetConversationsHistoryResponseExtension on GetConversationsHistoryRes
         assistant: AssistantModel(
           id: Assistant.gpt_4o_mini,
           model: "dify",
-          name: "GPT-4o mini",
+          name: Assistant.gpt_4o_mini.label,
         ),
         isErrored: false,
       );
@@ -54,7 +54,7 @@ extension GetConversationsHistoryResponseExtension on GetConversationsHistoryRes
         assistant: AssistantModel(
           id: Assistant.gpt_4o_mini,
           model: "dify",
-          name: "GPT-4o mini",
+          name: Assistant.gpt_4o_mini.label,
         ),
         isErrored: false,
       );

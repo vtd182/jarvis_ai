@@ -19,12 +19,11 @@ class UsePromptViewModel extends GetxController {
     }
   }
 
-  void onTapSendButton() {
+  String onTapSendButton() {
     for (int i = 0; i < listMatches.length; i++) {
       newMessage.value = newMessage.value.replaceFirst(listMatches[i].group(0)!, listTextEditController[i].text);
     }
-
-    sendMessageToChat();
+    return newMessage.value;
   }
 
   void sendMessageToChat() {

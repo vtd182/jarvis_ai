@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jarvis_ai/main.dart';
-import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_view_model.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/use_prompt_view_model.dart';
 import 'package:jarvis_ai/modules/prompt/domain/model/prompt_item_model.dart';
 import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
 
 class UsePromptBottomSheet extends StatefulWidget {
-  const UsePromptBottomSheet({super.key, required this.promptItem});
+  const UsePromptBottomSheet({
+    super.key,
+    required this.promptItem,
+    required this.onMessageSent, // Thêm callback
+  });
+
   final PromptItemModel promptItem;
+  final Function(String message) onMessageSent; // Hàm callback
 
   @override
   State<UsePromptBottomSheet> createState() => _UsePromptBottomSheetState();
@@ -112,6 +116,7 @@ class _UsePromptBottomSheetState extends State<UsePromptBottomSheet> {
                             const Spacer(),
                             InkWell(
                               onTap: () {
+                                // callback to add to chat
                                 controller.sendMessageToChat();
                               },
                               child: const Text(
@@ -162,6 +167,8 @@ class _UsePromptBottomSheetState extends State<UsePromptBottomSheet> {
             InkWell(
               onTap: () {
                 controller.onTapSendButton();
+                widget.onMessageSent(controller.newMessage.value.trim());
+                Get.back();
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
