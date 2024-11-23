@@ -28,5 +28,4 @@ abstract class PromptService {
 
   @DELETE("/{id}/favorite")
   Future<dynamic> removePromptFavorite(@Path("id") String id);
-
 }

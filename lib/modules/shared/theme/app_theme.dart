@@ -101,7 +101,6 @@ class AppTheme {
     Color(0xFF0078D4),
   ];
 
-
   static TextStyle white_12 = TextStyle(
     fontWeight: FontWeight.normal,
     fontSize: 12.sp,

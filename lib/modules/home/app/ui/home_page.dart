@@ -76,13 +76,13 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                               selectedIndex: viewModel.selectedIndex,
                               onTap: _onNavItemTapped,
                             ),
-				              NavDrawerItem(
-				                icon: Icons.edit,
-				                label: "Prompt",
-				                index: 2,
-				                selectedIndex: viewModel.selectedIndex,
-				                onTap: _onNavItemTapped,
-				              ),
+                            NavDrawerItem(
+                              icon: Icons.edit,
+                              label: "Prompt",
+                              index: 2,
+                              selectedIndex: viewModel.selectedIndex,
+                              onTap: _onNavItemTapped,
+                            ),
                             const Divider(height: 1, color: Colors.grey),
                             ...viewModel.conversationSummaries.map(
                               (item) => ListTile(
@@ -97,7 +97,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                         )),
                   ),
                 ),
-                 NavDrawerItem(
+                NavDrawerItem(
                   icon: Icons.settings,
                   label: "Settings",
                   index: 3,

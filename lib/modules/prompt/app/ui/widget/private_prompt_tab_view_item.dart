@@ -11,8 +11,7 @@ class PrivatePromptTabViewItem extends StatefulWidget {
   const PrivatePromptTabViewItem({super.key});
 
   @override
-  State<PrivatePromptTabViewItem> createState() =>
-      _PrivatePromptTabViewItemState();
+  State<PrivatePromptTabViewItem> createState() => _PrivatePromptTabViewItemState();
 }
 
 class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
@@ -32,11 +31,9 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
 
   void _scrollListener() {
     /// end of list listener
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        controller.getPrivatePrompt(
-            query: _privateSearchController.text, isLoadMore: true);
+        controller.getPrivatePrompt(query: _privateSearchController.text, isLoadMore: true);
       });
     }
   }
@@ -79,10 +76,7 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                       ),
                     ),
                     hintText: "Search",
-                    hintStyle: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.greyText,
-                        fontSize: 14),
+                    hintStyle: const TextStyle(fontWeight: FontWeight.w600, color: AppTheme.greyText, fontSize: 14),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 4,
@@ -101,8 +95,7 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                   height: 46,
                   width: 46,
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                        colors: AppTheme.primaryLinearGradient),
+                    gradient: const LinearGradient(colors: AppTheme.primaryLinearGradient),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(
@@ -123,9 +116,7 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                   )
                 : Expanded(
                     child: controller.listPrompt.isEmpty
-                        ? const Center(
-                            child: Text(
-                                "No prompts found 🥺. Try another or make your prompt"))
+                        ? const Center(child: Text("No prompts found 🥺. Try another or make your prompt"))
                         : ListView.separated(
                             controller: _scrollController,
                             itemBuilder: (context, index) {
@@ -184,8 +175,7 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                             separatorBuilder: (context, index) {
                               return const Divider();
                             },
-                            itemCount: controller.listPrompt.length +
-                                (controller.isFetchingNewData.value ? 1 : 0),
+                            itemCount: controller.listPrompt.length + (controller.isFetchingNewData.value ? 1 : 0),
                           ),
                   ),
           ),

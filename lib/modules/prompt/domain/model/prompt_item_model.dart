@@ -33,8 +33,7 @@ class PromptItemModel {
   final String? userName;
   final bool? isFavorite;
 
-  factory PromptItemModel.fromJson(Map<String, dynamic> json) =>
-      _$PromptItemModelFromJson(json);
+  factory PromptItemModel.fromJson(Map<String, dynamic> json) => _$PromptItemModelFromJson(json);
 
   PromptItemModel copyWith({
     String? id,

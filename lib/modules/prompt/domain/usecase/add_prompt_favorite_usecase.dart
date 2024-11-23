@@ -1,10 +1,9 @@
-
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/prompt/data/repository/prompt_repository.dart';
 import 'package:suga_core/suga_core.dart';
 
 @lazySingleton
-class AddPromptFavoriteUsecase extends Usecase{
+class AddPromptFavoriteUsecase extends Usecase {
   final PromptRepository _promptRepository;
 
   const AddPromptFavoriteUsecase(this._promptRepository);
