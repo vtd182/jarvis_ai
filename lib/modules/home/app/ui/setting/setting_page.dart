@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page_viewmodel.dart';
 import 'package:suga_core/suga_core.dart';
+
+import '../../../../../storage/spref.dart';
+import '../../../../auth/app/ui/login/login_page.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -87,7 +91,7 @@ class _SettingPageState extends BaseViewState<SettingPage, SettingPageViewModel>
     );
   }
 
-  void _onSettingItemTap(String title) {
+  Future<void> _onSettingItemTap(String title) async {
     // Thêm logic xử lý khi nhấn vào từng mục
     switch (title) {
       case 'Share to friend':
@@ -115,7 +119,9 @@ class _SettingPageState extends BaseViewState<SettingPage, SettingPageViewModel>
         print('Cài đặt tài khoản');
         break;
       case 'Log out':
-        viewModel.signOut();
+        await viewModel.signOut();
+        SPref.instance.deleteAll();
+        await Get.off(() => const LoginPage());
         break;
       default:
         break;
