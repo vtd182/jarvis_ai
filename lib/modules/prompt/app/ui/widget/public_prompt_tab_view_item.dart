@@ -176,6 +176,9 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
                                     Get.bottomSheet(
                                       UsePromptBottomSheet(
                                         promptItem: item,
+                                        onMessageSent: (message) {
+                                          print("onMessageSent");
+                                        },
                                       ),
                                       isScrollControlled: true,
                                     );

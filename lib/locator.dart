@@ -13,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suga_core/suga_core.dart';
 
 import 'config/config.dart';
-import 'modules/home/app/controller/appbar_controller.dart';
 
 final locator = GetIt.instance;
 
@@ -45,7 +44,4 @@ abstract class Locator {
 
   @lazySingleton
   Dio getDio() => locator<RestClient>().dio;
-
-  @lazySingleton
-  AppBarController getAppController() => AppBarController();
 }

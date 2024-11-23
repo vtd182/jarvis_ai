@@ -7,7 +7,6 @@ import 'package:jarvis_ai/modules/prompt/domain/usecase/delete_prompt_usecase.da
 import 'package:jarvis_ai/modules/prompt/domain/usecase/get_prompt_usecase.dart';
 import 'package:jarvis_ai/modules/prompt/domain/usecase/remove_prompt_favorite_usecase.dart';
 import 'package:jarvis_ai/modules/prompt/domain/usecase/update_prompt_usecase.dart';
-import 'package:jarvis_ai/storage/spref.dart';
 import 'package:suga_core/suga_core.dart';
 
 class PromptViewModel extends GetxController {
@@ -18,8 +17,14 @@ class PromptViewModel extends GetxController {
   final RemovePromptFavoriteUsecase _removePromptFavoriteUsecase;
   final UpdatePromptUsecase _updatePromptUsecase;
 
-  PromptViewModel(this._getPromptUsecase, this._addPromptFavoriteUsecase, this._createPromptUsecase, this._deletePromptUsecase,
-      this._removePromptFavoriteUsecase, this._updatePromptUsecase);
+  PromptViewModel(
+    this._getPromptUsecase,
+    this._addPromptFavoriteUsecase,
+    this._createPromptUsecase,
+    this._deletePromptUsecase,
+    this._removePromptFavoriteUsecase,
+    this._updatePromptUsecase,
+  );
 
   final indexTabPromt = 0.obs;
   final isLoading = false.obs;

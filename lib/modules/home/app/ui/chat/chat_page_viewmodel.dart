@@ -7,19 +7,26 @@ import 'package:jarvis_ai/modules/home/domain/models/get_conversation_history_re
 import 'package:jarvis_ai/modules/home/domain/usecases/do_ai_chat_usecase.dart';
 import 'package:jarvis_ai/modules/home/domain/usecases/get_message_in_conversation_usecase.dart';
 import 'package:jarvis_ai/modules/home/domain/usecases/send_message_in_old_conversation_usecase.dart';
+import 'package:jarvis_ai/modules/prompt/domain/usecase/get_prompt_usecase.dart';
+import 'package:suga_core/suga_core.dart';
 
 import '../../../../../locator.dart';
+import '../../../../prompt/domain/model/prompt_item_model.dart';
+import '../../../../prompt/domain/model/prompts_response_model.dart';
 import '../../../domain/enums/assistant.dart';
 import '../../../domain/models/message_model.dart';
 
 @lazySingleton
 class ChatPageViewModel extends AppViewModel {
+  final GetPromptUsecase _getPromptUsecase;
   final DoAIChatUseCase _doAIChatUseCase;
   final SendMessageInOldConversationUseCase _sendMessageInOldConversationUseCase;
   final GetMessageInConversationUseCase _getMessageInConversationUseCase;
   final messages = <MessageModel>[].obs;
   final _conversationId = Rxn<String?>();
   final isLoading = false.obs;
+  final showPromptOptions = false.obs;
+  final listPrompt = <PromptItemModel>[].obs;
 
   set conversationId(String? id) {
     if (id == _conversationId.value) return;
@@ -33,6 +40,7 @@ class ChatPageViewModel extends AppViewModel {
   String? get conversationId => _conversationId.value;
 
   ChatPageViewModel(
+    this._getPromptUsecase,
     this._doAIChatUseCase,
     this._sendMessageInOldConversationUseCase,
     this._getMessageInConversationUseCase,
@@ -78,6 +86,7 @@ class ChatPageViewModel extends AppViewModel {
   @override
   void initState() {
     super.initState();
+    getPublicPrompt(query: "");
     if (conversationId == null) return;
     getOldMessages();
   }
@@ -141,5 +150,31 @@ class ChatPageViewModel extends AppViewModel {
       print(e);
       // todo: handle error
     }
+  }
+
+  Future<Unit> getPublicPrompt({
+    required String query,
+    bool isLoadMore = false,
+  }) async {
+    print("getPublicPrompt");
+    try {
+      final queries = {
+        "query": query,
+        "isFavorite": false,
+        "isPublic": true,
+        "offset": 1,
+        "limit": 20,
+      };
+
+      final result = await _getPromptUsecase.run(
+        queries: queries,
+      );
+
+      final promptResponse = PromptsResponseModel.fromJson(result);
+      listPrompt.addAll(promptResponse.items ?? []);
+    } catch (e) {
+      print("Error during getPrompt: $e");
+    }
+    return unit;
   }
 }
