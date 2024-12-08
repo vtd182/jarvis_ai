@@ -4,8 +4,8 @@ import 'package:alice_lightweight/alice.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/config/config.dart';
-import 'package:jarvis_ai/helpers/ui_helper.dart';
 import 'package:jarvis_ai/locator.dart';
+import 'package:jarvis_ai/modules/auth/domain/usecases/refresh_token_usecase.dart';
 import 'package:jarvis_ai/retrofit/rest_error.dart';
 import 'package:jarvis_ai/storage/spref.dart';
 import 'package:shake/shake.dart';
@@ -22,7 +22,6 @@ class RestClient {
   Dio dio = Dio(_options);
 
   bool onRefreshToken = false;
-  bool onRefreshLockerToken = false;
 
   Future<Unit> _configDioInterceptors() async {
     if (Config.aliceEnable) {
@@ -35,10 +34,12 @@ class RestClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           var token = await SPref.instance.getAccessToken();
-          // todo: check login
-          options.headers["Authorization"] = "Bearer $token";
-          options.headers["Accept"] = "application/json";
+          if (!options.path.endsWith("refresh")) {
+            options.headers["Authorization"] = "Bearer $token";
+          }
           options.headers["X-Language"] = await SPref.instance.getLanguage() ?? Platform.localeName.substring(0, 2);
+          options.headers["Accept"] = "application/json";
+          options.headers["x-jarvis-guid"] = "";
           handler.next(options);
         },
         onResponse: (e, handler) async {
@@ -59,7 +60,8 @@ class RestClient {
             case DioExceptionType.badResponse:
               if (e.response != null) {
                 if (e.response!.statusCode == HttpStatus.unauthorized) {
-                  showToast("Session expired");
+                  await _handleUnAuthorizeStatusCode(e, handler);
+                  //return handler.next(RestError.fromErrorString("Unauthorized", e.response!.headers));
                 }
                 if (e.response!.statusCode == HttpStatus.tooManyRequests) {
                   return handler.next(RestError.fromErrorString("Too many requests", e.response!.headers));
@@ -80,6 +82,44 @@ class RestClient {
       ),
     );
     return unit;
+  }
+
+  Future<void> _handleUnAuthorizeStatusCode(DioException exception, ErrorInterceptorHandler handler) async {
+    print("retry refresh token");
+    if (!onRefreshToken) {
+      onRefreshToken = true;
+      try {
+        // Refresh token
+        await locator<RefreshTokenUseCase>().run();
+
+        // Retry request
+        final requestOptions = exception.requestOptions;
+        final newToken = await SPref.instance.getAccessToken();
+        if (newToken != null) {
+          requestOptions.headers["Authorization"] = "Bearer $newToken";
+        }
+
+        final response = await dio.fetch(requestOptions);
+        handler.resolve(response);
+      } catch (refreshError) {
+        handler.reject(DioException(requestOptions: exception.requestOptions, error: refreshError));
+      } finally {
+        onRefreshToken = false;
+      }
+    } else {
+      // Chờ refresh hoàn tất
+      while (onRefreshToken) {
+        await Future.delayed(Duration(milliseconds: 100));
+      }
+
+      // Retry sau khi refresh hoàn tất
+      final requestOptions = exception.requestOptions;
+      final newToken = await SPref.instance.getAccessToken();
+      requestOptions.headers["Authorization"] = "Bearer $newToken";
+      final response = await dio.fetch(requestOptions);
+      handler.resolve(response);
+    }
+    //await locator<RefreshTokenUseCase>().run();
   }
 
   RestClient() {

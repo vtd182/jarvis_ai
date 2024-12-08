@@ -54,12 +54,6 @@ dependencies:
   # Flutter library to load and cache network images. Can also be used with placeholder and error widgets.
   cached_network_image: ^3.2.3
 
-  # Flutter plugin for accepting incoming links - App/Deep Links (Android), Universal Links and Custom URL schemes (iOS).
-  uni_links: ^0.5.1
-
-  # A Flutter plugin to assist in leaving user reviews/ratings in Google Play Store and Apple App Store.
-  launch_review: ^3.0.1
-
   # Flutter package for day, week, range and month date pickers.
   flutter_date_pickers: ^0.4.0
 
@@ -171,6 +165,11 @@ dependencies:
   # A flutter plugin for save image to gallery, iOS need to add the following keys to your Info.plist file.
   image_gallery_saver: ^2.0.3
 
+  # A dart implementation of the famous javascript library 'jsonwebtoken' (JWT).
+  dart_jsonwebtoken: ^2.14.1
+
+  # A Flutter plugin for easily adding a loading indicator to your app.
+  loading_animation_widget: ^1.3.0
 
 dev_dependencies:
   flutter_test:
@@ -199,6 +198,7 @@ dev_dependencies:
 
   # Checks for missing, under-promoted, over-promoted, and unused dependencies.
   dependency_validator: ^3.2.2
+
 
 flutter_gen:
   output: lib/gen/

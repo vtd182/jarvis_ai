@@ -7,19 +7,19 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:jarvis_ai/helpers/utils.dart' as utils;
-import 'package:jarvis_ai/modules/auth/app/ui/login/login_page.dart';
 
 import 'loading.dart';
 import 'locator.dart';
 import 'modules/connection/app/ui/connection_page.dart';
+import 'modules/onboarding/app/ui/splash/splash_page.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await setupLocator();
-  setupEasyLoading();
   await runZonedGuarded(
     () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await EasyLocalization.ensureInitialized();
+      await setupLocator();
+      setupEasyLoading();
       runApp(
         EasyLocalization(
           supportedLocales: const [Locale('en'), Locale('vi')],
@@ -59,7 +59,7 @@ class _MyAppState extends State<Main> {
       designSize: const Size(375, 812),
       builder: (context, child) => GetMaterialApp(
         themeMode: ThemeMode.light,
-        title: 'SantaPocket',
+        title: 'Jarvis AI',
         locale: context.locale,
         supportedLocales: context.supportedLocales,
         localizationsDelegates: context.localizationDelegates,
@@ -69,7 +69,14 @@ class _MyAppState extends State<Main> {
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: Colors.orange,
           ),
-          useMaterial3: false,
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+          ).copyWith(
+            primary: Colors.blue,
+            onPrimary: Colors.white,
+            secondary: Colors.green,
+          ),
         ),
         builder: (context, child) {
           return MediaQuery(
@@ -80,23 +87,10 @@ class _MyAppState extends State<Main> {
         home: LayoutBuilder(
           builder: (context, _) {
             WidgetsBinding.instance.addPostFrameCallback((_) => utils.insertOverlay(context, const ConnectionPage()));
-            return const LoginPage();
+            return const SplashPage();
           },
         ),
       ),
     );
-  }
-}
-
-// homepage
-class SplashPage extends StatelessWidget {
-  const SplashPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-        body: Center(
-      child: CircularProgressIndicator(),
-    ));
   }
 }
