@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:jarvis_ai/modules/auth/domain/models/user_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../../../config/config.dart';
@@ -12,6 +13,9 @@ abstract class AuthService {
   @factoryMethod
   factory AuthService(Dio dio) = _AuthService;
 
+  @GET("/me")
+  Future<UserModel> getCurrentUser();
+
   @POST("/sign-in")
   Future<dynamic> signInWithEmailAndPassword(
     @Body() Map<String, dynamic> body,
@@ -22,6 +26,12 @@ abstract class AuthService {
     @Body() Map<String, dynamic> body,
   );
 
-  @GET("")
-  Future<dynamic> refreshToken(@Part(name: "refreshToken") String refreshToken);
+  @GET("/sign-out")
+  Future<dynamic> signOut();
+
+  @GET("/refresh")
+  Future<dynamic> refreshToken(@Query("refreshToken") String refreshToken);
+
+  @POST("google-sign-in")
+  Future<dynamic> signInWithGoogle(@Body() Map<String, dynamic> body);
 }

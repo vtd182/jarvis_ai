@@ -2,5 +2,13 @@ import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
 class Config {
+  static const bool debug = true;
+  static const String injectionEnvironment = Environment.dev;
+  static const Level logLevel = Level.debug;
+  static const bool aliceEnable = true;
 
+  static const String baseUrl = "https://api.dev.jarvis.cx";
+  static const String apiVersion = "1";
+  static const int connectTimeout = 30000;
+  static const int receiveTimeout = 30000;
 }
