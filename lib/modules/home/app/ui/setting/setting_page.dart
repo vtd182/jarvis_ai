@@ -116,7 +116,7 @@ class _SettingPageState extends BaseViewState<SettingPage, SettingPageViewModel>
         break;
       case 'Account':
         // Mở trang tài khoản
-        print('Cài đặt tài khoản');
+        print('Setting');
         break;
       case 'Log out':
         await viewModel.signOut();
