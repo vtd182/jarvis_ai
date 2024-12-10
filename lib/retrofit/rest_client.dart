@@ -34,9 +34,18 @@ class RestClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           var token = await SPref.instance.getAccessToken();
+
+          if (token != null) {
+            // check if url is knowledge base
+            if (options.uri.origin == Config.knowledgeBaseUrl && !options.path.endsWith("external-sign-in")) {
+              token = await SPref.instance.getKBAccessToken();
+            }
+          }
+
           if (!options.path.endsWith("refresh")) {
             options.headers["Authorization"] = "Bearer $token";
           }
+
           options.headers["X-Language"] = await SPref.instance.getLanguage() ?? Platform.localeName.substring(0, 2);
           options.headers["Accept"] = "application/json";
           options.headers["x-jarvis-guid"] = "";
@@ -89,12 +98,21 @@ class RestClient {
     if (!onRefreshToken) {
       onRefreshToken = true;
       try {
-        // Refresh token
-        await locator<RefreshTokenUseCase>().run();
+        String? newToken = "";
+
+        // check if url is knowledge base
+        if (exception.requestOptions.uri.origin == Config.knowledgeBaseUrl) {
+          // Refresh KB token
+          await locator<RefreshTokenUseCase>().run();
+          newToken = await SPref.instance.getKBAccessToken();
+        } else if (exception.requestOptions.uri.origin == Config.baseUrl) {
+          // Refresh main token
+          await locator<RefreshTokenUseCase>().run();
+          newToken = await SPref.instance.getAccessToken();
+        }
 
         // Retry request
         final requestOptions = exception.requestOptions;
-        final newToken = await SPref.instance.getAccessToken();
         if (newToken != null) {
           requestOptions.headers["Authorization"] = "Bearer $newToken";
         }
