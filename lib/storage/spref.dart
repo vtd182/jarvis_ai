@@ -74,4 +74,35 @@ class SPref {
       await prefs.setString('locale', strLocale);
     }
   }
+
+  // knowledge base
+  Future<String?> getKBAccessToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(SPrefKey.keyKBAccessToken);
+  }
+
+  Future setKBAccessToken(String token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(SPrefKey.keyKBAccessToken, token);
+  }
+
+  Future<String?> getKBRefreshToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(SPrefKey.keyKBRefreshToken);
+  }
+
+  Future saveKBRefreshToken(String token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(SPrefKey.keyKBRefreshToken, token);
+  }
+
+  Future<int?> getKBExpiresAt() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(SPrefKey.keyKBExpiresAt);
+  }
+
+  Future setKBExpiresAt(int expiresAt) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(SPrefKey.keyKBExpiresAt, expiresAt);
+  }
 }
