@@ -10,6 +10,7 @@ import 'package:jarvis_ai/modules/auth/domain/usecases/refresh_token_usecase.dar
 import 'package:jarvis_ai/modules/knowledge_base/kb_auth/domain/usecase/knowledge_base_refresh_token_usecase.dart';
 import 'package:jarvis_ai/retrofit/rest_error.dart';
 import 'package:jarvis_ai/storage/spref.dart';
+import 'package:logger/logger.dart';
 import 'package:shake/shake.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -39,7 +40,8 @@ class RestClient {
 
           if (token != null) {
             // check if url is knowledge base
-            if (options.uri.origin == Config.knowledgeBaseUrl && !options.path.endsWith("external-sign-in")) {
+            if (options.uri.origin == Config.knowledgeBaseUrl &&
+                !options.path.endsWith("external-sign-in")) {
               token = await SPref.instance.getKBAccessToken();
             }
           }
@@ -48,7 +50,8 @@ class RestClient {
             options.headers["Authorization"] = "Bearer $token";
           }
 
-          options.headers["X-Language"] = await SPref.instance.getLanguage() ?? Platform.localeName.substring(0, 2);
+          options.headers["X-Language"] = await SPref.instance.getLanguage() ??
+              Platform.localeName.substring(0, 2);
           options.headers["Accept"] = "application/json";
           options.headers["x-jarvis-guid"] = "";
           handler.next(options);
@@ -75,19 +78,24 @@ class RestClient {
                   //return handler.next(RestError.fromErrorString("Unauthorized", e.response!.headers));
                 }
                 if (e.response!.statusCode == HttpStatus.tooManyRequests) {
-                  return handler.next(RestError.fromErrorString("Too many requests", e.response!.headers));
+                  return handler.next(RestError.fromErrorString(
+                      "Too many requests", e.response!.headers));
                 }
                 if (e.response!.data != null) {
-                  return handler.next(RestError.fromJson(e.response!.data, e.response!.headers));
+                  return handler.next(RestError.fromJson(
+                      e.response!.data, e.response!.headers));
                 }
-                return handler.next(RestError.fromErrorString(e.message, e.response!.headers));
+                return handler.next(
+                    RestError.fromErrorString(e.message, e.response!.headers));
               }
               return handler.next(RestError.fromErrorString(e.message, null));
             case DioExceptionType.connectionError:
-              return handler.next(RestError.fromErrorString("Connection error", null));
+              return handler
+                  .next(RestError.fromErrorString("Connection error", null));
             case DioExceptionType.cancel:
             default:
-              return handler.next(RestError.fromErrorString("Something went wrong", null));
+              return handler.next(
+                  RestError.fromErrorString("Something went wrong", null));
           }
         },
       ),
@@ -95,14 +103,15 @@ class RestClient {
     return unit;
   }
 
-  Future<void> _handleUnAuthorizeStatusCode(DioException exception, ErrorInterceptorHandler handler) async {
+  Future<void> _handleUnAuthorizeStatusCode(
+      DioException exception, ErrorInterceptorHandler handler) async {
     // check if unauthorized in refresh token -> return error
     if (exception.requestOptions.path.endsWith("refresh")) {
       // todo: fire event to logout user and clear all data
       showToast("Unauthorized");
       return;
     }
-    print("retry refresh token");
+    print("retry refresh token ${onRefreshToken}");
 
     if (!onRefreshToken) {
       onRefreshToken = true;
@@ -130,19 +139,25 @@ class RestClient {
         final response = await dio.fetch(requestOptions);
         handler.resolve(response);
       } catch (refreshError) {
-        handler.reject(DioException(requestOptions: exception.requestOptions, error: refreshError));
+        handler.reject(DioException(
+            requestOptions: exception.requestOptions, error: refreshError));
       } finally {
         onRefreshToken = false;
       }
     } else {
       // Chờ refresh hoàn tất
       while (onRefreshToken) {
-        await Future.delayed(const Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 500));
       }
 
       // Retry sau khi refresh hoàn tất
       final requestOptions = exception.requestOptions;
-      final newToken = await SPref.instance.getAccessToken();
+      String? newToken;
+      if (exception.requestOptions.uri.origin == Config.knowledgeBaseUrl) {
+        newToken = await SPref.instance.getKBAccessToken();
+      } else if (exception.requestOptions.uri.origin == Config.baseUrl) {
+        newToken = await SPref.instance.getAccessToken();
+      }
       requestOptions.headers["Authorization"] = "Bearer $newToken";
       final response = await dio.fetch(requestOptions);
       handler.resolve(response);

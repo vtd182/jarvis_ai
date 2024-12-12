@@ -72,6 +72,7 @@ class SplashPageViewModel extends AppViewModel {
     // );
 
     final isAuth = await this.isAuth();
+    print ("tpoo is Auth $isAuth");
     if (!isAuth) {
       await Get.off(() => const LoginPage());
       return unit;
@@ -90,6 +91,7 @@ class SplashPageViewModel extends AppViewModel {
       return false;
     }
     final int? expiration = await SPref.instance.getExpiresAt();
+    print ("tpoo expiration $expiration");
     if (expiration != null) {
       if (DateTime.now().isAfter(DateTime.fromMillisecondsSinceEpoch(expiration - timeRefreshBeforeExpire))) {
         final String? refreshToken = await SPref.instance.getRefreshToken();
@@ -99,7 +101,7 @@ class SplashPageViewModel extends AppViewModel {
         }
 
         final res = await _refreshTokenUseCase.run();
-        print("refreshToken: $res");
+        print("tpoo refreshToken: $res");
         return res;
       } else {
         return true;

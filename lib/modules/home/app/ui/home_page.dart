@@ -5,7 +5,10 @@ import 'package:jarvis_ai/modules/home/app/ui/chat/chat_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/home_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page.dart';
 import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
+import 'package:jarvis_ai/modules/knowledge/app/ui/page/knowledge_page.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_auth/domain/usecase/knowledge_base_sign_in_usecase.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_page.dart';
+import 'package:jarvis_ai/storage/spref.dart';
 import 'package:suga_core/suga_core.dart';
 
 import '../../../../locator.dart';
@@ -22,6 +25,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
   final List<Widget> _pages = [
     const ChatPage(),
     PromptPage(),
+    KnowledgePage(),
     SettingPage(),
   ];
 
@@ -47,7 +51,8 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                     child: Obx(
                       () => Text(
                         "Token available: ${viewModel.tokenUsage.value.availableTokens}",
-                        style: const TextStyle(color: Colors.white, fontSize: 24),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 24),
                       ),
                     ),
                   ),
@@ -75,13 +80,21 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                               selectedIndex: viewModel.selectedIndex,
                               onTap: _onNavItemTapped,
                             ),
+                            NavDrawerItem(
+                              icon: Icons.edit,
+                              label: "Knowledge",
+                              index: 2,
+                              selectedIndex: viewModel.selectedIndex,
+                              onTap: _onNavItemTapped,
+                            ),
                             const Divider(height: 1, color: Colors.grey),
                             ...viewModel.conversationSummaries.map(
                               (item) => ListTile(
                                 title: Text(item.title),
                                 onTap: () {
                                   Navigator.of(context).pop();
-                                  locator<ChatPageViewModel>().conversationId = item.id;
+                                  locator<ChatPageViewModel>().conversationId =
+                                      item.id;
                                 },
                               ),
                             ),
@@ -119,7 +132,8 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(model.label),
-                  if (model.label == viewModel.currentAssistant.value.label) const Icon(Icons.check, color: Colors.blue),
+                  if (model.label == viewModel.currentAssistant.value.label)
+                    const Icon(Icons.check, color: Colors.blue),
                 ],
               ),
             );
@@ -148,6 +162,10 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
     } else if (viewModel.selectedIndex == 1) {
       return AppBar(
         title: const Text("Prompt Library"),
+      );
+    } else if (viewModel.selectedIndex == 2) {
+      return AppBar(
+        title: const Text("Knowledge Library"),
       );
     } else {
       return AppBar(
@@ -181,10 +199,12 @@ class NavDrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon, color: index == selectedIndex ? Colors.blue : Colors.grey),
+      leading:
+          Icon(icon, color: index == selectedIndex ? Colors.blue : Colors.grey),
       title: Text(
         label,
-        style: TextStyle(color: index == selectedIndex ? Colors.blue : Colors.grey),
+        style: TextStyle(
+            color: index == selectedIndex ? Colors.blue : Colors.grey),
       ),
       selected: index == selectedIndex,
       onTap: () => onTap(index),

@@ -7,11 +7,11 @@ import 'package:suga_core/suga_core.dart';
 @lazySingleton
 class KnowledgeBaseSignInUseCase extends Usecase {
   final KnowledgeBaseAuthRepository _knowledgeBaseAuthRepository;
-  const KnowledgeBaseSignInUseCase({required KnowledgeBaseAuthRepository knowledgeBaseAuthRepository})
-      : _knowledgeBaseAuthRepository = knowledgeBaseAuthRepository;
+  const KnowledgeBaseSignInUseCase(this._knowledgeBaseAuthRepository);
 
   Future<Unit> run({required String token}) async {
-    final result = await _knowledgeBaseAuthRepository.signInFromExternalClient(token: token);
+    final result = await _knowledgeBaseAuthRepository.signInFromExternalClient(
+        token: token);
     final accessToken = result["token"]["accessToken"];
     final refreshToken = result["token"]["refreshToken"];
 
