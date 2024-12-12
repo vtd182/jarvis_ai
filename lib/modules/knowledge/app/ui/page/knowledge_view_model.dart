@@ -5,6 +5,8 @@ import 'package:jarvis_ai/modules/knowledge/domain/usecases/get_knowledge_usecas
 import 'package:jarvis_ai/modules/knowledge_base/kb_auth/domain/usecase/knowledge_base_sign_in_usecase.dart';
 import 'package:jarvis_ai/storage/spref.dart';
 
+bool isSignInKnowledge = false;
+
 class KnowledgeViewModel extends GetxController {
   final GetKnowledgeUsecase _getKnowledgeUsecase;
 
@@ -12,9 +14,14 @@ class KnowledgeViewModel extends GetxController {
 
   void getAllKnowledge() async {
     try {
-      final token = await SPref.instance.getAccessToken();
-      print ("tpoo token $token");
-      await locator<KnowledgeBaseSignInUseCase>().run(token: (await SPref.instance.getAccessToken()) ?? "");
+      if (!isSignInKnowledge) {
+        isSignInKnowledge = true;
+        final token = await SPref.instance.getAccessToken();
+        print("tpoo token $token");
+        await locator<KnowledgeBaseSignInUseCase>()
+            .run(token: (await SPref.instance.getAccessToken()) ?? "");
+      }
+
       print("tpoo press get");
       final res =
           await _getKnowledgeUsecase.run(queries: RequestKnowledgeModel());
