@@ -57,12 +57,6 @@ class RestClient {
           handler.next(options);
         },
         onResponse: (e, handler) async {
-          if (e.data is Map<String, dynamic>) {
-            final data = e.data as Map<String, dynamic>;
-            if (data.containsKey("data") && data.containsKey("meta")) {
-              e.data = data["data"];
-            }
-          }
           handler.next(e);
         },
         onError: (e, handler) async {
