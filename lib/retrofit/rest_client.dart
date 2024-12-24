@@ -36,10 +36,10 @@ class RestClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           var token = await SPref.instance.getAccessToken();
-
           if (token != null) {
             // check if url is knowledge base
             if (options.uri.origin == Config.knowledgeBaseUrl && !options.path.endsWith("external-sign-in")) {
+              print("knowledge base");
               token = await SPref.instance.getKBAccessToken();
             }
           }

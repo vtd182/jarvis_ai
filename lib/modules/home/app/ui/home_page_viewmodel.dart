@@ -5,6 +5,8 @@ import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
 import 'package:jarvis_ai/modules/home/domain/models/conversation_summary_model.dart';
 import 'package:jarvis_ai/modules/home/domain/usecases/get_history_conversation_usecase.dart';
 import 'package:jarvis_ai/modules/home/domain/usecases/get_token_usage_usecase.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_auth/domain/usecase/knowledge_base_sign_in_usecase.dart';
+import 'package:jarvis_ai/storage/spref.dart';
 import 'package:suga_core/suga_core.dart';
 
 import '../../../../core/abstracts/app_view_model.dart';
@@ -16,6 +18,8 @@ class HomePageViewModel extends AppViewModel {
   final GetTokenUsageUseCase _getTokenUsageUseCase;
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final GetHistoryConversationUseCase _getHistoryConversationUseCase;
+  final KnowledgeBaseSignInUseCase _knowledgeBaseSignInUseCase;
+
   final conversationSummaries = <ConversationSummaryModel>[].obs;
   final RxInt _selectedIndex = 0.obs;
   final currentAssistant = Assistant.gpt_4o_mini.obs;
@@ -43,7 +47,23 @@ class HomePageViewModel extends AppViewModel {
     this._getTokenUsageUseCase,
     this._getCurrentUserUseCase,
     this._getHistoryConversationUseCase,
+    this._knowledgeBaseSignInUseCase,
   );
+
+  Future<Unit> onSignInKB() async {
+    final token = await SPref.instance.getKBAccessToken();
+    if (token != "") {
+      final appToken = await SPref.instance.getAccessToken();
+      if (appToken != "") {
+        await run(
+          () async {
+            await _knowledgeBaseSignInUseCase.run(token: appToken!);
+          },
+        );
+      }
+    }
+    return unit;
+  }
 
   Future<Unit> getTokenUsage() async {
     await run(() async {
