@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/config/config.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_response_with_pagination.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'kb_ai_assistant_service.g.dart';
@@ -25,7 +26,7 @@ abstract class KBAIAssistantService {
   Future<bool> deleteKBAIAssistant(@Path("assistantId") String assistantId);
 
   @GET("")
-  Future<List<KBAIAssistant>> getListKBAIAssistant(
+  Future<KBResponseWithPagination<KBAIAssistant>> getListKBAIAssistant(
     @Query("q") String query,
     @Query("order") String order,
     @Query("order_field") String orderField,

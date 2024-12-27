@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/data/repositories/kb_ai_assistant_repository.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_response_with_pagination.dart';
 
 @lazySingleton
 class GetListAIAssistantsUseCase {
@@ -8,7 +9,7 @@ class GetListAIAssistantsUseCase {
 
   GetListAIAssistantsUseCase(this._aiAssistantRepository);
 
-  Future<List<KBAIAssistant>> run({
+  Future<KBResponseWithPagination<KBAIAssistant>> run({
     required String query,
     required String order,
     required String orderField,

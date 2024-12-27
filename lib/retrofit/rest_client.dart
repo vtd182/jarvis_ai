@@ -39,7 +39,6 @@ class RestClient {
           if (token != null) {
             // check if url is knowledge base
             if (options.uri.origin == Config.knowledgeBaseUrl && !options.path.endsWith("external-sign-in")) {
-              print("knowledge base");
               token = await SPref.instance.getKBAccessToken();
             }
           }
@@ -54,12 +53,12 @@ class RestClient {
           handler.next(options);
         },
         onResponse: (e, handler) async {
-          if (e.data is Map<String, dynamic>) {
-            final data = e.data as Map<String, dynamic>;
-            if (data.containsKey("data") && data.containsKey("meta")) {
-              e.data = data["data"];
-            }
-          }
+          // if (e.data is Map<String, dynamic>) {
+          //   final data = e.data as Map<String, dynamic>;
+          //   if (data.containsKey("data") && data.containsKey("meta")) {
+          //     e.data = data["data"];
+          //   }
+          // }
           handler.next(e);
         },
         onError: (e, handler) async {

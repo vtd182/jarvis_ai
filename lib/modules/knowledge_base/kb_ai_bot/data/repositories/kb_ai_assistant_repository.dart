@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/data/datasources/kb_ai_assistant_datasource.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_response_with_pagination.dart';
 
 @lazySingleton
 class KBAIAssistantRepository {
@@ -50,7 +51,7 @@ class KBAIAssistantRepository {
     );
   }
 
-  Future<List<KBAIAssistant>> getListKBAIAssistant({
+  Future<KBResponseWithPagination<KBAIAssistant>> getListKBAIAssistant({
     required String query,
     required String order,
     required String orderField,

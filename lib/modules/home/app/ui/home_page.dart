@@ -23,7 +23,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
   final List<Widget> _pages = [
     const ChatPage(),
     PromptPage(),
-    KBAIAssistantListPage(),
+    const KBAIAssistantListPage(),
     SettingPage(),
   ];
 
@@ -161,14 +161,17 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
       case 1:
         return AppBar(
           title: const Text("Prompt Library"),
+          centerTitle: true,
         );
       case 2:
         return AppBar(
           title: const Text("Knowledge Base"),
+          centerTitle: true,
         );
       case 3:
         return AppBar(
           title: const Text("Settings"),
+          centerTitle: true,
         );
       default:
         return AppBar();
