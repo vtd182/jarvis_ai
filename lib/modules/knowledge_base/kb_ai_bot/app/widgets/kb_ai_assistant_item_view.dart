@@ -20,90 +20,101 @@ class KBAIAssistantItemView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onItemTap,
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Assets.images.imgAssistant.image(
-                    width: 50,
-                    height: 50,
-                  ),
-                  const SizedBox(width: 12),
-                  // Assistant Info
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+          border: Border.all(
+            color: assistant.isFavorite ? Colors.yellow : Colors.grey,
+            width: 0.3,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Assets.images.imgAssistant.image(
+                  width: 50,
+                  height: 50,
+                ),
+                const SizedBox(width: 12),
+                // Assistant Info
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      assistant.assistantName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    // trim the description if length > 20
+                    Text(
+                      assistant.description.length > 30 ? "${assistant.description.substring(0, 30)}..." : assistant.description,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                // Favorite and Delete Icons
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Row(
                     children: [
-                      Text(
-                        assistant.assistantName,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      InkWell(
+                        onTap: () {
+                          onFavoriteTap();
+                        },
+                        child: Icon(
+                          assistant.isFavorite ? Icons.star : Icons.star_border_outlined,
+                          color: assistant.isFavorite ? Colors.yellow : Colors.grey,
+                          size: 24,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      // trim the description if length > 20
-                      Text(
-                        assistant.description.length > 30 ? "${assistant.description.substring(0, 30)}..." : assistant.description,
-                        style: const TextStyle(
-                          fontSize: 14,
+                      const SizedBox(width: 5),
+                      InkWell(
+                        onTap: () {
+                          onDelete();
+                        },
+                        child: const Icon(
+                          Icons.delete,
                           color: Colors.grey,
+                          size: 24,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
                       ),
                     ],
                   ),
-                  const Spacer(),
-                  // Favorite and Delete Icons
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            onFavoriteTap();
-                          },
-                          child: Icon(
-                            assistant.isFavorite ? Icons.star : Icons.star_border_outlined,
-                            color: assistant.isFavorite ? Colors.yellow : Colors.grey,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        InkWell(
-                          onTap: () {
-                            onDelete();
-                          },
-                          child: const Icon(
-                            Icons.delete,
-                            color: Colors.grey,
-                            size: 24,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  _formatDate(assistant.createdAt),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                _formatDate(assistant.createdAt),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

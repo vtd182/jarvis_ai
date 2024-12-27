@@ -21,13 +21,27 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
   final _kBAIAssistantList = RxList<KBAIAssistant>([]);
   final _isHasNext = Rx<bool>(false);
 
+  set query(String value) => _query.value = value;
   String get query => _query.value;
+
+  set orderField(String value) => _orderField.value = value;
   String get orderField => _orderField.value;
+
+  set order(String value) => _order.value = value;
   String get order => _order.value;
+
+  set offset(int value) => _offset.value = value;
   int get offset => _offset.value;
+
+  set limit(int value) => _limit.value = value;
   int get limit => _limit.value;
+
+  set isFavorite(bool value) => _isFavorite.value = value;
   bool get isFavorite => _isFavorite.value;
+
+  set isPublished(bool value) => _isPublished.value = value;
   bool get isPublished => _isPublished.value;
+
   List<KBAIAssistant> get kBAIAssistantList => _kBAIAssistantList.toList();
   bool get isHasNext => _isHasNext.value;
 

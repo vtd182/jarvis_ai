@@ -132,7 +132,13 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(model.label),
-                    if (model.label == viewModel.currentAssistant.value.label) const Icon(Icons.check, color: Colors.blue),
+                    const SizedBox(width: 8),
+                    if (model.label == viewModel.currentAssistant.value.label)
+                      const Icon(
+                        Icons.check_circle,
+                        color: Colors.blue,
+                        size: 18,
+                      ),
                   ],
                 ),
               );
