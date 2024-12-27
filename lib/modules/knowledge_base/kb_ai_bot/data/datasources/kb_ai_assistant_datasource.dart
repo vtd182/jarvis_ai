@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/data/datasources/services/kb_ai_assistant_service.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_response_with_pagination.dart';
 
 abstract class KBAIAssistantDataSource {
   Future<KBAIAssistant> createKBAIAssistant({
@@ -24,7 +25,7 @@ abstract class KBAIAssistantDataSource {
     required String assistantId,
   });
 
-  Future<List<KBAIAssistant>> getListKBAIAssistant({
+  Future<KBResponseWithPagination<KBAIAssistant>> getListKBAIAssistant({
     required String query,
     required String order,
     required String orderField,
@@ -64,7 +65,7 @@ class KBAIAssistantDataSourceImp implements KBAIAssistantDataSource {
   }
 
   @override
-  Future<List<KBAIAssistant>> getListKBAIAssistant({
+  Future<KBResponseWithPagination<KBAIAssistant>> getListKBAIAssistant({
     required String query,
     required String order,
     required String orderField,

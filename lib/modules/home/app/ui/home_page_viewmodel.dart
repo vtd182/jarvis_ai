@@ -52,7 +52,8 @@ class HomePageViewModel extends AppViewModel {
 
   Future<Unit> onSignInKB() async {
     final token = await SPref.instance.getKBAccessToken();
-    if (token != "") {
+    if (token == "") {
+      print("KB: $token");
       final appToken = await SPref.instance.getAccessToken();
       if (appToken != "") {
         await run(
