@@ -1,74 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:injectable/injectable.dart';
+import 'package:jarvis_ai/core/abstracts/app_view_model.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/shared/kb_ai_assistant_info.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/delete_ai_assistant_by_id_usecase.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/get_ai_assistant_by_id_usecase.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/update_ai_assistant_usecase.dart';
+import 'package:suga_core/suga_core.dart';
 
-class KBAIAssistantChatPage extends StatefulWidget {
-  final String assistantId;
+@lazySingleton
+class KBAIAssistantSettingPageViewModel extends AppViewModel {
+  final GetAIAssistantByIdUseCase _getAIAssistantByIdUseCase;
+  final DeleteAIAssistantByIdUseCase _deleteAIAssistantByIdUseCase;
+  final UpdateAIAssistantUseCase _updateAIAssistantUseCase;
 
-  const KBAIAssistantChatPage({super.key, required this.assistantId});
+  String assistantId = "";
+  KBAIAssistantSettingPageViewModel(
+    this._getAIAssistantByIdUseCase,
+    this._deleteAIAssistantByIdUseCase,
+    this._updateAIAssistantUseCase,
+  );
 
-  @override
-  State<KBAIAssistantChatPage> createState() => _KBAIAssistantChatPageState();
-}
+  final _assistant = Rxn<KBAIAssistant>();
+  KBAIAssistant? get assistant => _assistant.value;
 
-class _KBAIAssistantChatPageState extends State<KBAIAssistantChatPage> {
-  final TextEditingController _textController = TextEditingController();
-
-  void _sendMessage() {
-    // Thực hiện gửi tin nhắn
-    print('Message sent: ${_textController.text}');
-    _textController.clear();
+  Future<void> getAssistantById(String assistantId) async {
+    final assistant = await _getAIAssistantByIdUseCase.run(assistantId: assistantId);
+    _assistant.value = assistant;
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Trợ lý AI (${widget.assistantId})"),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.mail_outline, size: 100, color: Colors.blue),
-                  SizedBox(height: 16),
-                  Text(
-                    'Trợ lý AI của bạn',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Sử dụng không gian này để gửi tin nhắn cho chính bạn',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _textController,
-                    decoration: const InputDecoration(
-                      hintText: "Nhập tin nhắn",
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: _sendMessage,
-                  icon: const Icon(Icons.send),
-                  color: Colors.blue,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+  void initState() {
+    _init();
+    super.initState();
+  }
+
+  Future<Unit> _init() async {
+    await getAssistantById(assistantId);
+    return unit;
+  }
+
+  Future<void> _deleteAssistantById(String assistantId) async {
+    await _deleteAIAssistantByIdUseCase.run(assistantId: assistantId);
+  }
+
+  Future<void> _updateAssistant({
+    required String assistantName,
+    required String instructions,
+    required String description,
+  }) async {
+    await _updateAIAssistantUseCase.run(
+      assistantId: assistantId,
+      assistantName: assistantName,
+      instructions: instructions,
+      description: description,
+    );
+  }
+
+  Future<void> showCreateAssistantDialog() async {
+    await showDialog(
+      context: Get.context!,
+      builder: (context) {
+        return KBAIAssistantInfo(
+          title: 'Update Assistant',
+          initialName: assistant?.assistantName,
+          initialDescription: assistant?.description,
+          onConfirm: (name, description) {
+            print('Name: $name, Description: $description');
+          },
+        );
+      },
     );
   }
 }

@@ -148,7 +148,6 @@ class ChatPageViewModel extends AppViewModel {
       await locator<HomePageViewModel>().getHistoryConversation();
     } catch (e) {
       print(e);
-      // todo: handle error
     }
   }
 
@@ -156,7 +155,6 @@ class ChatPageViewModel extends AppViewModel {
     required String query,
     bool isLoadMore = false,
   }) async {
-    print("getPublicPrompt");
     try {
       final queries = {
         "query": query,

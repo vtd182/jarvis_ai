@@ -67,7 +67,7 @@ class _MyAppState extends State<Main> {
           primarySwatch: Colors.blue,
           brightness: Brightness.light,
           textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: Colors.orange,
+            cursorColor: Colors.blue,
           ),
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
