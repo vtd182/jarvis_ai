@@ -6,6 +6,7 @@ class KBAIAssistantItemView extends StatefulWidget {
   final KBAIAssistant assistant;
   final VoidCallback onDelete;
   final VoidCallback onFavoriteTap;
+  final VoidCallback onEditTap;
   final VoidCallback onItemTap;
   final ValueNotifier<String?> openItemIdNotifier;
 
@@ -16,6 +17,7 @@ class KBAIAssistantItemView extends StatefulWidget {
     required this.onFavoriteTap,
     required this.onItemTap,
     required this.openItemIdNotifier,
+    required this.onEditTap,
   });
 
   @override
@@ -42,7 +44,7 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
   void _onNotifierChanged() {
     if (widget.openItemIdNotifier.value != widget.assistant.id) {
       setState(() {
-        _dragOffset = 0; // Đóng item nếu không phải item mở
+        _dragOffset = 0;
       });
     }
   }
@@ -132,9 +134,11 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            widget.assistant.description.length > 30
-                                ? "${widget.assistant.description.substring(0, 30)}..."
-                                : widget.assistant.description,
+                            widget.assistant.description != null
+                                ? (widget.assistant.description!.length > 30
+                                    ? "${widget.assistant.description!.substring(0, 30)}..."
+                                    : widget.assistant.description!)
+                                : "",
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.grey,
@@ -145,6 +149,14 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
                         ],
                       ),
                       const Spacer(),
+                      InkWell(
+                        onTap: widget.onEditTap,
+                        child: const Icon(
+                          Icons.edit_outlined,
+                          color: Colors.grey,
+                          size: 24,
+                        ),
+                      ),
                       InkWell(
                         onTap: widget.onFavoriteTap,
                         child: Icon(

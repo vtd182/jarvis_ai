@@ -30,9 +30,9 @@ class KBAIAssistant extends Equatable {
   @JsonKey(name: 'assistantName')
   final String assistantName;
   @JsonKey(name: 'instructions')
-  final String instructions;
+  final String? instructions;
   @JsonKey(name: 'description')
-  final String description;
+  final String? description;
   @JsonKey(name: 'openAiThreadIdPlay')
   final String openAiThreadIdPlay;
   @JsonKey(name: 'openAiVectorStoreId')

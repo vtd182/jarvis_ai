@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:jarvis_ai/helpers/ui_helper.dart';
 import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/kb_ai_assistant_list_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/widgets/kb_ai_assistant_item_view.dart';
@@ -38,14 +37,14 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
       body: Obx(
         () => RefreshIndicator(
           onRefresh: () async {
-            print("Refresh");
+            await viewModel.onRefresh();
           },
           child: NotificationListener<ScrollNotification>(
             onNotification: (scrollInfo) {
               if (scrollInfo.metrics.maxScrollExtent > 0) {
                 final isAtBottom = scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
-                if (isAtBottom && viewModel.isHasNext) {
-                  showToast("loading more");
+                if (isAtBottom && viewModel.isHasNext && !viewModel.isLoadingMore) {
+                  viewModel.onLoadingMore();
                 }
               }
               return false;
@@ -94,11 +93,14 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
         for (final item in viewModel.kBAIAssistantList)
           KBAIAssistantItemView(
             assistant: item,
-            onDelete: () {
-              print("Delete");
+            onDelete: () async {
+              await viewModel.showDeleteAssistantDialog(item);
             },
             onFavoriteTap: () {
               print("Favorite");
+            },
+            onEditTap: () async {
+              await viewModel.showUpdateAssistantDialog(item);
             },
             onItemTap: () {
               Get.to(
