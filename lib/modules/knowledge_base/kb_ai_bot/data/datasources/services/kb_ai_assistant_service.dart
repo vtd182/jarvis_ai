@@ -26,7 +26,7 @@ abstract class KBAIAssistantService {
   Future<KBAIAssistant> getKBAIAssistant(@Path("assistantId") String assistantId);
 
   @DELETE("/{assistantId}")
-  Future<bool> deleteKBAIAssistant(@Path("assistantId") String assistantId);
+  Future<String> deleteKBAIAssistant(@Path("assistantId") String assistantId);
 
   @GET("")
   Future<KBResponseWithPagination<KBAIAssistant>> getListKBAIAssistant(

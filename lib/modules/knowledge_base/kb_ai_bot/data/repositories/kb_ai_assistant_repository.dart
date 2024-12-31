@@ -46,7 +46,7 @@ class KBAIAssistantRepository {
     );
   }
 
-  Future<bool> deleteKBAIAssistant({
+  Future<String> deleteKBAIAssistant({
     required String assistantId,
   }) {
     return dataSource.deleteKBAIAssistant(

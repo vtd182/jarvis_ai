@@ -23,7 +23,6 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
   bool isSearching = false;
   final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
-  final ValueNotifier<String?> openItemIdNotifier = ValueNotifier<String?>(null);
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +108,7 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
                 ),
               );
             },
-            openItemIdNotifier: openItemIdNotifier,
+            openItemIdNotifier: viewModel.openItemIdNotifier,
           )
       ],
     );
