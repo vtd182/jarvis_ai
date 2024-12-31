@@ -25,6 +25,7 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
     this._updateAIAssistantUseCase,
   );
 
+  final ValueNotifier<String?> _openItemIdNotifier = ValueNotifier<String?>(null);
   final _query = Rx<String>("");
   final _orderField = Rx<String>("createdAt");
   final _order = Rx<String>("DESC");
@@ -35,6 +36,8 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
   final _kBAIAssistantList = RxList<KBAIAssistant>([]);
   final _isHasNext = Rx<bool>(false);
   final _isLoadingMore = Rx<bool>(false);
+
+  ValueNotifier<String?> get openItemIdNotifier => _openItemIdNotifier;
 
   set isLoadingMore(bool value) => _isLoadingMore.value = value;
   bool get isLoadingMore => _isLoadingMore.value;
@@ -165,12 +168,13 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
       content: "Are you sure you want to delete this assistant?",
     );
     if (confirm) {
-      bool delete = false;
+      String delete = "";
       final success = await run(() async {
         delete = await _deleteAIAssistantByIdUseCase.run(assistantId: assistant.id);
       });
-      if (success) {
+      if (success && delete == "true") {
         showToast("Delete Assistant Success");
+        openItemIdNotifier.value = null;
         await onRefresh();
       } else {
         showToast("Delete Assistant Failed");

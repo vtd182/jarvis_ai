@@ -24,7 +24,7 @@ abstract class KBAIAssistantDataSource {
     required String assistantId,
   });
 
-  Future<bool> deleteKBAIAssistant({
+  Future<String> deleteKBAIAssistant({
     required String assistantId,
   });
 
@@ -112,7 +112,7 @@ class KBAIAssistantDataSourceImp implements KBAIAssistantDataSource {
   }
 
   @override
-  Future<bool> deleteKBAIAssistant({required String assistantId}) {
+  Future<String> deleteKBAIAssistant({required String assistantId}) {
     return _kbAiAssistantService.deleteKBAIAssistant(assistantId);
   }
 
