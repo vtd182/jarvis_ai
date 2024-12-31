@@ -7,6 +7,7 @@ class KBAIAssistantItemView extends StatefulWidget {
   final VoidCallback onDelete;
   final VoidCallback onFavoriteTap;
   final VoidCallback onItemTap;
+  final ValueNotifier<String?> openItemIdNotifier;
 
   const KBAIAssistantItemView({
     super.key,
@@ -14,6 +15,7 @@ class KBAIAssistantItemView extends StatefulWidget {
     required this.onDelete,
     required this.onFavoriteTap,
     required this.onItemTap,
+    required this.openItemIdNotifier,
   });
 
   @override
@@ -25,6 +27,26 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
   static const double _maxOffset = 100;
   static const double _threshold = 0.3;
 
+  @override
+  void initState() {
+    super.initState();
+    widget.openItemIdNotifier.addListener(_onNotifierChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.openItemIdNotifier.removeListener(_onNotifierChanged);
+    super.dispose();
+  }
+
+  void _onNotifierChanged() {
+    if (widget.openItemIdNotifier.value != widget.assistant.id) {
+      setState(() {
+        _dragOffset = 0; // Đóng item nếu không phải item mở
+      });
+    }
+  }
+
   void _onHorizontalDragUpdate(DragUpdateDetails details) {
     setState(() {
       _dragOffset = (_dragOffset + details.delta.dx).clamp(-_maxOffset, 0.0);
@@ -35,8 +57,10 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
     setState(() {
       if (_dragOffset <= -_maxOffset * _threshold) {
         _dragOffset = -_maxOffset;
-      } else {
+        widget.openItemIdNotifier.value = widget.assistant.id;
+      } else if (_dragOffset != 0) {
         _dragOffset = 0;
+        widget.openItemIdNotifier.value = null;
       }
     });
   }
@@ -96,7 +120,6 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
                         height: 50,
                       ),
                       const SizedBox(width: 12),
-                      // Assistant Info
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -122,7 +145,6 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
                         ],
                       ),
                       const Spacer(),
-                      // Favorite Icon
                       InkWell(
                         onTap: widget.onFavoriteTap,
                         child: Icon(
