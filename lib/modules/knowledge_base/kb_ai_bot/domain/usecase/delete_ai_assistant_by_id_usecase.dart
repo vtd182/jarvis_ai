@@ -7,7 +7,7 @@ class DeleteAIAssistantByIdUseCase {
 
   DeleteAIAssistantByIdUseCase(this._repository);
 
-  Future<void> run({required String assistantId}) {
+  Future<bool> run({required String assistantId}) {
     return _repository.deleteKBAIAssistant(assistantId: assistantId);
   }
 }
