@@ -315,6 +315,7 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
   }
 
   Future<void> _login() async {
+    await viewModel.login("Alexie9911@gmail.com", "2wyML3agdX695ae");
     if (viewModel.autoValidateMode.value == AutovalidateMode.disabled) {
       viewModel.autoValidateMode.value = AutovalidateMode.always;
     }
