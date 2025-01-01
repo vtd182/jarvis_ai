@@ -50,59 +50,77 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                     ),
                   ),
                 ),
+                Column(
+                  children: [
+                    NavDrawerItem(
+                      icon: Icons.chat,
+                      label: "Chat",
+                      index: 0,
+                      selectedIndex: viewModel.selectedIndex,
+                      onTap: viewModel.onNavItemTapped,
+                    ),
+                    NavDrawerItem(
+                      icon: Icons.edit,
+                      label: "Prompt",
+                      index: 1,
+                      selectedIndex: viewModel.selectedIndex,
+                      onTap: viewModel.onNavItemTapped,
+                    ),
+                    NavDrawerItem(
+                      icon: Icons.add_home_outlined,
+                      label: "Knowledge Base",
+                      index: 2,
+                      selectedIndex: viewModel.selectedIndex,
+                      onTap: viewModel.onNavItemTapped,
+                    ),
+                  ],
+                ),
+                const Divider(height: 1, color: Colors.grey),
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async {
                       await viewModel.getTokenUsage();
                     },
-                    child: Obx(() => ListView(
+                    child: Obx(
+                      () => NotificationListener<ScrollNotification>(
+                        onNotification: (scrollInfo) {
+                          if (scrollInfo.metrics.maxScrollExtent > 0) {
+                            final isAtBottom = scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
+                            if (isAtBottom && !viewModel.isLoadingMore) {
+                              // todo: add loadmore
+                            }
+                          }
+                          return false;
+                        },
+                        child: ListView.builder(
                           padding: EdgeInsets.zero,
-                          children: [
-                            // Nav Items
-                            NavDrawerItem(
-                              icon: Icons.chat,
-                              label: "Chat",
-                              index: 0,
-                              selectedIndex: viewModel.selectedIndex,
-                              onTap: viewModel.onNavItemTapped,
-                            ),
-                            NavDrawerItem(
-                              icon: Icons.edit,
-                              label: "Prompt",
-                              index: 1,
-                              selectedIndex: viewModel.selectedIndex,
-                              onTap: viewModel.onNavItemTapped,
-                            ),
-                            NavDrawerItem(
-                              icon: Icons.add_home_outlined,
-                              label: "Knowledge Base",
-                              index: 2,
-                              selectedIndex: viewModel.selectedIndex,
-                              onTap: viewModel.onNavItemTapped,
-                            ),
-                            const Divider(height: 1, color: Colors.grey),
-                            ...viewModel.conversationSummaries.map(
-                              (item) => ListTile(
-                                title: Text(
-                                  item.title,
-                                  style: TextStyle(
-                                      color: viewModel.selectedIndex == 0 && locator<ChatPageViewModel>().conversationId == item.id
-                                          ? Colors.blue
-                                          : Colors.grey),
+                          itemCount: viewModel.conversationSummaries.length,
+                          itemBuilder: (context, index) {
+                            final item = viewModel.conversationSummaries[index];
+                            return ListTile(
+                              title: Text(
+                                item.title,
+                                style: TextStyle(
+                                  color: viewModel.selectedIndex == 0 && locator<ChatPageViewModel>().conversationId == item.id
+                                      ? Colors.blue
+                                      : Colors.grey,
                                 ),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                  if (viewModel.selectedIndex != 0) {
-                                    viewModel.onNavItemTapped(0);
-                                  }
-                                  locator<ChatPageViewModel>().conversationId = item.id;
-                                },
                               ),
-                            ),
-                          ],
-                        )),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                if (viewModel.selectedIndex != 0) {
+                                  viewModel.onNavItemTapped(0);
+                                }
+                                locator<ChatPageViewModel>().conversationId = item.id;
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                 ),
+                // Thêm mục Settings ở cuối
                 NavDrawerItem(
                   icon: Icons.settings,
                   label: "Settings",

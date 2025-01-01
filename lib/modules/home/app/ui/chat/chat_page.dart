@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:suga_core/suga_core.dart';
@@ -140,10 +141,9 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
               ),
             ),
             if (viewModel.showPromptOptions.value)
-              // Phần chọn prompt hiển thị dạng ListView dọc
               Container(
                 color: Colors.grey.shade100,
-                height: 200, // Chiều cao cố định
+                height: 200.h,
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   itemCount: viewModel.listPrompt.length,

@@ -23,6 +23,7 @@ class HomePageViewModel extends AppViewModel {
   final conversationSummaries = <ConversationSummaryModel>[].obs;
   final RxInt _selectedIndex = 0.obs;
   final currentAssistant = Assistant.gpt_4o_mini.obs;
+
   final models = <Assistant>[
     Assistant.gpt_4o_mini,
     Assistant.gpt_4o,
@@ -31,8 +32,38 @@ class HomePageViewModel extends AppViewModel {
     Assistant.gemini_1_5_flash_latest,
     Assistant.gemini_1_5_pro_latest,
   ].obs;
+
   set selectedIndex(int index) => _selectedIndex.value = index;
   int get selectedIndex => _selectedIndex.value;
+
+  final _query = Rx<String>("");
+  final _orderField = Rx<String>("createdAt");
+  final _order = Rx<String>("DESC");
+  final _offset = Rx<int>(0);
+  final _limit = Rx<int>(10);
+  final _isHasNext = Rx<bool>(false);
+  final _isLoadingMore = Rx<bool>(false);
+
+  set isLoadingMore(bool value) => _isLoadingMore.value = value;
+  bool get isLoadingMore => _isLoadingMore.value;
+
+  set query(String value) => _query.value = value;
+  String get query => _query.value;
+
+  set orderField(String value) => _orderField.value = value;
+  String get orderField => _orderField.value;
+
+  set order(String value) => _order.value = value;
+  String get order => _order.value;
+
+  set offset(int value) => _offset.value = value;
+  int get offset => _offset.value;
+
+  set limit(int value) => _limit.value = value;
+  int get limit => _limit.value;
+
+  bool get isHasNext => _isHasNext.value;
+  set isHasNext(bool value) => _isHasNext.value = value;
 
   Rx<TokenUsage> tokenUsage = TokenUsage(
     availableTokens: 0,
@@ -94,6 +125,7 @@ class HomePageViewModel extends AppViewModel {
     if (res.items.isNotEmpty) {
       conversationSummaries.value = res.items;
     }
+    isHasNext = res.hasMore;
   }
 
   Future<void> onNavItemTapped(int index) async {
