@@ -79,7 +79,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async {
-                      await viewModel.getTokenUsage();
+                      await viewModel.onRefreshDrawer();
                     },
                     child: Obx(
                       () => NotificationListener<ScrollNotification>(

@@ -123,7 +123,7 @@ class HomePageViewModel extends AppViewModel {
       assistantModel: 'dify',
     );
     if (res.items.isNotEmpty) {
-      conversationSummaries.value = res.items;
+      conversationSummaries.assignAll(res.items);
     }
     isHasNext = res.hasMore;
   }
@@ -134,5 +134,10 @@ class HomePageViewModel extends AppViewModel {
     }
     selectedIndex = index;
     Get.back();
+  }
+
+  Future<void> onRefreshDrawer() async {
+    await getHistoryConversation();
+    await getTokenUsage();
   }
 }
