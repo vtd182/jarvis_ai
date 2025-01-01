@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/modules/shared/widgets/start_an_conversation_widget.dart';
+import 'package:jarvis_ai/ads/event_log.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -24,6 +25,7 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
   @override
   void initState() {
     super.initState();
+    EventLog.logEvent('chat_page');
     _messageController.addListener(_handleInputChange);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToBottom();
@@ -240,6 +242,7 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
                   IconButton(
                     icon: const Icon(Icons.send, color: Colors.black),
                     onPressed: () {
+                      EventLog.logEvent('send_message');
                       final content = _messageController.text.trim();
                       if (content.isNotEmpty) {
                         viewModel.sendMessage(content);

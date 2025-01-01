@@ -12,6 +12,7 @@ class KnowledgeBaseRefreshTokenUseCase extends Usecase {
 
   Future<bool> run() async {
     final refreshToken = await SPref.instance.getKBRefreshToken();
+    print("refreshToken: $refreshToken");
     if (refreshToken == null) {
       return false;
     } else {

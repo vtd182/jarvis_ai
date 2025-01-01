@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/event_log.dart';
 import 'package:jarvis_ai/extensions/context_ext.dart';
 import 'package:jarvis_ai/modules/home/app/ui/home_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_view_model.dart';
@@ -15,7 +16,8 @@ class PrivatePromptTabViewItem extends StatefulWidget {
   const PrivatePromptTabViewItem({super.key});
 
   @override
-  State<PrivatePromptTabViewItem> createState() => _PrivatePromptTabViewItemState();
+  State<PrivatePromptTabViewItem> createState() =>
+      _PrivatePromptTabViewItemState();
 }
 
 class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
@@ -26,7 +28,7 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
 
   @override
   void initState() {
-    print("tpoo init private");
+    EventLog.logEvent("prompt_private_tab_view");
     controller.isFetchingNewData.value = false;
     controller.getPrivatePrompt();
     _scrollController.addListener(_scrollListener);
@@ -35,9 +37,11 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
 
   void _scrollListener() {
     /// end of list listener
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        controller.getPrivatePrompt(query: _privateSearchController.text, isLoadMore: true);
+        controller.getPrivatePrompt(
+            query: _privateSearchController.text, isLoadMore: true);
       });
     }
   }
@@ -80,7 +84,10 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                       ),
                     ),
                     hintText: "Search",
-                    hintStyle: const TextStyle(fontWeight: FontWeight.w600, color: AppTheme.greyText, fontSize: 14),
+                    hintStyle: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.greyText,
+                        fontSize: 14),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 4,
@@ -93,13 +100,15 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
+                  EventLog.logEvent("create_private_prompt");
                   Get.dialog(CreatePrivatePromptDialog());
                 },
                 child: Container(
                   height: 46,
                   width: 46,
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: AppTheme.primaryLinearGradient),
+                    gradient: const LinearGradient(
+                        colors: AppTheme.primaryLinearGradient),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(
@@ -120,7 +129,9 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                   )
                 : Expanded(
                     child: controller.listPrompt.isEmpty
-                        ? const Center(child: Text("No prompts found 🥺. Try another or make your prompt"))
+                        ? const Center(
+                            child: Text(
+                                "No prompts found 🥺. Try another or make your prompt"))
                         : ListView.separated(
                             controller: _scrollController,
                             itemBuilder: (context, index) {
@@ -136,8 +147,10 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                                     UsePromptBottomSheet(
                                       promptItem: item,
                                       onMessageSent: (message) {
-                                        locator<HomePageViewModel>().selectedIndex = 0;
-                                        locator<ChatPageViewModel>().sendMessage(message);
+                                        locator<HomePageViewModel>()
+                                            .selectedIndex = 0;
+                                        locator<ChatPageViewModel>()
+                                            .sendMessage(message);
                                       },
                                     ),
                                     isScrollControlled: true,
@@ -172,7 +185,11 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                                       ),
                                       onPressed: () {
                                         Get.dialog(ConfirmDeletePromptDialog(
-                                          id: item.id!,
+                                          title: "prompt",
+                                          onDelete: () {
+                                            controller.deletePrompt(
+                                                id: item.id!);
+                                          },
                                         ));
                                       },
                                     ),
@@ -183,7 +200,8 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                             separatorBuilder: (context, index) {
                               return const Divider();
                             },
-                            itemCount: controller.listPrompt.length + (controller.isFetchingNewData.value ? 1 : 0),
+                            itemCount: controller.listPrompt.length +
+                                (controller.isFetchingNewData.value ? 1 : 0),
                           ),
                   ),
           ),

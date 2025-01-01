@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/event_log.dart';
 import 'package:jarvis_ai/helpers/ui_helper.dart';
 import 'package:jarvis_ai/modules/auth/app/ui/register/register_page_viewmodel.dart';
 import 'package:suga_core/suga_core.dart';
@@ -12,6 +13,12 @@ import '../login/login_page.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
+
+  @override
+  StatelessElement createElement() {
+    EventLog.logEvent('register_page');
+    return super.createElement();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +48,8 @@ class RegisterPageView extends StatefulWidget {
   State<RegisterPageView> createState() => _RegisterPageViewState();
 }
 
-class _RegisterPageViewState extends BaseViewState<RegisterPageView, RegisterPageViewModel> {
+class _RegisterPageViewState
+    extends BaseViewState<RegisterPageView, RegisterPageViewModel> {
   final _usernameTextController = TextEditingController();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
@@ -153,7 +161,9 @@ class _RegisterPageViewState extends BaseViewState<RegisterPageView, RegisterPag
                     if (value == null || value.isEmpty) {
                       return "Please enter some text";
                     }
-                    final emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+                    final emailValid = RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(value);
                     if (!emailValid) {
                       return "Please enter a valid email";
                     }
@@ -413,7 +423,8 @@ class _RegisterPageViewState extends BaseViewState<RegisterPageView, RegisterPag
 
     final isEmailValid = usernameFormKey.currentState?.validate() ?? false;
     final isPasswordValid = passwordFormKey.currentState?.validate() ?? false;
-    final isConfirmPasswordValid = confirmPasswordFormKey.currentState?.validate() ?? false;
+    final isConfirmPasswordValid =
+        confirmPasswordFormKey.currentState?.validate() ?? false;
     final isValid = isEmailValid && isPasswordValid && isConfirmPasswordValid;
 
     if (!isValid) {
