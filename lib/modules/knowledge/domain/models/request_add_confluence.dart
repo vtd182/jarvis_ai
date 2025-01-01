@@ -16,8 +16,7 @@ class RequestAddConfluence {
     required this.confluenceAccessToken,
   });
 
-  factory RequestAddConfluence.fromJson(Map<String, dynamic> json) =>
-      _$RequestAddConfluenceFromJson(json);
+  factory RequestAddConfluence.fromJson(Map<String, dynamic> json) => _$RequestAddConfluenceFromJson(json);
 
   Map<String, dynamic> toJson() => _$RequestAddConfluenceToJson(this);
 }

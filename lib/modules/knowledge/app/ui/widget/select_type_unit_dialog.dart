@@ -64,8 +64,7 @@ class SelectTypeUnitDialog extends GetWidget<KlDetailViewModel> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                          colors: AppTheme.primaryLinearGradient),
+                      gradient: const LinearGradient(colors: AppTheme.primaryLinearGradient),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(

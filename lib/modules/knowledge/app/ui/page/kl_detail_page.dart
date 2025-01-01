@@ -57,8 +57,7 @@ class KlDetailPage extends StatelessWidget {
               height: 32,
               width: 32,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                    colors: AppTheme.primaryLinearGradient),
+                gradient: const LinearGradient(colors: AppTheme.primaryLinearGradient),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(

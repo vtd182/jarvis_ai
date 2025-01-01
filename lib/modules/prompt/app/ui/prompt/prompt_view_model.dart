@@ -98,8 +98,7 @@ class PromptViewModel extends GetxController {
       };
 
       if (indexCategory.value != 0) {
-        queries["category"] =
-            listPromptCategory[indexCategory.value].toLowerCase();
+        queries["category"] = listPromptCategory[indexCategory.value].toLowerCase();
       }
 
       final result = await _getPromptUsecase.run(
@@ -165,17 +164,10 @@ class PromptViewModel extends GetxController {
     }
   }
 
-  Future<void> createPrivatePrompt(
-      {required String title, required String content}) async {
+  Future<void> createPrivatePrompt({required String title, required String content}) async {
     try {
       isLoading.value = true;
-      await _createPromptUsecase.run(
-          title: title,
-          content: content,
-          category: "other",
-          isPublic: false,
-          language: "English",
-          description: "");
+      await _createPromptUsecase.run(title: title, content: content, category: "other", isPublic: false, language: "English", description: "");
       Get.back();
       await getPrivatePrompt();
       isLoading.value = false;

@@ -103,8 +103,7 @@ class CreateKlDialog extends GetWidget<KnowledgeViewModel> {
                         ? null
                         : () {
                             if (formKey.currentState!.validate()) {
-                              controller.onCreateKl(nameTextController.text,
-                                  desTextController.text);
+                              controller.onCreateKl(nameTextController.text, desTextController.text);
                             }
                           },
                     child: Container(
@@ -112,8 +111,7 @@ class CreateKlDialog extends GetWidget<KnowledgeViewModel> {
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            colors: AppTheme.primaryLinearGradient),
+                        gradient: const LinearGradient(colors: AppTheme.primaryLinearGradient),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Obx(
@@ -121,8 +119,7 @@ class CreateKlDialog extends GetWidget<KnowledgeViewModel> {
                             ? const SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: CircularProgressIndicator(
-                                    color: Colors.white),
+                                child: CircularProgressIndicator(color: Colors.white),
                               )
                             : Text(
                                 "Create",

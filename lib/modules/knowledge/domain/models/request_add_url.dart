@@ -9,7 +9,6 @@ class RequestAddUrl {
 
   RequestAddUrl({required this.unitName, required this.webUrl});
 
-  factory RequestAddUrl.fromJson(Map<String, dynamic> json) =>
-      _$RequestAddUrlFromJson(json);
+  factory RequestAddUrl.fromJson(Map<String, dynamic> json) => _$RequestAddUrlFromJson(json);
   Map<String, dynamic> toJson() => _$RequestAddUrlToJson(this);
 }

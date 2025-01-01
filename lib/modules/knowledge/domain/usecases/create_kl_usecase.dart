@@ -7,8 +7,7 @@ import 'package:suga_core/suga_core.dart';
 @lazySingleton
 class CreateKlUsecase extends Usecase {
   final KnowledgeRepository _knowledgeRepository;
-  const CreateKlUsecase({required KnowledgeRepository knowledgeRepository})
-      : _knowledgeRepository = knowledgeRepository;
+  const CreateKlUsecase({required KnowledgeRepository knowledgeRepository}) : _knowledgeRepository = knowledgeRepository;
 
   Future<ResponseCreateKl> run({required RequestCreateKl body}) async {
     return _knowledgeRepository.createKnowledge(

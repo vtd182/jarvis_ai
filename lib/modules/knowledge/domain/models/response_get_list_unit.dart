@@ -14,8 +14,7 @@ class ResponseGetListUnit {
     required this.meta,
   });
 
-  factory ResponseGetListUnit.fromJson(Map<String, dynamic> json) =>
-      _$ResponseGetListUnitFromJson(json);
+  factory ResponseGetListUnit.fromJson(Map<String, dynamic> json) => _$ResponseGetListUnitFromJson(json);
 
   Map<String, dynamic> toJson() => _$ResponseGetListUnitToJson(this);
 }

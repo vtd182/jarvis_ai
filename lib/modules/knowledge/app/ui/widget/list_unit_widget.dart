@@ -24,8 +24,7 @@ class _ListUnitWidgetState extends State<ListUnitWidget> {
 
   void _scrollListener() {
     /// end of list listener
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         controller.getUnitOfKl(isLoadMore: true);
       });

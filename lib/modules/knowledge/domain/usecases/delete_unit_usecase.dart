@@ -5,8 +5,7 @@ import 'package:suga_core/suga_core.dart';
 @lazySingleton
 class DeleteUnitUsecase extends Usecase {
   final KnowledgeRepository _knowledgeRepository;
-  const DeleteUnitUsecase({required KnowledgeRepository knowledgeRepository})
-      : _knowledgeRepository = knowledgeRepository;
+  const DeleteUnitUsecase({required KnowledgeRepository knowledgeRepository}) : _knowledgeRepository = knowledgeRepository;
 
   Future<void> run({required String idKl, required String idUnit}) async {
     return _knowledgeRepository.deleteUnitById(

@@ -16,8 +16,7 @@ class ResponseMetaKl {
     required this.hasNext,
   });
 
-  factory ResponseMetaKl.fromJson(Map<String, dynamic> json) =>
-      _$ResponseMetaKlFromJson(json);
+  factory ResponseMetaKl.fromJson(Map<String, dynamic> json) => _$ResponseMetaKlFromJson(json);
 
   Map<String, dynamic> toJson() => _$ResponseMetaKlToJson(this);
 }

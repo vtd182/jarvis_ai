@@ -19,38 +19,31 @@ class KnowledgeRepository {
 
   KnowledgeRepository(this._knowledgeService);
 
-  Future<ResponseGetListKl> getKnowledge(
-      {required RequestKnowledgeModel queries}) async {
+  Future<ResponseGetListKl> getKnowledge({required RequestKnowledgeModel queries}) async {
     return _knowledgeService.getKnowledge(queries);
   }
 
-  Future<ResponseCreateKl> createKnowledge(
-      {required RequestCreateKl body}) async {
+  Future<ResponseCreateKl> createKnowledge({required RequestCreateKl body}) async {
     return _knowledgeService.createKnowledge(body);
   }
 
-  Future<ResponseGetListUnit> getUnitsOfKnowledge(
-      {required String id, required RequestKnowledgeModel queries}) async {
+  Future<ResponseGetListUnit> getUnitsOfKnowledge({required String id, required RequestKnowledgeModel queries}) async {
     return _knowledgeService.getUnitsOfKnowledge(id, queries);
   }
 
-  Future<ResponseGetUnit> uploadLocalFile(
-      {required String id, required File file}) async {
+  Future<ResponseGetUnit> uploadLocalFile({required String id, required File file}) async {
     return _knowledgeService.uploadLocalFile(id, file);
   }
 
-  Future<ResponseGetUnit> addWebUnit(
-      {required String id, required RequestAddUrl body}) async {
+  Future<ResponseGetUnit> addWebUnit({required String id, required RequestAddUrl body}) async {
     return _knowledgeService.addWebUnit(id, body);
   }
 
-  Future<ResponseGetUnit> addSlackUnit(
-      {required String id, required RequestAddSlack body}) async {
+  Future<ResponseGetUnit> addSlackUnit({required String id, required RequestAddSlack body}) async {
     return _knowledgeService.addSlackUnit(id, body);
   }
 
-  Future<ResponseGetUnit> addConfluenceUnit(
-      {required String id, required RequestAddConfluence body}) async {
+  Future<ResponseGetUnit> addConfluenceUnit({required String id, required RequestAddConfluence body}) async {
     return _knowledgeService.addConfluenceUnit(id, body);
   }
 
@@ -65,8 +58,7 @@ class KnowledgeRepository {
     return _knowledgeService.updateStatusUnit(id, body);
   }
 
-  Future<void> deleteUnitById(
-      {required String idKl, required String idUnit}) async {
+  Future<void> deleteUnitById({required String idKl, required String idUnit}) async {
     return _knowledgeService.deleteUnitById(idKl, idUnit);
   }
 }

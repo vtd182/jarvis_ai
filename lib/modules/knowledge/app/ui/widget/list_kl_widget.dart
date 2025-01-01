@@ -26,11 +26,9 @@ class _ListKlWidgetState extends State<ListKlWidget> {
 
   void _scrollListener() {
     /// end of list listener
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        controller.getAllKnowledge(
-            query: controller.searchController.text, isLoadMore: true);
+        controller.getAllKnowledge(query: controller.searchController.text, isLoadMore: true);
       });
     }
   }
@@ -81,8 +79,7 @@ class _ListKlWidgetState extends State<ListKlWidget> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   "Knowledge",
-                                  style: AppTheme.black_14w600
-                                      .copyWith(color: AppTheme.primaryBlue),
+                                  style: AppTheme.black_14w600.copyWith(color: AppTheme.primaryBlue),
                                 ),
                               ),
                               Expanded(
@@ -90,8 +87,7 @@ class _ListKlWidgetState extends State<ListKlWidget> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   "Units",
-                                  style: AppTheme.black_14w600
-                                      .copyWith(color: AppTheme.primaryBlue),
+                                  style: AppTheme.black_14w600.copyWith(color: AppTheme.primaryBlue),
                                 ),
                               ),
                               Expanded(
@@ -99,8 +95,7 @@ class _ListKlWidgetState extends State<ListKlWidget> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   "Size",
-                                  style: AppTheme.black_14w600
-                                      .copyWith(color: AppTheme.primaryBlue),
+                                  style: AppTheme.black_14w600.copyWith(color: AppTheme.primaryBlue),
                                 ),
                               ),
                               Expanded(
@@ -109,8 +104,7 @@ class _ListKlWidgetState extends State<ListKlWidget> {
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
                                   "Action",
-                                  style: AppTheme.black_14w600
-                                      .copyWith(color: AppTheme.primaryBlue),
+                                  style: AppTheme.black_14w600.copyWith(color: AppTheme.primaryBlue),
                                 ),
                               ),
                             ],

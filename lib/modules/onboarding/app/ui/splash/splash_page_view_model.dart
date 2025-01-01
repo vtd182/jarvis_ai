@@ -35,8 +35,7 @@ class SplashPageViewModel extends AppViewModel {
   @override
   void initState() {
     _onInit();
-    _sessionExpiredEventListener =
-        _eventBus.on<SessionExpiredEvent>().listen((event) {
+    _sessionExpiredEventListener = _eventBus.on<SessionExpiredEvent>().listen((event) {
       Get.bottomSheet(
         const SessionExpiredWidget(),
         isDismissible: false,
@@ -95,8 +94,7 @@ class SplashPageViewModel extends AppViewModel {
     }
     final int? expiration = await SPref.instance.getExpiresAt();
     if (expiration != null) {
-      if (DateTime.now().isAfter(DateTime.fromMillisecondsSinceEpoch(
-          expiration - timeRefreshBeforeExpire))) {
+      if (DateTime.now().isAfter(DateTime.fromMillisecondsSinceEpoch(expiration - timeRefreshBeforeExpire))) {
         final String? refreshToken = await SPref.instance.getRefreshToken();
         if (StringHelper.isNullOrEmpty(refreshToken)) {
           print("refreshToken is null");

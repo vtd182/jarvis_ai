@@ -39,8 +39,7 @@ class UnitItem extends GetWidget<KlDetailViewModel> {
             child: FittedBox(
               fit: BoxFit.fill,
               child: Switch(
-                trackOutlineColor:
-                    const MaterialStatePropertyAll(Colors.transparent),
+                trackOutlineColor: const MaterialStatePropertyAll(Colors.transparent),
                 inactiveTrackColor: AppTheme.greyText,
                 value: item.status,
                 onChanged: (val) {
@@ -73,10 +72,6 @@ class UnitItem extends GetWidget<KlDetailViewModel> {
 
   String _convertSourceUnit(String source) {
     // replace all underscore with place and uppercase first letter of each word
-    return source
-        .replaceAll("_", " ")
-        .split(" ")
-        .map((e) => e[0].toUpperCase() + e.substring(1))
-        .join(" ");
+    return source.replaceAll("_", " ").split(" ").map((e) => e[0].toUpperCase() + e.substring(1)).join(" ");
   }
 }

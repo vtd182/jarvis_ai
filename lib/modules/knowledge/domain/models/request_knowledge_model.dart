@@ -1,4 +1,3 @@
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'request_knowledge_model.g.dart';
@@ -21,5 +20,4 @@ class RequestKnowledgeModel {
   factory RequestKnowledgeModel.fromJson(Map<String, dynamic> json) => _$RequestKnowledgeModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$RequestKnowledgeModelToJson(this);
-
 }

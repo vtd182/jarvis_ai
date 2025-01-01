@@ -66,8 +66,7 @@ class KnowledgeViewModel extends GetxController {
     try {
       if (!isSignInKnowledge) {
         isSignInKnowledge = true;
-        await locator<KnowledgeBaseSignInUseCase>()
-            .run(token: (await SPref.instance.getAccessToken()) ?? "");
+        await locator<KnowledgeBaseSignInUseCase>().run(token: (await SPref.instance.getAccessToken()) ?? "");
       }
 
       bool canLoad = isCanLoadMore(isLoadMore);
@@ -107,8 +106,7 @@ class KnowledgeViewModel extends GetxController {
     try {
       isLoading.value = true;
       await _createKlUsecase.run(
-        body: RequestCreateKl(
-            knowledgeName: name, description: description ?? ""),
+        body: RequestCreateKl(knowledgeName: name, description: description ?? ""),
       );
       Get.back();
       await getAllKnowledge();
