@@ -1,6 +1,9 @@
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_widget_cache.dart';
+import 'package:jarvis_ai/ads/remote_config.dart';
+import 'package:jarvis_ai/main.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_view_model.dart';
 import 'package:jarvis_ai/modules/prompt/domain/model/prompt_item_model.dart';
 import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
@@ -107,7 +110,8 @@ class CreatePrivatePromptDialog extends GetWidget<PromptViewModel> {
                   fillColor: AppTheme.grey,
                   filled: true,
                   hintMaxLines: 2,
-                  hintText: "e.g: Write an article [TOPIC], make sure to inclue these keywords: [KEYWORDS]",
+                  hintText:
+                      "e.g: Write an article [TOPIC], make sure to inclue these keywords: [KEYWORDS]",
                   hintStyle: AppTheme.grey1_14w400,
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 8),
@@ -149,17 +153,38 @@ class CreatePrivatePromptDialog extends GetWidget<PromptViewModel> {
                         ? null
                         : () {
                             if (formKey.currentState!.validate()) {
-                              promptItemModel != null
-                                  ? controller.updatePrompt(
-                                      item: promptItemModel!.copyWith(
+                              void onSaveButton() {
+                                promptItemModel != null
+                                    ? controller.updatePrompt(
+                                        item: promptItemModel!.copyWith(
+                                          title: titleTextController.text,
+                                          content: contentTextController.text,
+                                        ),
+                                      )
+                                    : controller.createPrivatePrompt(
                                         title: titleTextController.text,
                                         content: contentTextController.text,
-                                      ),
-                                    )
-                                  : controller.createPrivatePrompt(
-                                      title: titleTextController.text,
-                                      content: contentTextController.text,
-                                    );
+                                      );
+                              }
+
+                              EasyAds.instance.showInterstitialAd(
+                                adId: adIdManager.inter_create_prompt,
+                                config: RemoteConfig.inter_create_prompt,
+                                onAdFailedToLoad: (adNetwork, adUnitType, data,
+                                    errorMessage) {
+                                  onSaveButton();
+                                },
+                                onAdFailedToShow: (adNetwork, adUnitType, data,
+                                    errorMessage) {
+                                  onSaveButton();
+                                },
+                                onAdLoaded: (adNetwork, adUnitType, data) {
+                                  onSaveButton();
+                                },
+                                onDisabled: () {
+                                  onSaveButton();
+                                },
+                              );
                             }
                           },
                     child: Container(
@@ -167,12 +192,14 @@ class CreatePrivatePromptDialog extends GetWidget<PromptViewModel> {
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(colors: AppTheme.primaryLinearGradient),
+                        gradient: const LinearGradient(
+                            colors: AppTheme.primaryLinearGradient),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Obx(
                         () => controller.isLoading.value
-                            ? const CircularProgressIndicator(color: Colors.white)
+                            ? const CircularProgressIndicator(
+                                color: Colors.white)
                             : Text(
                                 "Save",
                                 style: AppTheme.white_14w600,

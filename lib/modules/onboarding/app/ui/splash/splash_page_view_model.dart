@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +35,8 @@ class SplashPageViewModel extends AppViewModel {
   @override
   void initState() {
     _onInit();
-    _sessionExpiredEventListener = _eventBus.on<SessionExpiredEvent>().listen((event) {
+    _sessionExpiredEventListener =
+        _eventBus.on<SessionExpiredEvent>().listen((event) {
       Get.bottomSheet(
         const SessionExpiredWidget(),
         isDismissible: false,
@@ -72,6 +74,8 @@ class SplashPageViewModel extends AppViewModel {
     // );
 
     final isAuth = await this.isAuth();
+    EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
+
     if (!isAuth) {
       await Get.off(() => const LoginPage());
       return unit;
@@ -91,7 +95,8 @@ class SplashPageViewModel extends AppViewModel {
     }
     final int? expiration = await SPref.instance.getExpiresAt();
     if (expiration != null) {
-      if (DateTime.now().isAfter(DateTime.fromMillisecondsSinceEpoch(expiration - timeRefreshBeforeExpire))) {
+      if (DateTime.now().isAfter(DateTime.fromMillisecondsSinceEpoch(
+          expiration - timeRefreshBeforeExpire))) {
         final String? refreshToken = await SPref.instance.getRefreshToken();
         if (StringHelper.isNullOrEmpty(refreshToken)) {
           print("refreshToken is null");
@@ -99,7 +104,6 @@ class SplashPageViewModel extends AppViewModel {
         }
 
         final res = await _refreshTokenUseCase.run();
-        print("refreshToken: $res");
         return res;
       } else {
         return true;

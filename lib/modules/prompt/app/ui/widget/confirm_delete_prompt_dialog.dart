@@ -4,8 +4,10 @@ import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_view_model.dart';
 import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
 
 class ConfirmDeletePromptDialog extends GetWidget<PromptViewModel> {
-  const ConfirmDeletePromptDialog({super.key, required this.id});
-  final String id;
+  const ConfirmDeletePromptDialog(
+      {super.key, required this.title, required this.onDelete});
+  final String title;
+  final Function onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +21,9 @@ class ConfirmDeletePromptDialog extends GetWidget<PromptViewModel> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              "Are you sure you want to delete this prompt?",
-              style: TextStyle(
+            Text(
+              "Are you sure you want to delete this $title?",
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -49,12 +51,14 @@ class ConfirmDeletePromptDialog extends GetWidget<PromptViewModel> {
                     onPressed: controller.isLoading.value
                         ? null
                         : () {
-                            controller.deletePrompt(id: id);
+                            onDelete();
                           },
                     child: Text(
                       "Delete",
                       style: TextStyle(
-                        color: controller.isLoading.value ? AppTheme.greyText : Colors.red,
+                        color: controller.isLoading.value
+                            ? AppTheme.greyText
+                            : Colors.red,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),

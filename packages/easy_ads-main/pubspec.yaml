@@ -1,0 +1,35 @@
+name: easy_ads_flutter
+description: "A new Flutter project."
+publish_to: "none"
+version: 3.0.7
+
+environment:
+  sdk: ">=3.2.2 <4.0.0"
+  flutter: ">=3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+  google_mobile_ads:
+    path: packages/google_mobile_ads
+
+  collection: ^1.17.2
+  logger: ^1.1.0
+  visibility_detector: ^0.4.0+2
+  shimmer: ^3.0.0
+  connectivity_plus: ^6.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.zens.easy_ad
+        pluginClass: EasyAdPlugin
+      ios:
+        pluginClass: EasyAdPlugin
