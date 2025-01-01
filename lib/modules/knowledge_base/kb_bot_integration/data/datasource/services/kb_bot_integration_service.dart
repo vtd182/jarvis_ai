@@ -1,95 +1,57 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/config/config.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_knowledge.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_message.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_thread.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_response_with_pagination.dart';
 import 'package:retrofit/retrofit.dart';
 
-part 'kb_ai_assistant_service.g.dart';
+part 'kb_bot_integration_service.g.dart';
 
 @lazySingleton
-@RestApi(baseUrl: "${Config.knowledgeBaseUrl}/kb-core/v${Config.apiVersion}/ai-assistant")
-abstract class KBAIAssistantService {
+@RestApi(baseUrl: "${Config.knowledgeBaseUrl}/kb-core/v${Config.apiVersion}/bot-integration")
+abstract class KBBotIntegrationService {
   @factoryMethod
-  factory KBAIAssistantService(Dio dio) = _KBAIAssistantService;
+  factory KBBotIntegrationService(Dio dio) = _KBBotIntegrationService;
 
-  @POST("")
-  Future<KBAIAssistant> createKBAIAssistant(@Body() Map<String, dynamic> body);
+  // /kb-core/v1/bot-integration/{assistantId}/configurations
+  @GET("/{assistantId}/configurations")
+  Future<Response> getConfigurations(@Path("assistantId") String assistantId);
 
-  @PATCH("/{assistantId}")
-  Future<KBAIAssistant> updateKBAIAssistant(@Path("assistantId") String assistantId, @Body() Map<String, dynamic> body);
-
-  @GET("/{assistantId}")
-  Future<KBAIAssistant> getKBAIAssistant(@Path("assistantId") String assistantId);
-
-  @DELETE("/{assistantId}")
-  Future<String> deleteKBAIAssistant(@Path("assistantId") String assistantId);
-
-  @GET("")
-  Future<KBResponseWithPagination<KBAIAssistant>> getListKBAIAssistant(
-    @Query("q") String query,
-    @Query("order") String order,
-    @Query("order_field") String orderField,
-    @Query("offset") int offset,
-    @Query("limit") int limit,
-    @Query("is_favorite") bool isFavorite,
-    @Query("is_published") bool isPublished,
-  );
-
-  @POST("/{assistantId}/knowledges/{knowledgeId}")
-  Future<bool> importKnowledgeToKBAIAssistant(
+  // /kb-core/v1/bot-integration/{assistantId}/{type}
+  @DELETE("/{assistantId}/{type}")
+  Future<Response> deleteIntegration(
     @Path("assistantId") String assistantId,
-    @Path("knowledgeId") String knowledgeId,
+    @Path("type") String type,
   );
 
-  @DELETE("/{assistantId}/knowledges/{knowledgeId}")
-  Future<bool> removeKnowledgeFromKBAIAssistant(
-    @Path("assistantId") String assistantId,
-    @Path("knowledgeId") String knowledgeId,
-  );
+  // /kb-core/v1/bot-integration/telegram/validation
+  @POST("/telegram/validation")
+  Future<Response> validateTelegramIntegration(Map<String, dynamic> body);
 
-  @GET("/{assistantId}/knowledges")
-  Future<KBResponseWithPagination<KBAIKnowledge>> getListKnowledgeOfKBAIAssistant(
-    @Path("assistantId") String assistantId,
-    @Query("q") String query,
-    @Query("order") String order,
-    @Query("order_field") String orderField,
-    @Query("offset") int offset,
-    @Query("limit") int limit,
-  );
-
-  @POST("/thread")
-  Future<KBAIThread> createKBAIThreadForAssistant(@Body() Map<String, dynamic> body);
-
-  @POST("/thread/playground")
-  Future<KBAIThread> updateAssistantWithNewThreadPlayground(@Body() Map<String, dynamic> body);
-
-  @GET("/{assistantId}/ask")
-  Future<String> askToKBAIAssistant(
+  // /kb-core/v1/bot-integration/telegram/publish/{assistantId}
+  @POST("/telegram/publish/{assistantId}")
+  Future<Response> publishTelegramIntegration(
     @Path("assistantId") String assistantId,
     @Body() Map<String, dynamic> body,
   );
 
-  @GET("/thread/{openAiThreadId}/messages")
-  Future<List<KBAIMessage>> getMessagesOfKBAIThread(
-    @Path("openAiThreadId") String openAiThreadId,
-    @Query("q") String query,
-    @Query("order") String order,
-    @Query("order_field") String orderField,
-    @Query("offset") int offset,
-    @Query("limit") int limit,
+  // /kb-core/v1/bot-integration/slack/validation
+  @POST("/slack/validation")
+  Future<Response> validateSlackIntegration(Map<String, dynamic> body);
+
+  // /kb-core/v1/bot-integration/slack/publish/{assistantId}
+  @POST("/slack/publish/{assistantId}")
+  Future<Response> publishSlackIntegration(
+    @Path("assistantId") String assistantId,
+    @Body() Map<String, dynamic> body,
   );
 
-  @GET("/{assistantId}/threads")
-  Future<KBResponseWithPagination<KBAIThread>> getListKBAIThreadOfAssistant(
+  // /kb-core/v1/bot-integration/messenger/validation
+  @POST("/messenger/validation")
+  Future<Response> validateMessengerIntegration(Map<String, dynamic> body);
+
+  // /kb-core/v1/bot-integration/messenger/publish/{assistantId}
+  @POST("/messenger/publish/{assistantId}")
+  Future<Response> publishMessengerIntegration(
     @Path("assistantId") String assistantId,
-    @Query("q") String query,
-    @Query("order") String order,
-    @Query("order_field") String orderField,
-    @Query("offset") int offset,
-    @Query("limit") int limit,
+    @Body() Map<String, dynamic> body,
   );
 }
