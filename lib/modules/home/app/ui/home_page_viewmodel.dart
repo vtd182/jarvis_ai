@@ -1,4 +1,4 @@
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
@@ -94,5 +94,13 @@ class HomePageViewModel extends AppViewModel {
     if (res.items.isNotEmpty) {
       conversationSummaries.value = res.items;
     }
+  }
+
+  Future<void> onNavItemTapped(int index) async {
+    if (index == 2) {
+      await onSignInKB();
+    }
+    selectedIndex = index;
+    Get.back();
   }
 }

@@ -63,9 +63,9 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
                   return ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.all(16),
-                    itemCount: viewModel.messages.length + (viewModel.isLoading.value ? 1 : 0),
+                    itemCount: viewModel.messages.length + (viewModel.isModelAnswering.value ? 1 : 0),
                     itemBuilder: (context, index) {
-                      if (index == viewModel.messages.length && viewModel.isLoading.value) {
+                      if (index == viewModel.messages.length && viewModel.isModelAnswering.value) {
                         return Align(
                           alignment: Alignment.centerLeft,
                           child: Column(

@@ -73,7 +73,7 @@ class KBAIAssistant extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, createdAt];
+  List<Object?> get props => [id, updatedAt];
 
   factory KBAIAssistant.fromJson(Map<String, dynamic> json) => _$KBAIAssistantFromJson(json);
   Map<String, dynamic> toJson() => _$KBAIAssistantToJson(this);
