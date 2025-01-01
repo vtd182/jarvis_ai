@@ -66,7 +66,10 @@ class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingP
                             color: Colors.grey.shade300,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(Icons.edit),
+                          child: InkWell(
+                            onTap: () => viewModel.showUpdateAssistantDialog(viewModel.assistant!),
+                            child: const Icon(Icons.edit),
+                          ),
                         ),
                       )),
                 ],
@@ -102,7 +105,9 @@ class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingP
                   "Delete Assistant",
                   style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                 ),
-                onTap: () {},
+                onTap: () {
+                  viewModel.showDeleteAssistantDialog(viewModel.assistant!);
+                },
               ),
             ],
           ),

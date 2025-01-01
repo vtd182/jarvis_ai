@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/core/abstracts/app_view_model.dart';
+import 'package:jarvis_ai/helpers/ui_helper.dart';
+import 'package:jarvis_ai/helpers/utils.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/shared/kb_ai_assistant_info.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/delete_ai_assistant_by_id_usecase.dart';
@@ -41,21 +43,8 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
     return unit;
   }
 
-  Future<void> _deleteAssistantById(String assistantId) async {
-    await _deleteAIAssistantByIdUseCase.run(assistantId: assistantId);
-  }
-
-  Future<void> _updateAssistant({
-    required String assistantName,
-    required String instructions,
-    required String description,
-  }) async {
-    await _updateAIAssistantUseCase.run(
-      assistantId: assistantId,
-      assistantName: assistantName,
-      instructions: instructions,
-      description: description,
-    );
+  Future<void> onRefresh() async {
+    await getAssistantById(assistantId);
   }
 
   Future<void> showCreateAssistantDialog() async {
@@ -69,6 +58,81 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
           onConfirm: (name, description) {
             print('Name: $name, Description: $description');
           },
+        );
+      },
+    );
+  }
+
+  Future<void> showUpdateAssistantDialog(KBAIAssistant assistant) async {
+    await showDialog(
+      context: Get.context!,
+      builder: (context) {
+        return KBAIAssistantInfo(
+          title: 'Update Assistant',
+          initialName: assistant.assistantName,
+          initialDescription: assistant.description,
+          onConfirm: (name, description) async {
+            final success = await run(
+              () => _updateAIAssistantUseCase.run(
+                assistantId: assistant.id,
+                assistantName: name,
+                instructions: "",
+                description: description,
+              ),
+            );
+            if (success) {
+              showToast("Update Assistant Success");
+              await onRefresh();
+            } else {
+              showToast("Update Assistant Failed");
+            }
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> showDeleteAssistantDialog(KBAIAssistant assistant) async {
+    final confirm = await showConfirmDialog(
+      title: "Delete Assistant",
+      content: "Are you sure you want to delete this assistant?",
+    );
+    if (confirm) {
+      String delete = "";
+      final success = await run(() async {
+        delete = await _deleteAIAssistantByIdUseCase.run(assistantId: assistant.id);
+      });
+      if (success && delete == "true") {
+        backPageOrHome();
+        showToast("Delete Assistant Success");
+        await onRefresh();
+      } else {
+        showToast("Delete Assistant Failed");
+      }
+    }
+  }
+
+  showConfirmDialog({required String title, required String content}) {
+    return showDialog(
+      context: Get.context!,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back(result: false);
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Get.back(result: true);
+              },
+              child: Text("Confirm"),
+            ),
+          ],
         );
       },
     );

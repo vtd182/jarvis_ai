@@ -24,9 +24,34 @@ class ChatPageViewModel extends AppViewModel {
   final GetMessageInConversationUseCase _getMessageInConversationUseCase;
   final messages = <MessageModel>[].obs;
   final _conversationId = Rxn<String?>();
-  final isLoading = false.obs;
+  final isModelAnswering = false.obs;
   final showPromptOptions = false.obs;
   final listPrompt = <PromptItemModel>[].obs;
+
+  final _promtQuery = Rx<String>("");
+  final _promtOrderField = Rx<String>("createdAt");
+  final _promtOrder = Rx<String>("DESC");
+  final _promtOffset = Rx<int>(0);
+  final _promtLimit = Rx<int>(50);
+  final _promtIsHasNext = Rx<bool>(false);
+
+  String get promtQuery => _promtQuery.value;
+  set promtQuery(String value) => _promtQuery.value = value;
+
+  String get promtOrderField => _promtOrderField.value;
+  set promtOrderField(String value) => _promtOrderField.value = value;
+
+  String get promtOrder => _promtOrder.value;
+  set promtOrder(String value) => _promtOrder.value = value;
+
+  int get promtOffset => _promtOffset.value;
+  set promtOffset(int value) => _promtOffset.value = value;
+
+  int get promtLimit => _promtLimit.value;
+  set promtLimit(int value) => _promtLimit.value = value;
+
+  bool get promtIsHasNext => _promtIsHasNext.value;
+  set promtIsHasNext(bool value) => _promtIsHasNext.value = value;
 
   set conversationId(String? id) {
     if (id == _conversationId.value) return;
@@ -74,13 +99,13 @@ class ChatPageViewModel extends AppViewModel {
         isErrored: false,
       ),
     );
-    isLoading.value = true;
+    isModelAnswering.value = true;
     if (_conversationId.value == null) {
       await sendMessageInNewConversation(content, assistant);
     } else {
       await sendMessageInOldConversation(content, assistant);
     }
-    isLoading.value = false;
+    isModelAnswering.value = false;
   }
 
   @override
@@ -174,5 +199,12 @@ class ChatPageViewModel extends AppViewModel {
       print("Error during getPrompt: $e");
     }
     return unit;
+  }
+
+  @override
+  void disposeState() {
+    messages.clear();
+    listPrompt.clear();
+    super.disposeState();
   }
 }

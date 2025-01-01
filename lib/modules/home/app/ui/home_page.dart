@@ -13,6 +13,7 @@ import '../../../../locator.dart';
 import 'chat/chat_page.dart';
 
 class HomePage extends StatefulWidget {
+  static String routeName = "/HomePage";
   const HomePage({super.key});
 
   @override
@@ -26,14 +27,6 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
     const KBAIAssistantListPage(),
     SettingPage(),
   ];
-
-  void _onNavItemTapped(int index) {
-    if (index == 2) {
-      viewModel.onSignInKB();
-    }
-    viewModel.selectedIndex = index;
-    Navigator.of(context).pop();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,28 +64,37 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                               label: "Chat",
                               index: 0,
                               selectedIndex: viewModel.selectedIndex,
-                              onTap: _onNavItemTapped,
+                              onTap: viewModel.onNavItemTapped,
                             ),
                             NavDrawerItem(
                               icon: Icons.edit,
                               label: "Prompt",
                               index: 1,
                               selectedIndex: viewModel.selectedIndex,
-                              onTap: _onNavItemTapped,
+                              onTap: viewModel.onNavItemTapped,
                             ),
                             NavDrawerItem(
                               icon: Icons.add_home_outlined,
                               label: "Knowledge Base",
                               index: 2,
                               selectedIndex: viewModel.selectedIndex,
-                              onTap: _onNavItemTapped,
+                              onTap: viewModel.onNavItemTapped,
                             ),
                             const Divider(height: 1, color: Colors.grey),
                             ...viewModel.conversationSummaries.map(
                               (item) => ListTile(
-                                title: Text(item.title),
+                                title: Text(
+                                  item.title,
+                                  style: TextStyle(
+                                      color: viewModel.selectedIndex == 0 && locator<ChatPageViewModel>().conversationId == item.id
+                                          ? Colors.blue
+                                          : Colors.grey),
+                                ),
                                 onTap: () {
                                   Navigator.of(context).pop();
+                                  if (viewModel.selectedIndex != 0) {
+                                    viewModel.onNavItemTapped(0);
+                                  }
                                   locator<ChatPageViewModel>().conversationId = item.id;
                                 },
                               ),
@@ -106,7 +108,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                   label: "Settings",
                   index: 3,
                   selectedIndex: viewModel.selectedIndex,
-                  onTap: _onNavItemTapped,
+                  onTap: viewModel.onNavItemTapped,
                 ),
               ],
             ),

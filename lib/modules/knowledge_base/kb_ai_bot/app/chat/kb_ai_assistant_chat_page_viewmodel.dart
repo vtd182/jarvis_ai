@@ -65,6 +65,7 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
   set isAnswering(bool value) => _isAnswering.value = value;
 
   bool get messageIsHasNext => _messageIsHasNext.value;
+  set messageIsHasNext(bool value) => _messageIsHasNext.value = value;
 
   set threadId(String? value) {
     if (value == _threadId.value) return;
@@ -77,7 +78,6 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
 
   Future<void> onRefreshThread() async {
     _threadOffset.value = 0;
-    _kBAIThreadList.clear();
     await loadKBAIThreads();
   }
 
@@ -91,8 +91,13 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
       offset: messageOffset,
       limit: messageLimit,
     );
-    if (res.isNotEmpty) {
+    if (messageOffset == 0) {
+      _kBAIMessageList.assignAll(res);
+    } else {
       _kBAIMessageList.addAll(res);
+    }
+    if (res.length < messageLimit) {
+      messageIsHasNext = false;
     }
   }
 
@@ -165,23 +170,12 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
       offset: threadOffset,
       limit: threadLimit,
     );
+    if (threadOffset == 0) {
+      _kBAIThreadList.assignAll(result.data);
+    } else {
+      _kBAIThreadList.addAll(result.data);
+    }
     _threadIsHasNext.value = result.meta.hasNext;
-    _kBAIThreadList.addAll(result.data);
-    // // todo: REMOVE THIS
-    //final id = result.data.first.openAiThreadId;
-    // threadId = id;
-    // // todo: REMOVE THIS
-    // // format dd/MM/yyyy
-    //final now = DateTime.now();
-    // final thread = await _createKBAIThreadForAssistantUseCase.run(assistantId: assistantId, firstMessage: "send when $now");
-    // threadId = thread.openAiThreadId;
-    //
-    // await _askToKBAiAssistantUseCase.run(
-    //   assistantId: assistantId,
-    //   message: "send when $now",
-    //   openAiThreadId: id,
-    //   additionalInstruction: "",
-    // );
     return unit;
   }
 
