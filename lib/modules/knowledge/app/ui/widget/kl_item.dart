@@ -12,7 +12,7 @@ class KlItem extends GetWidget<KnowledgeViewModel> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        controller.onNavigateToKlDetail(kl);
+        controller.onNavigateToKnowledge(kl);
       },
       child: Row(
         children: [

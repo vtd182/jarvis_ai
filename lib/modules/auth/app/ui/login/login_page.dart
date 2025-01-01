@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/event_log.dart';
 import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/auth/app/ui/login/login_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
@@ -12,6 +13,12 @@ import '../register/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
+
+  @override
+  StatelessElement createElement() {
+    EventLog.logEvent('login_page');
+    return super.createElement();
+  }
 
   @override
   Widget build(BuildContext context) {

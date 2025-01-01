@@ -177,6 +177,16 @@ dependencies:
 
   http_parser: ^4.0.2
 
+  easy_ads_flutter: 
+    path: ./packages/easy_ads-main
+
+  flutter_flavorizr: ^2.2.3
+
+  firebase_core: ^2.24.2
+  firebase_analytics: ^10.8.0
+  firebase_messaging: ^14.7.10
+  firebase_crashlytics: ^3.4.9
+  firebase_remote_config: ^4.3.8
 
 dev_dependencies:
   flutter_test:
@@ -224,3 +234,30 @@ flutter:
       fonts:
         - asset: assets/fonts/Lobster-Regular.ttf
 
+# dart run flutter_flavorizr -p android:buildGradle,android:androidManifest,google:firebase
+flavorizr:
+  flavors:
+    dev:
+      app:
+        name: "(Dev) Jarvis AI"
+
+      android:
+        applicationId: "com.group8.jarvis.ai"
+        resValues:
+          ads_app_id:
+            type: "string"
+            value: "ca-app-pub-3940256099942544~3347511713"
+        # firebase:
+        #   config: ".firebase/dev/google-services.json"
+    prod:
+      app:
+        name: "Jarvis AI"
+
+      android:
+        applicationId: "com.group8.jarvis.ai"
+        resValues:
+          ads_app_id:
+            type: "string"
+            value: "ca-app-pub-7943913974858898~5450151735"
+        # firebase:
+        #   config: ".firebase/prod/google-services.json"

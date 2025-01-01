@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/event_log.dart';
 import 'package:jarvis_ai/extensions/context_ext.dart';
 import 'package:jarvis_ai/modules/knowledge/app/ui/page/knowledge_view_model.dart';
 import 'package:jarvis_ai/modules/knowledge/app/ui/widget/create_kl_dialog.dart';
@@ -52,6 +53,7 @@ class SearchKlWidget extends GetWidget<KnowledgeViewModel> {
         const SizedBox(width: 8),
         GestureDetector(
           onTap: () {
+            EventLog.logEvent("create_kl");
             Get.dialog(
               CreateKlDialog(),
               barrierDismissible: false,

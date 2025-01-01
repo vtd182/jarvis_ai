@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/event_log.dart';
 import 'package:jarvis_ai/modules/knowledge/app/ui/page/knowledge_view_model.dart';
 import 'package:jarvis_ai/modules/knowledge/app/ui/widget/kl_item.dart';
 import 'package:jarvis_ai/modules/knowledge/app/ui/widget/search_kl_widget.dart';
@@ -17,6 +18,7 @@ class _ListKlWidgetState extends State<ListKlWidget> {
 
   @override
   void initState() {
+    EventLog.logEvent("knowledge_page");
     controller.getAllKnowledge();
     _scrollController.addListener(_scrollListener);
     super.initState();

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LoadingTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:windowNoTitle">true</item>
+        <!--        <item name="android:windowIsFloating">true</item>-->
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="backgroundColor">@android:color/black</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+</resources>

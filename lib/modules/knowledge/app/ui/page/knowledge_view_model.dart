@@ -1,6 +1,9 @@
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/remote_config.dart';
 import 'package:jarvis_ai/locator.dart';
+import 'package:jarvis_ai/main.dart';
 import 'package:jarvis_ai/modules/knowledge/app/ui/page/kl_detail_page.dart';
 import 'package:jarvis_ai/modules/knowledge/domain/models/request_create_kl.dart';
 import 'package:jarvis_ai/modules/knowledge/domain/models/request_knowledge_model.dart';
@@ -141,8 +144,27 @@ class KnowledgeViewModel extends GetxController {
     }
   }
 
-  Future<void> onNavigateToKlDetail(ResponseGetKl kl) async {
+  Future<void> _navigateToKlDetail(ResponseGetKl kl) async {
     await Get.to(() => KlDetailPage(kl: kl));
     await getAllKnowledge();
+  }
+
+  void onNavigateToKnowledge(ResponseGetKl kl) {
+    EasyAds.instance.showInterstitialAd(
+      adId: adIdManager.inter_knowledge_detail,
+      config: RemoteConfig.inter_knowledge_detail,
+      onAdFailedToLoad: (adNetwork, adUnitType, data, errorMessage) {
+        _navigateToKlDetail(kl);
+      },
+      onAdFailedToShow: (adNetwork, adUnitType, data, errorMessage) {
+        _navigateToKlDetail(kl);
+      },
+      onAdLoaded: (adNetwork, adUnitType, data) {
+        _navigateToKlDetail(kl);
+      },
+      onDisabled: () {
+        _navigateToKlDetail(kl);
+      },
+    );
   }
 }
