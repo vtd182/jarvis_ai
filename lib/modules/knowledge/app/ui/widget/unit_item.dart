@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/modules/knowledge/app/ui/page/kl_detail_viewmodel.dart';
 import 'package:jarvis_ai/modules/knowledge/domain/models/response_get_unit.dart';
@@ -37,7 +35,6 @@ class UnitItem extends GetWidget<KlDetailViewModel> {
           child: SizedBox(
             height: 30,
             child: FittedBox(
-              fit: BoxFit.fill,
               child: Switch(
                 trackOutlineColor: const MaterialStatePropertyAll(Colors.transparent),
                 inactiveTrackColor: AppTheme.greyText,
