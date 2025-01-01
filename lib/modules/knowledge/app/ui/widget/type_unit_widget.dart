@@ -15,14 +15,10 @@ class TypeUnitWidget extends GetWidget<KlDetailViewModel> {
       child: Obx(
         () => Container(
           decoration: BoxDecoration(
-            color: controller.indexTypeUnit.value == index
-                ? AppTheme.primaryBlue.withOpacity(0.1)
-                : Colors.transparent,
+            color: controller.indexTypeUnit.value == index ? AppTheme.primaryBlue.withOpacity(0.1) : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: controller.indexTypeUnit.value == index
-                  ? AppTheme.primaryBlue
-                  : AppTheme.greyText,
+              color: controller.indexTypeUnit.value == index ? AppTheme.primaryBlue : AppTheme.greyText,
             ),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -32,13 +28,9 @@ class TypeUnitWidget extends GetWidget<KlDetailViewModel> {
                 width: 16,
                 height: 16,
                 decoration: BoxDecoration(
-                  color: controller.indexTypeUnit.value == index
-                      ? AppTheme.primaryBlue
-                      : Colors.transparent,
+                  color: controller.indexTypeUnit.value == index ? AppTheme.primaryBlue : Colors.transparent,
                   border: Border.all(
-                    color: controller.indexTypeUnit.value == index
-                        ? AppTheme.primaryBlue
-                        : AppTheme.greyText,
+                    color: controller.indexTypeUnit.value == index ? AppTheme.primaryBlue : AppTheme.greyText,
                   ),
                   shape: BoxShape.circle,
                 ),

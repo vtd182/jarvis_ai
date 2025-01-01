@@ -129,7 +129,7 @@ class HomePageViewModel extends AppViewModel {
   }
 
   Future<void> onNavItemTapped(int index) async {
-    if (index == 2) {
+    if (index == 2 || index == 3) {
       await onSignInKB();
     }
     selectedIndex = index;

@@ -44,16 +44,12 @@ class ConnectUnitButton extends GetWidget<KlDetailViewModel> {
             alignment: Alignment.center,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              gradient:
-                  const LinearGradient(colors: AppTheme.primaryLinearGradient),
+              gradient: const LinearGradient(colors: AppTheme.primaryLinearGradient),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Obx(
               () => controller.isLoading.value
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(color: Colors.white))
+                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white))
                   : Text(
                       "Connect",
                       style: AppTheme.white_14w600,

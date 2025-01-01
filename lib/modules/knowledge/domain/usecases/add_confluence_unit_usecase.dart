@@ -10,8 +10,7 @@ class AddConfluenceUnitUsecase extends Usecase {
 
   const AddConfluenceUnitUsecase(this._knowledgeRepository);
 
-  Future<ResponseGetUnit> run(
-      {required String id, required RequestAddConfluence body}) async {
+  Future<ResponseGetUnit> run({required String id, required RequestAddConfluence body}) async {
     return _knowledgeRepository.addConfluenceUnit(id: id, body: body);
   }
 }

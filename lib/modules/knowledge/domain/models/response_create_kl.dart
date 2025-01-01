@@ -27,8 +27,7 @@ class ResponseCreateKl {
       required this.knowledgeName,
       required this.description});
 
-  factory ResponseCreateKl.fromJson(Map<String, dynamic> json) =>
-      _$ResponseCreateKlFromJson(json);
+  factory ResponseCreateKl.fromJson(Map<String, dynamic> json) => _$ResponseCreateKlFromJson(json);
 
   Map<String, dynamic> toJson() => _$ResponseCreateKlToJson(this);
 }

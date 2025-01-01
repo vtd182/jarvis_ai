@@ -14,8 +14,7 @@ class ResponseGetListKl {
     required this.meta,
   });
 
-  factory ResponseGetListKl.fromJson(Map<String, dynamic> json) =>
-      _$ResponseGetListKlFromJson(json);
+  factory ResponseGetListKl.fromJson(Map<String, dynamic> json) => _$ResponseGetListKlFromJson(json);
 
   Map<String, dynamic> toJson() => _$ResponseGetListKlToJson(this);
 }

@@ -10,8 +10,7 @@ class KnowledgeBaseSignInUseCase extends Usecase {
   const KnowledgeBaseSignInUseCase(this._knowledgeBaseAuthRepository);
 
   Future<Unit> run({required String token}) async {
-    final result = await _knowledgeBaseAuthRepository.signInFromExternalClient(
-        token: token);
+    final result = await _knowledgeBaseAuthRepository.signInFromExternalClient(token: token);
     final accessToken = result["token"]["accessToken"];
     final refreshToken = result["token"]["refreshToken"];
 

@@ -48,8 +48,7 @@ class RegisterPageView extends StatefulWidget {
   State<RegisterPageView> createState() => _RegisterPageViewState();
 }
 
-class _RegisterPageViewState
-    extends BaseViewState<RegisterPageView, RegisterPageViewModel> {
+class _RegisterPageViewState extends BaseViewState<RegisterPageView, RegisterPageViewModel> {
   final _usernameTextController = TextEditingController();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
@@ -161,9 +160,7 @@ class _RegisterPageViewState
                     if (value == null || value.isEmpty) {
                       return "Please enter some text";
                     }
-                    final emailValid = RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        .hasMatch(value);
+                    final emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
                     if (!emailValid) {
                       return "Please enter a valid email";
                     }
@@ -423,8 +420,7 @@ class _RegisterPageViewState
 
     final isEmailValid = usernameFormKey.currentState?.validate() ?? false;
     final isPasswordValid = passwordFormKey.currentState?.validate() ?? false;
-    final isConfirmPasswordValid =
-        confirmPasswordFormKey.currentState?.validate() ?? false;
+    final isConfirmPasswordValid = confirmPasswordFormKey.currentState?.validate() ?? false;
     final isValid = isEmailValid && isPasswordValid && isConfirmPasswordValid;
 
     if (!isValid) {

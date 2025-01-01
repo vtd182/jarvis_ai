@@ -10,8 +10,7 @@ class AddUrlUnitUsecase extends Usecase {
 
   const AddUrlUnitUsecase(this._knowledgeRepository);
 
-  Future<ResponseGetUnit> run(
-      {required String id, required RequestAddUrl body}) async {
+  Future<ResponseGetUnit> run({required String id, required RequestAddUrl body}) async {
     return _knowledgeRepository.addWebUnit(id: id, body: body);
   }
 }

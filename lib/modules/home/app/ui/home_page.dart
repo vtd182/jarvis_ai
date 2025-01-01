@@ -5,11 +5,9 @@ import 'package:jarvis_ai/modules/home/app/ui/chat/chat_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/home_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page.dart';
 import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/kb_ai_assistant_list_page.dart';
 import 'package:jarvis_ai/modules/knowledge/app/ui/page/knowledge_page.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_auth/domain/usecase/knowledge_base_sign_in_usecase.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/kb_ai_assistant_list_page.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_page.dart';
-import 'package:jarvis_ai/storage/spref.dart';
 import 'package:suga_core/suga_core.dart';
 
 import '../../../../locator.dart';
@@ -49,8 +47,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                     child: Obx(
                       () => Text(
                         "Token available: ${viewModel.tokenUsage.value.availableTokens}",
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 24),
+                        style: const TextStyle(color: Colors.white, fontSize: 24),
                       ),
                     ),
                   ),
@@ -83,7 +80,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                       label: "Knowledge",
                       index: 3,
                       selectedIndex: viewModel.selectedIndex,
-                      onTap: _onNavItemTapped,
+                      onTap: viewModel.onNavItemTapped,
                     ),
                   ],
                 ),
@@ -246,12 +243,10 @@ class NavDrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading:
-          Icon(icon, color: index == selectedIndex ? Colors.blue : Colors.grey),
+      leading: Icon(icon, color: index == selectedIndex ? Colors.blue : Colors.grey),
       title: Text(
         label,
-        style: TextStyle(
-            color: index == selectedIndex ? Colors.blue : Colors.grey),
+        style: TextStyle(color: index == selectedIndex ? Colors.blue : Colors.grey),
       ),
       selected: index == selectedIndex,
       onTap: () => onTap(index),

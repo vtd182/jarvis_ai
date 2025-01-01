@@ -66,9 +66,7 @@ class PromptPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Obx(
-                    () => controller.indexTabPromt.value == 0
-                        ? const PrivatePromptTabViewItem()
-                        : const PublicPromptTabViewItem(),
+                    () => controller.indexTabPromt.value == 0 ? const PrivatePromptTabViewItem() : const PublicPromptTabViewItem(),
                   ),
                 ],
               ),

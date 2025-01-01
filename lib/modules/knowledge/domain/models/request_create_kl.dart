@@ -10,8 +10,7 @@ class RequestCreateKl {
 
   RequestCreateKl({required this.knowledgeName, this.description});
 
-  factory RequestCreateKl.fromJson(Map<String, dynamic> json) =>
-      _$RequestCreateKlFromJson(json);
+  factory RequestCreateKl.fromJson(Map<String, dynamic> json) => _$RequestCreateKlFromJson(json);
 
   Map<String, dynamic> toJson() => _$RequestCreateKlToJson(this);
 }

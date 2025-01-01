@@ -128,15 +128,13 @@ class _MyAppState extends State<Main> with WidgetsBindingObserver {
         ),
         builder: (context, child) {
           return MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: const TextScaler.linear(1)),
+            data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1)),
             child: FlutterEasyLoading(child: child),
           );
         },
         home: LayoutBuilder(
           builder: (context, _) {
-            WidgetsBinding.instance.addPostFrameCallback(
-                (_) => utils.insertOverlay(context, const ConnectionPage()));
+            WidgetsBinding.instance.addPostFrameCallback((_) => utils.insertOverlay(context, const ConnectionPage()));
             return const SplashPage();
           },
         ),

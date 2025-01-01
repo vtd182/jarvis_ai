@@ -59,11 +59,9 @@ class KlDetailViewModel extends GetxController {
   final listTypeUnits = [
     UnitTypeModel(title: "Local files", description: "Upload pdf, docx,..."),
     UnitTypeModel(title: "Website", description: "Connect Website to get data"),
-    UnitTypeModel(
-        title: "Google Drive", description: "Connect Google Drive to get data"),
+    UnitTypeModel(title: "Google Drive", description: "Connect Google Drive to get data"),
     UnitTypeModel(title: "Slack", description: "Connect Slack to get data"),
-    UnitTypeModel(
-        title: "Confluence", description: "Connect Confluence to get data"),
+    UnitTypeModel(title: "Confluence", description: "Connect Confluence to get data"),
   ];
 
   final indexTypeUnit = 0.obs;
@@ -164,22 +162,7 @@ class KlDetailViewModel extends GetxController {
   Future<void> onSelectLocalFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-    final listAllowedExtensions = [
-      'c',
-      'cpp',
-      'docx',
-      'html',
-      'java',
-      'json',
-      'md',
-      'pdf',
-      'php',
-      'pptx',
-      'py',
-      'rb',
-      'tex',
-      'txt'
-    ];
+    final listAllowedExtensions = ['c', 'cpp', 'docx', 'html', 'java', 'json', 'md', 'pdf', 'php', 'pptx', 'py', 'rb', 'tex', 'txt'];
 
     if (result != null) {
       final path = result.files.single.path;
@@ -207,8 +190,7 @@ class KlDetailViewModel extends GetxController {
         final multiPartFileUpload = await MultipartFile.fromFile(
           localFile.value!.path,
           filename: fileName,
-          contentType:
-              MediaType.parse("${lookupMimeType(localFile.value!.path)}"),
+          contentType: MediaType.parse("${lookupMimeType(localFile.value!.path)}"),
         );
         FormData fileUpload = FormData.fromMap({
           "file": multiPartFileUpload,
@@ -244,8 +226,7 @@ class KlDetailViewModel extends GetxController {
     }
   }
 
-  Future<void> onAddWebUnit(
-      {required String unitName, required String webUrl}) async {
+  Future<void> onAddWebUnit({required String unitName, required String webUrl}) async {
     try {
       isLoading.value = true;
       await _addUrlUnitUsecase.run(
@@ -267,18 +248,12 @@ class KlDetailViewModel extends GetxController {
     }
   }
 
-  Future<void> onAddSlackUnit(
-      {required String unitName,
-      required String slackWorkspace,
-      required String slackBotToken}) async {
+  Future<void> onAddSlackUnit({required String unitName, required String slackWorkspace, required String slackBotToken}) async {
     try {
       isLoading.value = true;
       await _addSlackUnitUsecase.run(
         id: idKl.value,
-        body: RequestAddSlack(
-            unitName: unitName,
-            slackWorkspace: slackWorkspace,
-            slackBotToken: slackBotToken),
+        body: RequestAddSlack(unitName: unitName, slackWorkspace: slackWorkspace, slackBotToken: slackBotToken),
       );
       Get.back();
       await getUnitOfKl();
@@ -296,19 +271,13 @@ class KlDetailViewModel extends GetxController {
   }
 
   Future<void> onAddConfluenceUnit(
-      {required String unitName,
-      required String wikiPageUrl,
-      required String confluenceUsername,
-      required String confluenceAccessToken}) async {
+      {required String unitName, required String wikiPageUrl, required String confluenceUsername, required String confluenceAccessToken}) async {
     try {
       isLoading.value = true;
       await _addConfluenceUnitUsecase.run(
         id: idKl.value,
         body: RequestAddConfluence(
-            unitName: unitName,
-            wikiPageUrl: wikiPageUrl,
-            confluenceUsername: confluenceUsername,
-            confluenceAccessToken: confluenceAccessToken),
+            unitName: unitName, wikiPageUrl: wikiPageUrl, confluenceUsername: confluenceUsername, confluenceAccessToken: confluenceAccessToken),
       );
       Get.back();
       await getUnitOfKl();
@@ -344,8 +313,7 @@ class KlDetailViewModel extends GetxController {
     }
   }
 
-  Future<void> updateStatusUnit(
-      {required String id, required bool status}) async {
+  Future<void> updateStatusUnit({required String id, required bool status}) async {
     try {
       isLoading.value = true;
       final acc = await SPref.instance.getKBAccessToken();

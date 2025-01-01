@@ -18,23 +18,19 @@ import 'package:retrofit/retrofit.dart';
 part 'knowledge_service.g.dart';
 
 @lazySingleton
-@RestApi(
-    baseUrl:
-        "${Config.knowledgeBaseUrl}/kb-core/v${Config.apiVersion}/knowledge")
+@RestApi(baseUrl: "${Config.knowledgeBaseUrl}/kb-core/v${Config.apiVersion}/knowledge")
 abstract class KnowledgeService {
   @factoryMethod
   factory KnowledgeService(Dio dio) = _KnowledgeService;
 
   @GET("")
-  Future<ResponseGetListKl> getKnowledge(
-      @Queries() RequestKnowledgeModel queries);
+  Future<ResponseGetListKl> getKnowledge(@Queries() RequestKnowledgeModel queries);
 
   @POST("")
   Future<ResponseCreateKl> createKnowledge(@Body() RequestCreateKl body);
 
   @GET("/{id}/units")
-  Future<ResponseGetListUnit> getUnitsOfKnowledge(
-      @Path("id") String id, @Queries() RequestKnowledgeModel queries);
+  Future<ResponseGetListUnit> getUnitsOfKnowledge(@Path("id") String id, @Queries() RequestKnowledgeModel queries);
 
   @MultiPart()
   @POST("/{id}/local-file")

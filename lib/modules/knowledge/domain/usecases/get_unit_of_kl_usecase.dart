@@ -7,11 +7,9 @@ import 'package:suga_core/suga_core.dart';
 @lazySingleton
 class GetUnitOfKlUsecase extends Usecase {
   final KnowledgeRepository _knowledgeRepository;
-  const GetUnitOfKlUsecase({required KnowledgeRepository knowledgeRepository})
-      : _knowledgeRepository = knowledgeRepository;
+  const GetUnitOfKlUsecase({required KnowledgeRepository knowledgeRepository}) : _knowledgeRepository = knowledgeRepository;
 
-  Future<ResponseGetListUnit> run(
-      {required String id, required RequestKnowledgeModel queries}) async {
+  Future<ResponseGetListUnit> run({required String id, required RequestKnowledgeModel queries}) async {
     return _knowledgeRepository.getUnitsOfKnowledge(
       id: id,
       queries: queries,

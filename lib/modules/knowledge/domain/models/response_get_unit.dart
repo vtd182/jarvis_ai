@@ -36,8 +36,7 @@ class ResponseGetUnit {
       required this.knowledgeId,
       required this.type});
 
-  factory ResponseGetUnit.fromJson(Map<String, dynamic> json) =>
-      _$ResponseGetUnitFromJson(json);
+  factory ResponseGetUnit.fromJson(Map<String, dynamic> json) => _$ResponseGetUnitFromJson(json);
 
   Map<String, dynamic> toJson() => _$ResponseGetUnitToJson(this);
 }

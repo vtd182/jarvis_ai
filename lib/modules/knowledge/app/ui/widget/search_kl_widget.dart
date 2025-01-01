@@ -37,10 +37,7 @@ class SearchKlWidget extends GetWidget<KnowledgeViewModel> {
                 ),
               ),
               hintText: "Search",
-              hintStyle: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.greyText,
-                  fontSize: 14),
+              hintStyle: const TextStyle(fontWeight: FontWeight.w600, color: AppTheme.greyText, fontSize: 14),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
                 vertical: 4,
@@ -64,8 +61,7 @@ class SearchKlWidget extends GetWidget<KnowledgeViewModel> {
             height: 46,
             width: 46,
             decoration: BoxDecoration(
-              gradient:
-                  const LinearGradient(colors: AppTheme.primaryLinearGradient),
+              gradient: const LinearGradient(colors: AppTheme.primaryLinearGradient),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(

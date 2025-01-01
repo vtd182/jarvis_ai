@@ -13,8 +13,7 @@ class UploadLocalFileUsecase extends Usecase {
 
   const UploadLocalFileUsecase(this._knowledgeRepository);
 
-  Future<ResponseGetUnit> run(
-      {required String id, required File file}) async {
+  Future<ResponseGetUnit> run({required String id, required File file}) async {
     return _knowledgeRepository.uploadLocalFile(id: id, file: file);
   }
 }

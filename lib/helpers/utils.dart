@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -51,7 +49,7 @@ Future<Unit> launchUri(String uri) async {
   return unit;
 }
 
-Future<MultipartFile> convertFileToMultipartFile(File file) async {
-  final String fileName = file.path.split('/').last;
-  return MultipartFile.fromFile(file.path, filename: fileName);
-}
+// Future<MultipartFile> convertFileToMultipartFile(File file) async {
+//   final String fileName = file.path.split('/').last;
+//   return MultipartFile.fromFile(file.path, filename: fileName);
+// }

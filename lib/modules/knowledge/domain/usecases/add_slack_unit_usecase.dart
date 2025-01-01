@@ -10,8 +10,7 @@ class AddSlackUnitUsecase extends Usecase {
 
   const AddSlackUnitUsecase(this._knowledgeRepository);
 
-  Future<ResponseGetUnit> run(
-      {required String id, required RequestAddSlack body}) async {
+  Future<ResponseGetUnit> run({required String id, required RequestAddSlack body}) async {
     return _knowledgeRepository.addSlackUnit(id: id, body: body);
   }
 }

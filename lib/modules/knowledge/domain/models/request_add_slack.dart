@@ -14,8 +14,7 @@ class RequestAddSlack {
     required this.slackBotToken,
   });
 
-  factory RequestAddSlack.fromJson(Map<String, dynamic> json) =>
-      _$RequestAddSlackFromJson(json);
+  factory RequestAddSlack.fromJson(Map<String, dynamic> json) => _$RequestAddSlackFromJson(json);
 
   Map<String, dynamic> toJson() => _$RequestAddSlackToJson(this);
 }

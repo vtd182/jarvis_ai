@@ -36,8 +36,7 @@ class ResponseGetKl {
       required this.numUnits,
       required this.totalSize});
 
-  factory ResponseGetKl.fromJson(Map<String, dynamic> json) =>
-      _$ResponseGetKlFromJson(json);
+  factory ResponseGetKl.fromJson(Map<String, dynamic> json) => _$ResponseGetKlFromJson(json);
 
   Map<String, dynamic> toJson() => _$ResponseGetKlToJson(this);
 }
