@@ -1,0 +1,47 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout mã nguồn
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Thiết lập Flutter (FVM support)
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: stable
+
+      # 3. Cài đặt FVM
+      - name: Install FVM
+        run: dart pub global activate fvm
+
+      # 4. Cache dependencies
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/.pub-cache
+            ${{ github.workspace }}/build
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
+      # 5. Chạy file pub.py
+      - name: Run pub.py script
+        run: python3 pub.py
+
+      # 6. Chạy test
+      - name: Run tests
+        run: fvm flutter test
