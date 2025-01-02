@@ -220,7 +220,8 @@ dev_dependencies:
   # Checks for missing, under-promoted, over-promoted, and unused dependencies.
   dependency_validator: ^3.2.2
 
-
+  mockito: ^5.4.2
+  pedantic: ^1.11.1
 
 
 flutter_gen:
