@@ -17,12 +17,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Thiết lập Flutter (FVM support)
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: stable
-
       # 3. Cài đặt FVM
       - name: Install FVM
         run: dart pub global activate fvm
