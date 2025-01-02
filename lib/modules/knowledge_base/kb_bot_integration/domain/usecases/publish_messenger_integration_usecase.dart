@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_bot_integration/data/repositories/kb_bot_integration_repositoy.dart';
 
@@ -8,7 +7,7 @@ class PublishMessengerIntegrationUseCase {
 
   PublishMessengerIntegrationUseCase(this._repository);
 
-  Future<Response> run({
+  Future<String> run({
     required String assistantId,
     required String botToken,
     required String pageId,

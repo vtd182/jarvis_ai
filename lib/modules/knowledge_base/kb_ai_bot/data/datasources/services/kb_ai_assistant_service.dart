@@ -67,7 +67,7 @@ abstract class KBAIAssistantService {
   @POST("/thread/playground")
   Future<KBAIThread> updateAssistantWithNewThreadPlayground(@Body() Map<String, dynamic> body);
 
-  @GET("/{assistantId}/ask")
+  @POST("/{assistantId}/ask")
   Future<String> askToKBAIAssistant(
     @Path("assistantId") String assistantId,
     @Body() Map<String, dynamic> body,

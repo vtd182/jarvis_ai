@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_bot_integration/data/datasource/kb_bot_integration_datasource.dart';
 
 class KBBotIntegrationRepository {
@@ -6,17 +5,17 @@ class KBBotIntegrationRepository {
   KBBotIntegrationRepository(this._dataSource);
 
   @override
-  Future<Response> deleteIntegration({required String assistantId, required String type}) {
+  Future<String> deleteIntegration({required String assistantId, required String type}) {
     return _dataSource.deleteIntegration(assistantId: assistantId, type: type);
   }
 
   @override
-  Future<Response> getConfigurations({required String assistantId}) {
+  Future<String> getConfigurations({required String assistantId}) {
     return _dataSource.getConfigurations(assistantId: assistantId);
   }
 
   @override
-  Future<Response> publishMessengerIntegration({
+  Future<String> publishMessengerIntegration({
     required String assistantId,
     required String botToken,
     required String pageId,
@@ -31,7 +30,7 @@ class KBBotIntegrationRepository {
   }
 
   @override
-  Future<Response> publishSlackIntegration({
+  Future<String> publishSlackIntegration({
     required String assistantId,
     required String botToken,
     required String clientId,
@@ -48,7 +47,7 @@ class KBBotIntegrationRepository {
   }
 
   @override
-  Future<Response> publishTelegramIntegration({
+  Future<String> publishTelegramIntegration({
     required String assistantId,
     required String botToken,
   }) {
@@ -59,7 +58,7 @@ class KBBotIntegrationRepository {
   }
 
   @override
-  Future<Response> validateMessengerIntegration({required String botToken, required String pageId, required String appSecret}) {
+  Future<String> validateMessengerIntegration({required String botToken, required String pageId, required String appSecret}) {
     return _dataSource.validateMessengerIntegration(
       botToken: botToken,
       pageId: pageId,
@@ -68,7 +67,7 @@ class KBBotIntegrationRepository {
   }
 
   @override
-  Future<Response> validateSlackIntegration(
+  Future<String> validateSlackIntegration(
       {required String botToken, required String clientId, required String clientSecret, required String signingSecret}) {
     return _dataSource.validateSlackIntegration(
       botToken: botToken,
@@ -79,7 +78,7 @@ class KBBotIntegrationRepository {
   }
 
   @override
-  Future<Response> validateTelegramIntegration({required String botToken}) {
+  Future<String> validateTelegramIntegration({required String botToken}) {
     return _dataSource.validateTelegramIntegration(botToken: botToken);
   }
 }
