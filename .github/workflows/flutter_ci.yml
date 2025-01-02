@@ -61,7 +61,7 @@ jobs:
 
       # 9. Đổi tên file config.dart.example thành config.dart
       - name: Rename config file
-        run: mv config/config.dart.example config/config.dart
+        run: mv lib/config/config.dart.example lib/config/config.dart
 
       # 10. Chạy lệnh pub get và các bước khác
       - name: Run pub.py script
@@ -73,4 +73,4 @@ jobs:
 
       # 12. Xóa file config.dart sau khi test
       - name: Clean up config file
-        run: rm config/config.dart
+        run: rm lib/config/config.dart
