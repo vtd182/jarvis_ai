@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17' # Sử dụng Java 17 (hoặc Java 11 nếu cần)
+          java-version: '17'
 
       # 3. Cài đặt Python (để chạy fvm.py)
       - name: Set up Python
@@ -30,25 +30,25 @@ jobs:
         with:
           python-version: '3.x'
 
-      # 5. Cài đặt Flutter SDK (nếu chưa có)
+      # 4. Cài đặt Flutter SDK (nếu chưa có)
       - name: Set up Flutter
         uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
 
-      # 6. Cài đặt FVM
+      # 5. Cài đặt FVM
       - name: Install FVM
         run: dart pub global activate fvm
 
-      # 7. Thêm FVM vào PATH
+      # 6. Thêm FVM vào PATH
       - name: Add FVM to PATH
         run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
 
-      # 8. Chạy script fvm.py để chọn đúng phiên bản Flutter
+      # 7. Chạy script fvm.py để chọn đúng phiên bản Flutter
       - name: Run fvm.py script
         run: python3 fvm.py
 
-      # 9. Cache dependencies
+      # 8. Cache dependencies
       - name: Cache Flutter dependencies
         uses: actions/cache@v3
         with:
@@ -59,6 +59,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-flutter-
 
+      # 9. Đổi tên file config.dart.example thành config.dart
+      - name: Rename config file
+        run: mv config/config.dart.example config/config.dart
+
       # 10. Chạy lệnh pub get và các bước khác
       - name: Run pub.py script
         run: python3 pub.py
@@ -66,3 +70,7 @@ jobs:
       # 11. Chạy test
       - name: Run tests
         run: fvm flutter test
+
+      # 12. Xóa file config.dart sau khi test
+      - name: Clean up config file
+        run: rm config/config.dart
