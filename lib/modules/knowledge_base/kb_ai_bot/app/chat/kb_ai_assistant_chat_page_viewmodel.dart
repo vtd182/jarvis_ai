@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/core/abstracts/app_view_model.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_message.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_message_content.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_message_content_text.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_thread.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/ask_to_kb_ai_assistant_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/create_ai_assistant_usecase.dart';
@@ -24,6 +28,7 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
   final CreateAIAssistantUseCase _createAIAssistantUseCase;
   final DeleteAIAssistantByIdUseCase _deleteAIAssistantByIdUseCase;
   final UpdateAIAssistantUseCase _updateAIAssistantUseCase;
+  final _isCreatingThread = Rx<bool>(false);
   final _kBAIThreadList = RxList<KBAIThread>([]);
   final _kBAIMessageList = RxList<KBAIMessage>([]);
 
@@ -45,6 +50,9 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
   final _isAnswering = Rx<bool>(false);
 
   get messages => _kBAIMessageList;
+
+  bool get isCreatingMessage => _isCreatingThread.value;
+  set isCreatingMessage(bool value) => _isCreatingThread.value = value;
 
   String get messageQuery => _messageQuery.value;
   set messageQuery(String value) => _messageQuery.value = value;
@@ -91,10 +99,14 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
       offset: messageOffset,
       limit: messageLimit,
     );
+    if (res.isEmpty) {
+      messageIsHasNext = false;
+      return;
+    }
     if (messageOffset == 0) {
-      _kBAIMessageList.assignAll(res);
+      _kBAIMessageList.assignAll(res.reversed.toList());
     } else {
-      _kBAIMessageList.addAll(res);
+      _kBAIMessageList.addAll(res.reversed.toList());
     }
     if (res.length < messageLimit) {
       messageIsHasNext = false;
@@ -158,6 +170,7 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
   Future<Unit> _init() async {
     await getAssistantById(assistantId);
     await loadKBAIThreads();
+    threadId = _kBAIThreadList.isEmpty ? null : _kBAIThreadList.first.openAiThreadId;
     return unit;
   }
 
@@ -190,16 +203,34 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
   }
 
   Future<void> askToAssistant(String message) async {
-    if (threadId == null) return;
-    isAnswering = true;
-    await _askToKBAiAssistantUseCase.run(
-      assistantId: assistantId,
-      message: message,
-      openAiThreadId: threadId!,
-      additionalInstruction: "",
-    );
-    isAnswering = false;
-    await getMessages();
+    if (message.isEmpty) return;
+    try {
+      if (threadId == null) {
+        isCreatingMessage = true;
+        await createNewThread(message);
+        unawaited(loadKBAIThreads());
+      }
+      _kBAIMessageList.add(createTempMessage(messageContent: message, role: 'user'));
+
+      isCreatingMessage = false;
+      isAnswering = true;
+
+      await _askToKBAiAssistantUseCase.run(
+        assistantId: assistantId,
+        message: message,
+        openAiThreadId: threadId!,
+        additionalInstruction: "",
+      );
+
+      isAnswering = false;
+
+      await getMessages();
+    } catch (e) {
+      isCreatingMessage = false;
+      isAnswering = false;
+      _kBAIMessageList.add(createTempMessage(messageContent: "Error: $e", role: 'assistant'));
+      rethrow;
+    }
   }
 
   Future<void> createNewThread(String message) async {
@@ -208,5 +239,21 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
       firstMessage: message,
     );
     threadId = thread.openAiThreadId;
+  }
+
+  KBAIMessage createTempMessage({required String messageContent, required String role}) {
+    return KBAIMessage(
+      role: role,
+      content: [
+        KBAIMessageContent(
+          text: KBAIMessageContentText(
+            [],
+            messageContent,
+          ),
+          type: 'ok',
+        ),
+      ],
+      createdAt: DateTime.now(),
+    );
   }
 }

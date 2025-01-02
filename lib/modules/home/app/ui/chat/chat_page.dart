@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:jarvis_ai/modules/shared/widgets/start_an_conversation_widget.dart';
 import 'package:jarvis_ai/ads/event_log.dart';
+import 'package:jarvis_ai/modules/shared/widgets/start_an_conversation_widget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -70,8 +70,8 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           StartAnConversationWidget(
-                            title: viewModel.conversationId != null ? "Dang tai" : "Bắt đầu cuộc trò chuyện",
-                            subtitle: viewModel.conversationId != null ? "" : "Hãy bắt đầu cuộc trò chuyện với Jarvis AI",
+                            title: viewModel.conversationId != null ? "Loading conversation" : "Start a conversation",
+                            subtitle: viewModel.conversationId != null ? "" : "Send a message to start a conversation with Jarvis AI",
                             icon: LoadingAnimationWidget.waveDots(
                               size: 50.w,
                               color: Colors.grey,
@@ -94,7 +94,7 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                "Model đang trả lời...",
+                                "Jarvis AI is thinking...",
                                 style: TextStyle(fontSize: 12, color: Colors.grey),
                               ),
                               const SizedBox(height: 4),
@@ -224,7 +224,7 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
                       controller: _messageController,
                       maxLines: null,
                       decoration: InputDecoration(
-                        hintText: "Tin nhắn",
+                        hintText: "Type a message...",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24),
                           borderSide: BorderSide.none,
