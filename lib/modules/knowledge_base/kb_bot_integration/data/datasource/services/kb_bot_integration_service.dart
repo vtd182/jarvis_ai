@@ -13,44 +13,44 @@ abstract class KBBotIntegrationService {
 
   // /kb-core/v1/bot-integration/{assistantId}/configurations
   @GET("/{assistantId}/configurations")
-  Future<Response> getConfigurations(@Path("assistantId") String assistantId);
+  Future<String> getConfigurations(@Path("assistantId") String assistantId);
 
   // /kb-core/v1/bot-integration/{assistantId}/{type}
   @DELETE("/{assistantId}/{type}")
-  Future<Response> deleteIntegration(
+  Future<String> deleteIntegration(
     @Path("assistantId") String assistantId,
     @Path("type") String type,
   );
 
   // /kb-core/v1/bot-integration/telegram/validation
   @POST("/telegram/validation")
-  Future<Response> validateTelegramIntegration(Map<String, dynamic> body);
+  Future<String> validateTelegramIntegration(Map<String, dynamic> body);
 
   // /kb-core/v1/bot-integration/telegram/publish/{assistantId}
   @POST("/telegram/publish/{assistantId}")
-  Future<Response> publishTelegramIntegration(
+  Future<String> publishTelegramIntegration(
     @Path("assistantId") String assistantId,
     @Body() Map<String, dynamic> body,
   );
 
   // /kb-core/v1/bot-integration/slack/validation
   @POST("/slack/validation")
-  Future<Response> validateSlackIntegration(Map<String, dynamic> body);
+  Future<String> validateSlackIntegration(Map<String, dynamic> body);
 
   // /kb-core/v1/bot-integration/slack/publish/{assistantId}
   @POST("/slack/publish/{assistantId}")
-  Future<Response> publishSlackIntegration(
+  Future<String> publishSlackIntegration(
     @Path("assistantId") String assistantId,
     @Body() Map<String, dynamic> body,
   );
 
   // /kb-core/v1/bot-integration/messenger/validation
   @POST("/messenger/validation")
-  Future<Response> validateMessengerIntegration(Map<String, dynamic> body);
+  Future<String> validateMessengerIntegration(Map<String, dynamic> body);
 
   // /kb-core/v1/bot-integration/messenger/publish/{assistantId}
   @POST("/messenger/publish/{assistantId}")
-  Future<Response> publishMessengerIntegration(
+  Future<String> publishMessengerIntegration(
     @Path("assistantId") String assistantId,
     @Body() Map<String, dynamic> body,
   );
