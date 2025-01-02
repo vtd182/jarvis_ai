@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/gen/assets.gen.dart';
 import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/chat/kb_ai_assistant_chat_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/chat/setting/kb_ai_assistant_setting_page.dart';
+import 'package:jarvis_ai/modules/shared/widgets/start_an_conversation_widget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -29,7 +31,7 @@ class _KBAIAssistantChatPageState extends BaseViewState<KBAIAssistantChatPage, K
   }
 
   void _sendMessage() {
-    print('Message sent: ${_textController.text}');
+    viewModel.askToAssistant(_textController.text);
     _textController.clear();
   }
 
@@ -45,7 +47,7 @@ class _KBAIAssistantChatPageState extends BaseViewState<KBAIAssistantChatPage, K
       () => Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text(viewModel.assistant?.assistantName ?? ''),
+          title: Text(viewModel.assistant?.assistantName ?? 'Assistant'),
           centerTitle: true,
           actions: [
             IconButton(
@@ -124,12 +126,52 @@ class _KBAIAssistantChatPageState extends BaseViewState<KBAIAssistantChatPage, K
             children: [
               Column(
                 children: [
+                  if (viewModel.isCreatingMessage)
+                    Container(
+                      width: double.infinity,
+                      color: Colors.blue.withOpacity(0.1),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Creating thread",
+                            style: TextStyle(fontSize: 12, color: Colors.blue),
+                          ),
+                          const SizedBox(width: 8),
+                          LoadingAnimationWidget.waveDots(
+                            size: 20,
+                            color: Colors.blue,
+                          ),
+                        ],
+                      ),
+                    ),
                   Expanded(
                     child: Obx(
                       () {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           _scrollToBottom();
                         });
+
+                        if (viewModel.messages.isEmpty && !viewModel.isCreatingMessage) {
+                          return Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                StartAnConversationWidget(
+                                  title: viewModel.threadId != null ? "Loading history" : "Start a conversation",
+                                  subtitle: viewModel.threadId != null ? "" : "Send a message to start a conversation",
+                                  icon: LoadingAnimationWidget.waveDots(
+                                    size: 50.w,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
 
                         return ListView.builder(
                           controller: _scrollController,
@@ -143,7 +185,7 @@ class _KBAIAssistantChatPageState extends BaseViewState<KBAIAssistantChatPage, K
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      "Model đang trả lời...",
+                                      "Answering...",
                                       style: TextStyle(fontSize: 12, color: Colors.grey),
                                     ),
                                     const SizedBox(height: 4),
@@ -215,7 +257,9 @@ class _KBAIAssistantChatPageState extends BaseViewState<KBAIAssistantChatPage, K
                     child: Row(
                       children: [
                         IconButton(
-                          onPressed: _sendMessage,
+                          onPressed: () {
+                            viewModel.threadId = null;
+                          },
                           icon: const Icon(Icons.add),
                           color: Colors.blue,
                         ),
@@ -223,7 +267,7 @@ class _KBAIAssistantChatPageState extends BaseViewState<KBAIAssistantChatPage, K
                           child: TextField(
                             controller: _textController,
                             decoration: InputDecoration(
-                              hintText: "Tin nhắn",
+                              hintText: "Type a message...",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(24),
                                 borderSide: BorderSide.none,
