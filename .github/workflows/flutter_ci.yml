@@ -1,0 +1,76 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout mã nguồn
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Cài đặt Java
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3. Cài đặt Python (để chạy fvm.py)
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # 4. Cài đặt Flutter SDK (nếu chưa có)
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      # 5. Cài đặt FVM
+      - name: Install FVM
+        run: dart pub global activate fvm
+
+      # 6. Thêm FVM vào PATH
+      - name: Add FVM to PATH
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      # 7. Chạy script fvm.py để chọn đúng phiên bản Flutter
+      - name: Run fvm.py script
+        run: python3 fvm.py
+
+      # 8. Cache dependencies
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/.pub-cache
+            ${{ github.workspace }}/build
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
+      # 9. Đổi tên file config.dart.example thành config.dart
+      - name: Rename config file
+        run: mv lib/config/config.dart.example lib/config/config.dart
+
+      # 10. Chạy lệnh pub get và các bước khác
+      - name: Run pub.py script
+        run: python3 pub.py
+
+      # 11. Chạy test
+      - name: Run tests
+        run: fvm flutter test
+
+      # 12. Xóa file config.dart sau khi test
+      - name: Clean up config file
+        run: rm lib/config/config.dart
