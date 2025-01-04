@@ -1,29 +1,47 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:jarvis_ai/loading.dart';
+import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const Main());
+  setUpAll(() async {
+    // Khởi tạo giá trị mock cho SharedPreferences
+    SharedPreferences.setMockInitialValues({});
+    await EasyLocalization.ensureInitialized();
+    await setupLocator();
+    setupEasyLoading();
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  tearDownAll(() {
+    // Hủy bỏ tất cả các dịch vụ trong locator
+    locator.reset();
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('App builds successfully without exceptions', (WidgetTester tester) async {
+    // Sử dụng FakeAsync để kiểm soát Timer
+    await tester.runAsync(() async {
+      await tester.pumpWidget(
+        EasyLocalization(
+          supportedLocales: const [Locale('en'), Locale('vi')],
+          path: 'assets/langs',
+          useOnlyLangCode: true,
+          fallbackLocale: const Locale('en'),
+          child: ScreenUtilInit(
+            designSize: const Size(375, 812),
+            builder: (context, child) => const Main(),
+          ),
+        ),
+      );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      // Đợi tất cả các frame được vẽ
+      await tester.pumpAndSettle();
+
+      // Kiểm tra xem widget Main có xuất hiện không
+      expect(find.byType(Main), findsOneWidget);
+    });
   });
 }
