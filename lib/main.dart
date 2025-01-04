@@ -25,7 +25,7 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       await EasyLocalization.ensureInitialized();
-      await _initFirebaseSDK();
+      await initFirebaseSDK();
       await setupLocator();
       setupEasyLoading();
       runApp(
@@ -45,7 +45,7 @@ Future<void> main() async {
   );
 }
 
-_initFirebaseSDK() async {
+initFirebaseSDK() async {
   await Firebase.initializeApp();
   if (kDebugMode) {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
