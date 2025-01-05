@@ -7,6 +7,7 @@ import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/shared/kb_ai_assi
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/create_ai_assistant_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/delete_ai_assistant_by_id_usecase.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/favorite_kb_ai_assistant_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/get_list_ai_assistants_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/update_ai_assistant_usecase.dart';
 import 'package:suga_core/suga_core.dart';
@@ -17,12 +18,14 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
   final CreateAIAssistantUseCase _createAIAssistantUseCase;
   final DeleteAIAssistantByIdUseCase _deleteAIAssistantByIdUseCase;
   final UpdateAIAssistantUseCase _updateAIAssistantUseCase;
+  final FavoriteKBAIAssistantUseCase _favoriteKBAIAssistantUseCase;
 
   KBAIAssistantListPageViewModel(
     this._getListAIAssistantsUseCase,
     this._createAIAssistantUseCase,
     this._deleteAIAssistantByIdUseCase,
     this._updateAIAssistantUseCase,
+    this._favoriteKBAIAssistantUseCase,
   );
 
   final ValueNotifier<String?> _openItemIdNotifier = ValueNotifier<String?>(null);
@@ -31,8 +34,8 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
   final _order = Rx<String>("DESC");
   final _offset = Rx<int>(0);
   final _limit = Rx<int>(10);
-  final _isFavorite = Rx<bool>(false);
-  final _isPublished = Rx<bool>(false);
+  final _isFavorite = Rx<bool?>(null);
+  final _isPublished = Rx<bool?>(null);
   final _kBAIAssistantList = RxList<KBAIAssistant>([]);
   final _isHasNext = Rx<bool>(false);
   final _isLoadingMore = Rx<bool>(false);
@@ -57,11 +60,11 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
   set limit(int value) => _limit.value = value;
   int get limit => _limit.value;
 
-  set isFavorite(bool value) => _isFavorite.value = value;
-  bool get isFavorite => _isFavorite.value;
+  set isFavorite(bool? value) => _isFavorite.value = value;
+  bool? get isFavorite => _isFavorite.value;
 
-  set isPublished(bool value) => _isPublished.value = value;
-  bool get isPublished => _isPublished.value;
+  set isPublished(bool? value) => _isPublished.value = value;
+  bool? get isPublished => _isPublished.value;
 
   List<KBAIAssistant> get kBAIAssistantList => _kBAIAssistantList.toList();
   bool get isHasNext => _isHasNext.value;
@@ -211,5 +214,59 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
     query = value;
     await loadAIAssistants();
     await hideLoading();
+  }
+
+  Future<void> favoriteAssistant(KBAIAssistant assistant) async {
+    final success = await run(() => _favoriteKBAIAssistantUseCase.run(assistantId: assistant.id));
+    if (success) {
+      assistant.isFavorite ? showToast("UnFavorite") : showToast("Favorite");
+      await onRefresh();
+    }
+  }
+
+  Future<void> onApplyFilter(FilterType filterType) async {
+    switch (filterType) {
+      case FilterType.favorite:
+        isFavorite = true;
+        isPublished = null;
+        break;
+      case FilterType.published:
+        isFavorite = null;
+        isPublished = true;
+        break;
+      case FilterType.all:
+        isFavorite = null;
+        isPublished = null;
+        break;
+    }
+    await onRefresh();
+  }
+}
+
+enum FilterType { favorite, published, all }
+
+extension FilterTypeExtension on FilterType {
+  String get value {
+    switch (this) {
+      case FilterType.favorite:
+        return "Favorite";
+      case FilterType.published:
+        return "Fublished";
+      case FilterType.all:
+        return "All";
+    }
+  }
+}
+
+extension FilterTypeColorExtension on FilterType {
+  String get label {
+    switch (this) {
+      case FilterType.favorite:
+        return "Favorite";
+      case FilterType.published:
+        return "Published";
+      case FilterType.all:
+        return "All";
+    }
   }
 }
