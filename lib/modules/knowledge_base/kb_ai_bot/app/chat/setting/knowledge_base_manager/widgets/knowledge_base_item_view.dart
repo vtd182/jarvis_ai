@@ -152,7 +152,7 @@ class _KnowledgeBaseItemViewState<T> extends State<KnowledgeBaseItemView<T>> {
                 children: [
                   Row(
                     children: [
-                      Assets.images.imgAssistant.image(
+                      Assets.images.imgKlb.image(
                         width: 50,
                         height: 50,
                       ),
