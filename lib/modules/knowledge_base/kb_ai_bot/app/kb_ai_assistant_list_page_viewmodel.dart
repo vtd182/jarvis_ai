@@ -88,8 +88,6 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
   @override
   void initState() {
     loadAIAssistants();
-    print("KBAIAssistantListPageViewModel initState");
-    print(kBAIAssistantList);
     super.initState();
   }
 
