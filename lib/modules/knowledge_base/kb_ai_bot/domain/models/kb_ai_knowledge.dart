@@ -24,9 +24,9 @@ class KBAIKnowledge extends Equatable {
   @JsonKey(name: 'id')
   final String id;
   @JsonKey(name: 'numUnits')
-  final int numUnits;
+  final int? numUnits;
   @JsonKey(name: 'totalSize')
-  final double totalSize;
+  final double? totalSize;
 
   const KBAIKnowledge({
     required this.createdAt,
