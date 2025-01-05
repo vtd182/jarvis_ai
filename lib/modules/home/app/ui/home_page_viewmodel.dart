@@ -1,5 +1,11 @@
+import 'dart:async';
+
+import 'package:event_bus/event_bus.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
+import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
 import 'package:jarvis_ai/modules/home/domain/models/conversation_summary_model.dart';
@@ -12,6 +18,8 @@ import 'package:jarvis_ai/storage/spref.dart';
 import 'package:suga_core/suga_core.dart';
 
 import '../../../../core/abstracts/app_view_model.dart';
+import '../../../auth/app/ui/widgets/session_expired_widget.dart';
+import '../../../auth/domain/events/session_expired_event.dart';
 import '../../../auth/domain/models/user_model.dart';
 import '../../domain/models/token_usage.dart';
 
@@ -22,6 +30,7 @@ class HomePageViewModel extends AppViewModel {
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final GetHistoryConversationUseCase _getHistoryConversationUseCase;
   final KnowledgeBaseSignInUseCase _knowledgeBaseSignInUseCase;
+  StreamSubscription? _sessionExpiredEventListener;
 
   final conversationSummaries = <ConversationSummaryModel>[].obs;
   final RxInt _selectedIndex = 0.obs;
@@ -128,7 +137,7 @@ class HomePageViewModel extends AppViewModel {
   Future<UserModel> getCurrentUser() async {
     await run(() async {
       final user = await _getCurrentUserUseCase.run();
-      this.currentUser.value = user;
+      currentUser.value = user;
     });
     return currentUser.value;
   }
@@ -139,6 +148,19 @@ class HomePageViewModel extends AppViewModel {
     getSubscriptionUsage();
     getCurrentUser();
     getHistoryConversation();
+    _sessionExpiredEventListener = locator<EventBus>().on<SessionExpiredEvent>().listen((event) {
+      Get.bottomSheet(
+        const SessionExpiredWidget(),
+        isDismissible: false,
+        isScrollControlled: false,
+        enableDrag: false,
+        elevation: 1,
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
+        ),
+      );
+    });
     super.initState();
   }
 

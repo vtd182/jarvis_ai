@@ -14,24 +14,23 @@ class RestError extends DioException {
   factory RestError.fromJson(dynamic map, Headers? headers) {
     final List<String> allMessages = [];
 
-    final mapErr = jsonDecode(map);
-    if (mapErr is Map<String, dynamic>) {
-      if (mapErr.containsKey("message") && mapErr["message"] != null) {
-        //add all issue in details
-        //{"request_id":"8722bdcc-6aea-4631-8026-a557359518b5","message":"Bad Request Exception","details":[{"issue":"This knowledge is already imported to this assistant"}]}
-        if (mapErr.containsKey("details") && mapErr["details"] is List<dynamic>) {
-          for (final detail in mapErr["details"]) {
-            allMessages.add(detail["issue"].toString());
-          }
-        }
-      }
-      return RestError(allMessages, headers);
-    }
-
-    // Nếu map là một chuỗi, chỉ cần thêm vào allMessages
     if (map is String) {
-      allMessages.add(map);
-      return RestError(allMessages, headers);
+      try {
+        final mapErr = jsonDecode(map);
+        if (mapErr is Map<String, dynamic>) {
+          if (mapErr.containsKey("message") && mapErr["message"] != null) {
+            if (mapErr.containsKey("details") && mapErr["details"] is List<dynamic>) {
+              for (final detail in mapErr["details"]) {
+                allMessages.add(detail["issue"].toString());
+              }
+            }
+          }
+          return RestError(allMessages, headers);
+        }
+      } catch (e) {
+        allMessages.add(map);
+        return RestError(allMessages, headers);
+      }
     }
 
     // Nếu map chứa key "message", thêm giá trị của message vào allMessages
