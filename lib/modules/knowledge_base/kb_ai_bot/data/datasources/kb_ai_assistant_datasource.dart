@@ -91,6 +91,8 @@ abstract class KBAIAssistantDataSource {
     required int offset,
     required int limit,
   });
+
+  Future<KBAIAssistant> favoriteKBAIAssistant({required String assistantId});
 }
 
 @LazySingleton(as: KBAIAssistantDataSource)
@@ -256,5 +258,10 @@ class KBAIAssistantDataSourceImp implements KBAIAssistantDataSource {
       'assistantId': assistantId,
       'firstMessage': firstMessage,
     });
+  }
+
+  @override
+  Future<KBAIAssistant> favoriteKBAIAssistant({required String assistantId}) {
+    return _kbAiAssistantService.favoriteKBAIAssistant(assistantId);
   }
 }

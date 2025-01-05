@@ -92,4 +92,7 @@ abstract class KBAIAssistantService {
     @Query("offset") int offset,
     @Query("limit") int limit,
   );
+
+  @POST("/{assistantId}/favorite")
+  Future<KBAIAssistant> favoriteKBAIAssistant(@Path("assistantId") String assistantId);
 }
