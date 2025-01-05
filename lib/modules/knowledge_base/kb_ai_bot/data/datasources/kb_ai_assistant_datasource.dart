@@ -34,16 +34,16 @@ abstract class KBAIAssistantDataSource {
     required String orderField,
     required int offset,
     required int limit,
-    required bool isFavorite,
-    required bool isPublished,
+    required bool? isFavorite,
+    required bool? isPublished,
   });
 
-  Future<bool> importKnowledgeToKBAIAssistant({
+  Future<String> importKnowledgeToKBAIAssistant({
     required String assistantId,
     required String knowledgeId,
   });
 
-  Future<bool> removeKnowledgeFromKBAIAssistant({
+  Future<String> removeKnowledgeFromKBAIAssistant({
     required String assistantId,
     required String knowledgeId,
   });
@@ -91,6 +91,8 @@ abstract class KBAIAssistantDataSource {
     required int offset,
     required int limit,
   });
+
+  Future<KBAIAssistant> favoriteKBAIAssistant({required String assistantId});
 }
 
 @LazySingleton(as: KBAIAssistantDataSource)
@@ -128,8 +130,8 @@ class KBAIAssistantDataSourceImp implements KBAIAssistantDataSource {
     required String orderField,
     required int offset,
     required int limit,
-    required bool isFavorite,
-    required bool isPublished,
+    required bool? isFavorite,
+    required bool? isPublished,
   }) {
     return _kbAiAssistantService.getListKBAIAssistant(
       query,
@@ -235,7 +237,7 @@ class KBAIAssistantDataSourceImp implements KBAIAssistantDataSource {
   }
 
   @override
-  Future<bool> importKnowledgeToKBAIAssistant({required String assistantId, required String knowledgeId}) {
+  Future<String> importKnowledgeToKBAIAssistant({required String assistantId, required String knowledgeId}) {
     return _kbAiAssistantService.importKnowledgeToKBAIAssistant(
       assistantId,
       knowledgeId,
@@ -243,7 +245,7 @@ class KBAIAssistantDataSourceImp implements KBAIAssistantDataSource {
   }
 
   @override
-  Future<bool> removeKnowledgeFromKBAIAssistant({required String assistantId, required String knowledgeId}) {
+  Future<String> removeKnowledgeFromKBAIAssistant({required String assistantId, required String knowledgeId}) {
     return _kbAiAssistantService.removeKnowledgeFromKBAIAssistant(
       assistantId,
       knowledgeId,
@@ -256,5 +258,10 @@ class KBAIAssistantDataSourceImp implements KBAIAssistantDataSource {
       'assistantId': assistantId,
       'firstMessage': firstMessage,
     });
+  }
+
+  @override
+  Future<KBAIAssistant> favoriteKBAIAssistant({required String assistantId}) {
+    return _kbAiAssistantService.favoriteKBAIAssistant(assistantId);
   }
 }

@@ -108,7 +108,7 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
                   ),
                 ],
                 border: Border.all(
-                  color: widget.assistant.isFavorite ? Colors.yellow : Colors.grey,
+                  color: widget.assistant.isFavorite ? Colors.orange : Colors.grey,
                   width: 0.3,
                 ),
               ),
@@ -161,7 +161,7 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
                         onTap: widget.onFavoriteTap,
                         child: Icon(
                           widget.assistant.isFavorite ? Icons.star : Icons.star_border_outlined,
-                          color: widget.assistant.isFavorite ? Colors.yellow : Colors.grey,
+                          color: widget.assistant.isFavorite ? Colors.orange : Colors.grey,
                           size: 24,
                         ),
                       ),
@@ -188,6 +188,6 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
   }
 
   String _formatDate(DateTime date) {
-    return "${date.month}/${date.day}/${date.year}";
+    return "${date.day}/${date.month}/${date.year}";
   }
 }

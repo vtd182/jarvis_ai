@@ -60,8 +60,8 @@ class KBAIAssistantRepository {
     required String orderField,
     required int offset,
     required int limit,
-    required bool isFavorite,
-    required bool isPublished,
+    required bool? isFavorite,
+    required bool? isPublished,
   }) {
     return dataSource.getListKBAIAssistant(
       query: query,
@@ -147,7 +147,7 @@ class KBAIAssistantRepository {
     );
   }
 
-  Future<bool> importKnowledgeToKBAIAssistant({
+  Future<String> importKnowledgeToKBAIAssistant({
     required String assistantId,
     required String knowledgeId,
   }) {
@@ -157,7 +157,7 @@ class KBAIAssistantRepository {
     );
   }
 
-  Future<bool> removeKnowledgeFromKBAIAssistant({
+  Future<String> removeKnowledgeFromKBAIAssistant({
     required String assistantId,
     required String knowledgeId,
   }) {
@@ -174,6 +174,14 @@ class KBAIAssistantRepository {
     return dataSource.updateAssistantWithNewThreadPlayground(
       assistantId: assistantId,
       firstMessage: firstMessage,
+    );
+  }
+
+  Future<KBAIAssistant> favoriteKBAIAssistant({
+    required String assistantId,
+  }) {
+    return dataSource.favoriteKBAIAssistant(
+      assistantId: assistantId,
     );
   }
 }

@@ -15,8 +15,8 @@ class GetListAIAssistantsUseCase {
     required String orderField,
     required int offset,
     required int limit,
-    required bool isFavorite,
-    required bool isPublished,
+    required bool? isFavorite,
+    required bool? isPublished,
   }) {
     return _aiAssistantRepository.getListKBAIAssistant(
       query: query,

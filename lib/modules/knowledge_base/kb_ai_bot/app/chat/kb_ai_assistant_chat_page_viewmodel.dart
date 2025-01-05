@@ -9,13 +9,10 @@ import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_m
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_message_content_text.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_thread.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/ask_to_kb_ai_assistant_usecase.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/create_ai_assistant_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/create_kb_ai_thread_for_assistant_usecase.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/delete_ai_assistant_by_id_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/get_ai_assistant_by_id_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/get_list_kb_ai_thread_of_assistant_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/get_messages_of_thread_usecase.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/update_ai_assistant_usecase.dart';
 import 'package:suga_core/suga_core.dart';
 
 @lazySingleton
@@ -25,9 +22,6 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
   final GetListKBAIThreadOfAssistantUseCase _getListKBAIThreadOfAssistantUseCase;
   final AskToKBAiAssistantUseCase _askToKBAiAssistantUseCase;
   final GetMessagesOfThreadUseCase _getMessagesOfThreadUseCase;
-  final CreateAIAssistantUseCase _createAIAssistantUseCase;
-  final DeleteAIAssistantByIdUseCase _deleteAIAssistantByIdUseCase;
-  final UpdateAIAssistantUseCase _updateAIAssistantUseCase;
   final _isCreatingThread = Rx<bool>(false);
   final _kBAIThreadList = RxList<KBAIThread>([]);
   final _kBAIMessageList = RxList<KBAIMessage>([]);
@@ -139,9 +133,6 @@ class KBAIAssistantChatPageViewModel extends AppViewModel {
     this._getListKBAIThreadOfAssistantUseCase,
     this._askToKBAiAssistantUseCase,
     this._getMessagesOfThreadUseCase,
-    this._createAIAssistantUseCase,
-    this._deleteAIAssistantByIdUseCase,
-    this._updateAIAssistantUseCase,
   );
 
   final _assistantId = Rx<String>("");
