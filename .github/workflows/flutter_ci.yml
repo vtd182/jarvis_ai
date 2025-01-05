@@ -69,7 +69,7 @@ jobs:
 
       # 11. Chạy test
       - name: Run tests
-        run: fvm flutter test
+        run: fvm flutter test --flavor dev
 
       # 12. Xóa file config.dart sau khi test
       - name: Clean up config file
