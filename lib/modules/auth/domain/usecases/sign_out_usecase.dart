@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:jarvis_ai/storage/spref.dart';
 import 'package:suga_core/suga_core.dart';
 
 import '../../data/repositories/auth_repository.dart';
@@ -10,5 +11,6 @@ class SignOutUseCase extends Usecase {
 
   Future<void> run() async {
     await _authRepository.signOut();
+    await SPref.instance.deleteAll();
   }
 }
