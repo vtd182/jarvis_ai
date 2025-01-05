@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/event_log.dart';
+import 'package:jarvis_ai/modules/shared/widgets/start_an_conversation_widget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -22,6 +25,7 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
   @override
   void initState() {
     super.initState();
+    EventLog.logEvent('chat_page');
     _messageController.addListener(_handleInputChange);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToBottom();
@@ -60,19 +64,37 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
                     _scrollToBottom();
                   });
 
+                  if (viewModel.messages.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          StartAnConversationWidget(
+                            title: viewModel.conversationId != null ? "Loading conversation" : "Start a conversation",
+                            subtitle: viewModel.conversationId != null ? "" : "Send a message to start a conversation with Jarvis AI",
+                            icon: LoadingAnimationWidget.waveDots(
+                              size: 50.w,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
                   return ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.all(16),
-                    itemCount: viewModel.messages.length + (viewModel.isLoading.value ? 1 : 0),
+                    itemCount: viewModel.messages.length + (viewModel.isModelAnswering.value ? 1 : 0),
                     itemBuilder: (context, index) {
-                      if (index == viewModel.messages.length && viewModel.isLoading.value) {
+                      if (index == viewModel.messages.length && viewModel.isModelAnswering.value) {
                         return Align(
                           alignment: Alignment.centerLeft,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                "Model đang trả lời...",
+                                "Jarvis AI is thinking...",
                                 style: TextStyle(fontSize: 12, color: Colors.grey),
                               ),
                               const SizedBox(height: 4),
@@ -139,11 +161,11 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
                 },
               ),
             ),
+
             if (viewModel.showPromptOptions.value)
-              // Phần chọn prompt hiển thị dạng ListView dọc
               Container(
                 color: Colors.grey.shade100,
-                height: 200, // Chiều cao cố định
+                height: 200.h,
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   itemCount: viewModel.listPrompt.length,
@@ -202,7 +224,7 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
                       controller: _messageController,
                       maxLines: null,
                       decoration: InputDecoration(
-                        hintText: "Tin nhắn",
+                        hintText: "Type a message...",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24),
                           borderSide: BorderSide.none,
@@ -220,6 +242,7 @@ class _ChatPageState extends BaseViewState<ChatPage, ChatPageViewModel> {
                   IconButton(
                     icon: const Icon(Icons.send, color: Colors.black),
                     onPressed: () {
+                      EventLog.logEvent('send_message');
                       final content = _messageController.text.trim();
                       if (content.isNotEmpty) {
                         viewModel.sendMessage(content);

@@ -4,10 +4,13 @@ import 'package:alice_lightweight/alice.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/config/config.dart';
+import 'package:jarvis_ai/helpers/ui_helper.dart';
 import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/auth/domain/usecases/refresh_token_usecase.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_auth/domain/usecase/knowledge_base_refresh_token_usecase.dart';
 import 'package:jarvis_ai/retrofit/rest_error.dart';
 import 'package:jarvis_ai/storage/spref.dart';
+import 'package:logger/logger.dart';
 import 'package:shake/shake.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -34,21 +37,29 @@ class RestClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           var token = await SPref.instance.getAccessToken();
+          if (token != null) {
+            // check if url is knowledge base
+            if (options.uri.origin == Config.knowledgeBaseUrl && !options.path.endsWith("external-sign-in")) {
+              token = await SPref.instance.getKBAccessToken();
+            }
+          }
+
           if (!options.path.endsWith("refresh")) {
             options.headers["Authorization"] = "Bearer $token";
           }
+
           options.headers["X-Language"] = await SPref.instance.getLanguage() ?? Platform.localeName.substring(0, 2);
           options.headers["Accept"] = "application/json";
           options.headers["x-jarvis-guid"] = "";
           handler.next(options);
         },
         onResponse: (e, handler) async {
-          if (e.data is Map<String, dynamic>) {
-            final data = e.data as Map<String, dynamic>;
-            if (data.containsKey("data") && data.containsKey("meta")) {
-              e.data = data["data"];
-            }
-          }
+          // if (e.data is Map<String, dynamic>) {
+          //   final data = e.data as Map<String, dynamic>;
+          //   if (data.containsKey("data") && data.containsKey("meta")) {
+          //     e.data = data["data"];
+          //   }
+          // }
           handler.next(e);
         },
         onError: (e, handler) async {
@@ -85,16 +96,33 @@ class RestClient {
   }
 
   Future<void> _handleUnAuthorizeStatusCode(DioException exception, ErrorInterceptorHandler handler) async {
-    print("retry refresh token");
+    // check if unauthorized in refresh token -> return error
+    if (exception.requestOptions.path.endsWith("refresh")) {
+      // todo: fire event to logout user and clear all data
+      showToast("Unauthorized");
+      return;
+    }
+    print("retry refresh token ${onRefreshToken}");
+
     if (!onRefreshToken) {
       onRefreshToken = true;
       try {
-        // Refresh token
-        await locator<RefreshTokenUseCase>().run();
+        String? newToken;
+        // check if url is knowledge base
+        if (exception.requestOptions.uri.origin == Config.knowledgeBaseUrl) {
+          print("refresh kb token");
+          // Refresh KB token
+          await locator<KnowledgeBaseRefreshTokenUseCase>().run();
+          newToken = await SPref.instance.getKBAccessToken();
+        } else if (exception.requestOptions.uri.origin == Config.baseUrl) {
+          print("refresh main token");
+          // Refresh main token
+          await locator<RefreshTokenUseCase>().run();
+          newToken = await SPref.instance.getAccessToken();
+        }
 
         // Retry request
         final requestOptions = exception.requestOptions;
-        final newToken = await SPref.instance.getAccessToken();
         if (newToken != null) {
           requestOptions.headers["Authorization"] = "Bearer $newToken";
         }
@@ -109,12 +137,17 @@ class RestClient {
     } else {
       // Chờ refresh hoàn tất
       while (onRefreshToken) {
-        await Future.delayed(Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 500));
       }
 
       // Retry sau khi refresh hoàn tất
       final requestOptions = exception.requestOptions;
-      final newToken = await SPref.instance.getAccessToken();
+      String? newToken;
+      if (exception.requestOptions.uri.origin == Config.knowledgeBaseUrl) {
+        newToken = await SPref.instance.getKBAccessToken();
+      } else if (exception.requestOptions.uri.origin == Config.baseUrl) {
+        newToken = await SPref.instance.getAccessToken();
+      }
       requestOptions.headers["Authorization"] = "Bearer $newToken";
       final response = await dio.fetch(requestOptions);
       handler.resolve(response);

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/event_log.dart';
 import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/auth/app/ui/login/login_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
@@ -12,6 +13,12 @@ import '../register/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
+
+  @override
+  StatelessElement createElement() {
+    EventLog.logEvent('login_page');
+    return super.createElement();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -315,6 +322,7 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
   }
 
   Future<void> _login() async {
+    await viewModel.login("cuongtp1408@gmail.com", "Aa123456");
     if (viewModel.autoValidateMode.value == AutovalidateMode.disabled) {
       viewModel.autoValidateMode.value = AutovalidateMode.always;
     }

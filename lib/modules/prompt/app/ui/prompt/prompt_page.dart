@@ -1,6 +1,9 @@
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/remote_config.dart';
 import 'package:jarvis_ai/locator.dart';
+import 'package:jarvis_ai/main.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_view_model.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/widget/private_prompt_tab_view_item.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/widget/prompt_tab_bar_item.dart';
@@ -30,40 +33,52 @@ class PromptPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: AppTheme.grey,
-                borderRadius: BorderRadius.circular(32),
-              ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: PromptTabBarItem(
-                      index: 0,
-                      title: "My Prompt",
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppTheme.grey,
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: PromptTabBarItem(
+                            index: 0,
+                            title: "My Prompt",
+                          ),
+                        ),
+                        Expanded(
+                          child: PromptTabBarItem(
+                            index: 1,
+                            title: "Public Prompt",
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Expanded(
-                    child: PromptTabBarItem(
-                      index: 1,
-                      title: "Public Prompt",
-                    ),
+                  const SizedBox(height: 8),
+                  Obx(
+                    () => controller.indexTabPromt.value == 0 ? const PrivatePromptTabViewItem() : const PublicPromptTabViewItem(),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 8),
-            Obx(
-              () => controller.indexTabPromt.value == 0 ? const PrivatePromptTabViewItem() : const PublicPromptTabViewItem(),
-            )
-          ],
-        ),
+          ),
+          EasyBannerAd(
+            adId: adIdManager.banner_all,
+            config: RemoteConfig.banner_all,
+            visibilityDetectorKey: "${runtimeType}banner_all",
+            type: EasyAdsBannerType.adaptive,
+          ),
+        ],
       ),
     );
   }

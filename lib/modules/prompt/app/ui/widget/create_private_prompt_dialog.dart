@@ -1,6 +1,9 @@
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_widget_cache.dart';
+import 'package:jarvis_ai/ads/remote_config.dart';
+import 'package:jarvis_ai/main.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_view_model.dart';
 import 'package:jarvis_ai/modules/prompt/domain/model/prompt_item_model.dart';
 import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
@@ -149,17 +152,36 @@ class CreatePrivatePromptDialog extends GetWidget<PromptViewModel> {
                         ? null
                         : () {
                             if (formKey.currentState!.validate()) {
-                              promptItemModel != null
-                                  ? controller.updatePrompt(
-                                      item: promptItemModel!.copyWith(
+                              void onSaveButton() {
+                                promptItemModel != null
+                                    ? controller.updatePrompt(
+                                        item: promptItemModel!.copyWith(
+                                          title: titleTextController.text,
+                                          content: contentTextController.text,
+                                        ),
+                                      )
+                                    : controller.createPrivatePrompt(
                                         title: titleTextController.text,
                                         content: contentTextController.text,
-                                      ),
-                                    )
-                                  : controller.createPrivatePrompt(
-                                      title: titleTextController.text,
-                                      content: contentTextController.text,
-                                    );
+                                      );
+                              }
+
+                              EasyAds.instance.showInterstitialAd(
+                                adId: adIdManager.inter_create_prompt,
+                                config: RemoteConfig.inter_create_prompt,
+                                onAdFailedToLoad: (adNetwork, adUnitType, data, errorMessage) {
+                                  onSaveButton();
+                                },
+                                onAdFailedToShow: (adNetwork, adUnitType, data, errorMessage) {
+                                  onSaveButton();
+                                },
+                                onAdLoaded: (adNetwork, adUnitType, data) {
+                                  onSaveButton();
+                                },
+                                onDisabled: () {
+                                  onSaveButton();
+                                },
+                              );
                             }
                           },
                     child: Container(

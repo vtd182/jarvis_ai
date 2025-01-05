@@ -5,6 +5,8 @@ import 'package:jarvis_ai/modules/home/app/ui/chat/chat_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/home_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page.dart';
 import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
+import 'package:jarvis_ai/modules/knowledge/app/ui/page/knowledge_page.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/kb_ai_assistant_list_page.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_page.dart';
 import 'package:suga_core/suga_core.dart';
 
@@ -12,23 +14,21 @@ import '../../../../locator.dart';
 import 'chat/chat_page.dart';
 
 class HomePage extends StatefulWidget {
+  static String routeName = "/HomePage";
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
   final List<Widget> _pages = [
     const ChatPage(),
     PromptPage(),
+    const KBAIAssistantListPage(),
+    KnowledgePage(),
     SettingPage(),
   ];
-
-  void _onNavItemTapped(int index) {
-    viewModel.selectedIndex = index;
-    Navigator.of(context).pop();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,49 +52,90 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                     ),
                   ),
                 ),
+                Column(
+                  children: [
+                    NavDrawerItem(
+                      icon: Icons.chat,
+                      label: "Chat",
+                      index: 0,
+                      selectedIndex: viewModel.selectedIndex,
+                      onTap: viewModel.onNavItemTapped,
+                    ),
+                    NavDrawerItem(
+                      icon: Icons.edit,
+                      label: "Prompt",
+                      index: 1,
+                      selectedIndex: viewModel.selectedIndex,
+                      onTap: viewModel.onNavItemTapped,
+                    ),
+                    NavDrawerItem(
+                      icon: Icons.add_home_outlined,
+                      label: "Knowledge Base",
+                      index: 2,
+                      selectedIndex: viewModel.selectedIndex,
+                      onTap: viewModel.onNavItemTapped,
+                    ),
+                    NavDrawerItem(
+                      icon: Icons.edit,
+                      label: "Knowledge",
+                      index: 3,
+                      selectedIndex: viewModel.selectedIndex,
+                      onTap: viewModel.onNavItemTapped,
+                    ),
+                  ],
+                ),
+                const Divider(height: 1, color: Colors.grey),
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async {
-                      await viewModel.getTokenUsage();
+                      await viewModel.onRefreshDrawer();
                     },
-                    child: Obx(() => ListView(
+                    child: Obx(
+                      () => NotificationListener<ScrollNotification>(
+                        onNotification: (scrollInfo) {
+                          if (scrollInfo.metrics.maxScrollExtent > 0) {
+                            final isAtBottom = scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
+                            if (isAtBottom && !viewModel.isLoadingMore) {
+                              // todo: add loadmore
+                            }
+                          }
+                          return false;
+                        },
+                        child: ListView.builder(
                           padding: EdgeInsets.zero,
-                          children: [
-                            // Nav Items
-                            NavDrawerItem(
-                              icon: Icons.chat,
-                              label: "Chat",
-                              index: 0,
-                              selectedIndex: viewModel.selectedIndex,
-                              onTap: _onNavItemTapped,
-                            ),
-                            NavDrawerItem(
-                              icon: Icons.edit,
-                              label: "Prompt",
-                              index: 1,
-                              selectedIndex: viewModel.selectedIndex,
-                              onTap: _onNavItemTapped,
-                            ),
-                            const Divider(height: 1, color: Colors.grey),
-                            ...viewModel.conversationSummaries.map(
-                              (item) => ListTile(
-                                title: Text(item.title),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                  locator<ChatPageViewModel>().conversationId = item.id;
-                                },
+                          itemCount: viewModel.conversationSummaries.length,
+                          itemBuilder: (context, index) {
+                            final item = viewModel.conversationSummaries[index];
+                            return ListTile(
+                              title: Text(
+                                item.title,
+                                style: TextStyle(
+                                  color: viewModel.selectedIndex == 0 && locator<ChatPageViewModel>().conversationId == item.id
+                                      ? Colors.blue
+                                      : Colors.grey,
+                                ),
                               ),
-                            ),
-                          ],
-                        )),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                if (viewModel.selectedIndex != 0) {
+                                  viewModel.onNavItemTapped(0);
+                                }
+                                locator<ChatPageViewModel>().conversationId = item.id;
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                 ),
+                // Thêm mục Settings ở cuối
                 NavDrawerItem(
                   icon: Icons.settings,
                   label: "Settings",
-                  index: 2,
+                  index: 4,
                   selectedIndex: viewModel.selectedIndex,
-                  onTap: _onNavItemTapped,
+                  onTap: viewModel.onNavItemTapped,
                 ),
               ],
             ),
@@ -106,53 +147,74 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
   }
 
   AppBar _buildAppBar() {
-    if (viewModel.selectedIndex == 0) {
-      return AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: DropdownButton<String>(
-          value: viewModel.currentAssistant.value.label,
-          items: viewModel.models.map((model) {
-            return DropdownMenuItem(
-              value: model.label,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(model.label),
-                  if (model.label == viewModel.currentAssistant.value.label) const Icon(Icons.check, color: Colors.blue),
-                ],
-              ),
-            );
-          }).toList(),
-          onChanged: (value) {
-            if (value != null) {
-              viewModel.currentAssistant.value = viewModel.models.firstWhere(
-                (model) => model.label == value,
+    switch (viewModel.selectedIndex) {
+      case 0:
+        return AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: DropdownButton<String>(
+            value: viewModel.currentAssistant.value.label,
+            items: viewModel.models.map((model) {
+              return DropdownMenuItem(
+                value: model.label,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(model.label),
+                    const SizedBox(width: 8),
+                    if (model.label == viewModel.currentAssistant.value.label)
+                      const Icon(
+                        Icons.check_circle,
+                        color: Colors.blue,
+                        size: 18,
+                      ),
+                  ],
+                ),
               );
-            }
-          },
-          underline: Container(),
-          icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add, color: Colors.black),
-            onPressed: () {
-              if (locator<ChatPageViewModel>().conversationId != null) {
-                locator<ChatPageViewModel>().conversationId = null;
+            }).toList(),
+            onChanged: (value) {
+              if (value != null) {
+                viewModel.currentAssistant.value = viewModel.models.firstWhere(
+                  (model) => model.label == value,
+                );
               }
             },
+            underline: Container(),
+            icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
           ),
-        ],
-      );
-    } else if (viewModel.selectedIndex == 1) {
-      return AppBar(
-        title: const Text("Prompt Library"),
-      );
-    } else {
-      return AppBar(
-        title: const Text("Settings"),
-      );
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add, color: Colors.black),
+              onPressed: () {
+                if (locator<ChatPageViewModel>().conversationId != null) {
+                  locator<ChatPageViewModel>().conversationId = null;
+                }
+              },
+            ),
+          ],
+        );
+      case 1:
+        return AppBar(
+          title: const Text("Prompt Library"),
+          centerTitle: true,
+        );
+      case 2:
+        return AppBar(
+          title: const Text("Knowledge Base"),
+          centerTitle: true,
+        );
+      case 3:
+        return AppBar(
+          title: const Text("Knowledge Library"),
+          centerTitle: true,
+        );
+      case 4:
+        return AppBar(
+          title: const Text("Settings"),
+          centerTitle: true,
+        );
+      default:
+        return AppBar();
     }
   }
 

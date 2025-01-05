@@ -1,0 +1,60 @@
+group 'com.zens.easy_ad'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.0'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'com.zens.easy_ad'
+    if (project.android.hasProperty("namespace")) {
+        namespace 'com.zens.easy_ad'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        compileSdk 34
+        minSdkVersion 23
+        targetSdkVersion 34
+    }
+
+    dependencies {
+        implementation "com.google.android.material:material:1.11.0"
+        implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    }
+
+    testOptions {
+        unitTests.all {
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
+            }
+        }
+    }
+    compileSdk 34
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:15.0'
+}

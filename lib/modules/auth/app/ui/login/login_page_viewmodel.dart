@@ -22,7 +22,7 @@ class LoginPageViewModel extends AppViewModel {
       final success = await run(() => _signInWithEmailAndPasswordUseCase.run(email: email, password: password));
       await hideLoading();
       if (success) {
-        await Get.to(() => const HomePage());
+        await Get.offAll(() => const HomePage());
       }
     } catch (e) {
       print("Error during login: $e");

@@ -2,7 +2,9 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:jarvis_ai/helpers/ui_helper.dart';
+import 'package:jarvis_ai/modules/home/app/ui/home_page.dart';
 import 'package:suga_core/suga_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -34,9 +36,9 @@ Future<Unit> callHotLine(String? hotline) async {
   return unit;
 }
 
-// void backPageOrHome({String pageName = ""}) => Get.until(
-//       (route) => route is GetPageRoute && (route.routeName == pageName || route.routeName == MainPage.routeName),
-//     );
+void backPageOrHome({String pageName = ""}) => Get.until(
+      (route) => route is GetPageRoute && (route.routeName == pageName || route.routeName == HomePage.routeName),
+    );
 
 Future<Unit> launchUri(String uri) async {
   if (await canLaunchUrl(Uri.parse(uri))) {
@@ -46,3 +48,8 @@ Future<Unit> launchUri(String uri) async {
   }
   return unit;
 }
+
+// Future<MultipartFile> convertFileToMultipartFile(File file) async {
+//   final String fileName = file.path.split('/').last;
+//   return MultipartFile.fromFile(file.path, filename: fileName);
+// }
