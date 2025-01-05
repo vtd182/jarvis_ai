@@ -24,87 +24,89 @@ class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingP
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Settings"),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Assets.images.imgAssistant.image(
-                    width: 100,
-                    height: 100,
-                  ),
-                  Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: InkWell(
-                        onTap: () async {
-                          await viewModel.showCreateAssistantDialog();
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
-                            shape: BoxShape.circle,
-                          ),
-                          child: InkWell(
-                            onTap: () => viewModel.showUpdateAssistantDialog(viewModel.assistant!),
-                            child: const Icon(Icons.edit),
-                          ),
-                        ),
-                      )),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Obx(
-                () => Text(
-                  viewModel.assistant?.assistantName ?? '',
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Obx(
-                () => Text(
-                  viewModel.assistant?.description ?? '',
-                ),
-              ),
-              const SizedBox(height: 30),
-              _buildOptionRow(
-                title: const Text(
-                  "Knowledge Base",
-                ),
-                onTap: () {
-                  Get.to(
-                    () => KBAIAssistantKnowledgeBaseManagerPage(
-                      assistantId: widget.assistantId,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Settings"),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Assets.images.imgAssistant.image(
+                      width: 100,
+                      height: 100,
                     ),
-                  );
-                },
-              ),
-              _buildOptionRow(
-                title: const Text(
-                  "Instructions",
+                    Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: InkWell(
+                          onTap: () async {
+                            await viewModel.showCreateAssistantDialog();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade300,
+                              shape: BoxShape.circle,
+                            ),
+                            child: InkWell(
+                              onTap: () => viewModel.showUpdateAssistantDialog(viewModel.assistant!),
+                              child: const Icon(Icons.edit),
+                            ),
+                          ),
+                        )),
+                  ],
                 ),
-                onTap: () {
-                  viewModel.showUpdateInstructionsDialog(viewModel.assistant!);
-                },
-              ),
-              _buildOptionRow(
-                title: const Text(
-                  "Delete Assistant",
-                  style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                const SizedBox(height: 16),
+                Obx(
+                  () => Text(
+                    viewModel.assistant?.assistantName ?? '',
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
-                onTap: () {
-                  viewModel.showDeleteAssistantDialog(viewModel.assistant!);
-                },
-              ),
-            ],
+                const SizedBox(height: 16),
+                Obx(
+                  () => Text(
+                    viewModel.assistant?.description ?? '',
+                  ),
+                ),
+                const SizedBox(height: 30),
+                _buildOptionRow(
+                  title: const Text(
+                    "Knowledge Base",
+                  ),
+                  onTap: () {
+                    Get.to(
+                      () => KBAIAssistantKnowledgeBaseManagerPage(
+                        assistantId: widget.assistantId,
+                      ),
+                    );
+                  },
+                ),
+                _buildOptionRow(
+                  title: const Text(
+                    "Instructions",
+                  ),
+                  onTap: () {
+                    viewModel.showUpdateInstructionsDialog(viewModel.assistant!);
+                  },
+                ),
+                _buildOptionRow(
+                  title: const Text(
+                    "Delete Assistant",
+                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    viewModel.showDeleteAssistantDialog(viewModel.assistant!);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -22,6 +22,7 @@ import '../../../auth/app/ui/widgets/session_expired_widget.dart';
 import '../../../auth/domain/events/session_expired_event.dart';
 import '../../../auth/domain/models/user_model.dart';
 import '../../domain/models/token_usage.dart';
+import 'chat/chat_page_viewmodel.dart';
 
 @lazySingleton
 class HomePageViewModel extends AppViewModel {
@@ -178,6 +179,11 @@ class HomePageViewModel extends AppViewModel {
   }
 
   Future<void> onNavItemTapped(int index) async {
+    if (index == 0) {
+      if (locator<ChatPageViewModel>().conversationId != null) {
+        locator<ChatPageViewModel>().conversationId = null;
+      }
+    }
     if (index == 2 || index == 3) {
       await onSignInKB();
     }

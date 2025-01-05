@@ -39,186 +39,30 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
       child: Obx(
         () => Scaffold(
           appBar: _buildAppBar(),
-          drawer: Drawer(
+          drawer: Container(
+            color: Colors.white,
+            width: MediaQuery.of(context).size.width * 0.75,
             child: Column(
               children: [
-                Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            blurRadius: 6,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.blue.withOpacity(0.2),
-                                child: const Icon(Icons.person, color: Colors.blue),
-                              ),
-                              const SizedBox(width: 12),
-                              Obx(() => Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        viewModel.currentUser.value.username,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      Text(
-                                        viewModel.currentUser.value.email,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Token Usage 🔥',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Obx(() => Text(
-                                  "${viewModel.tokenUsage.value.unlimited ? "∞" : viewModel.tokenUsage.value.availableTokens}/${viewModel.tokenUsage.value.unlimited ? "∞" : viewModel.tokenUsage.value.totalTokens}",
-                                  style: const TextStyle(fontSize: 14))),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Obx(() => LinearProgressIndicator(
-                                value: viewModel.tokenUsage.value.unlimited
-                                    ? 1.0
-                                    : viewModel.tokenUsage.value.availableTokens / viewModel.tokenUsage.value.totalTokens,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
-                              )),
-                          const SizedBox(height: 8),
-                          //Account type indicator
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PricingPage()));
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: viewModel.subscriptionUsage.value.annually > 0
-                                    ? Colors.yellowAccent
-                                    : (viewModel.subscriptionUsage.value.monthly > 0 ? Colors.green : Colors.blue),
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.2),
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                  child: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  viewModel.subscriptionUsage.value.name.toUpperCase(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )),
-                            ),
-                          )
-                        ],
-                      ),
-                    )),
-                Column(
-                  children: [
-                    NavDrawerItem(
-                      icon: Icons.chat,
-                      label: "Chat",
-                      index: 0,
-                      selectedIndex: viewModel.selectedIndex,
-                      onTap: viewModel.onNavItemTapped,
-                    ),
-                    NavDrawerItem(
-                      icon: Icons.edit,
-                      label: "Prompt",
-                      index: 1,
-                      selectedIndex: viewModel.selectedIndex,
-                      onTap: viewModel.onNavItemTapped,
-                    ),
-                    NavDrawerItem(
-                      icon: Icons.add_home_outlined,
-                      label: "Knowledge Base",
-                      index: 2,
-                      selectedIndex: viewModel.selectedIndex,
-                      onTap: viewModel.onNavItemTapped,
-                    ),
-                    NavDrawerItem(
-                      icon: Icons.edit,
-                      label: "Knowledge",
-                      index: 3,
-                      selectedIndex: viewModel.selectedIndex,
-                      onTap: viewModel.onNavItemTapped,
-                    ),
-                    NavDrawerItem(
-                      icon: Icons.email,
-                      label: "Email",
-                      index: 5,
-                      selectedIndex: viewModel.selectedIndex,
-                      onTap: viewModel.onNavItemTapped,
-                    ),
-                  ],
-                ),
-                const Divider(height: 1, color: Colors.grey),
+                _buildAccountInformation(),
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async {
                       await viewModel.onRefreshDrawer();
                     },
                     child: Obx(
-                      () => NotificationListener<ScrollNotification>(
-                        onNotification: (scrollInfo) {
-                          if (scrollInfo.metrics.maxScrollExtent > 0) {
-                            final isAtBottom = scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
-                            if (isAtBottom && !viewModel.isLoadingMore) {
-                              // todo: add loadmore
-                            }
-                          }
-                          return false;
-                        },
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemCount: viewModel.conversationSummaries.length,
-                          itemBuilder: (context, index) {
-                            final item = viewModel.conversationSummaries[index];
-                            return ListTile(
-                              title: Text(
-                                item.title,
-                                style: TextStyle(
-                                  color: viewModel.selectedIndex == 0 && locator<ChatPageViewModel>().conversationId == item.id
-                                      ? Colors.blue
-                                      : Colors.grey,
-                                ),
-                              ),
+                      () => ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: 6 + viewModel.conversationSummaries.length, // 5 items + history count
+                        itemBuilder: (context, index) {
+                          if (index < 6) {
+                            // Render NavDrawerItem
+                            return _buildNavDrawerItem(index);
+                          } else {
+                            // Render History Items
+                            final item = viewModel.conversationSummaries[index - 6];
+                            return _buildItemList(
+                              title: item.title,
                               onTap: () {
                                 Navigator.of(context).pop();
                                 if (viewModel.selectedIndex != 0) {
@@ -226,26 +70,109 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                                 }
                                 locator<ChatPageViewModel>().conversationId = item.id;
                               },
+                              isSelected: viewModel.selectedIndex == 0 && locator<ChatPageViewModel>().conversationId == item.id,
                             );
-                          },
-                        ),
+                          }
+                        },
                       ),
                     ),
                   ),
                 ),
-                // Thêm mục Settings ở cuối
                 NavDrawerItem(
                   icon: Icons.settings,
                   label: "Settings",
                   index: 4,
-                  selectedIndex: viewModel.selectedIndex,
                   onTap: viewModel.onNavItemTapped,
+                  isSelected: viewModel.selectedIndex == 4,
                 ),
               ],
             ),
           ),
           body: _pages[viewModel.selectedIndex],
         ),
+      ),
+    );
+  }
+
+  Widget _buildNavDrawerItem(int index) {
+    final navItems = [
+      NavDrawerItem(
+        icon: Icons.chat,
+        label: "Chat",
+        index: 0,
+        onTap: viewModel.onNavItemTapped,
+        isSelected: viewModel.selectedIndex == 0 && locator<ChatPageViewModel>().conversationId == null,
+      ),
+      NavDrawerItem(
+        icon: Icons.edit,
+        label: "Prompt",
+        index: 1,
+        onTap: viewModel.onNavItemTapped,
+        isSelected: viewModel.selectedIndex == 1,
+      ),
+      NavDrawerItem(
+        icon: Icons.add_home_outlined,
+        label: "Personal Assistant",
+        index: 2,
+        onTap: viewModel.onNavItemTapped,
+        isSelected: viewModel.selectedIndex == 2,
+      ),
+      NavDrawerItem(
+        icon: Icons.library_books,
+        label: "Knowledge",
+        index: 3,
+        onTap: viewModel.onNavItemTapped,
+        isSelected: viewModel.selectedIndex == 3,
+      ),
+      NavDrawerItem(
+        icon: Icons.email,
+        label: "Email",
+        index: 5,
+        onTap: viewModel.onNavItemTapped,
+        isSelected: viewModel.selectedIndex == 5,
+      ),
+      const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Divider(
+              height: 0,
+              thickness: 1.2,
+              color: Colors.grey,
+            ),
+          ),
+          ListTile(
+            title: Text(
+              "History",
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+    return navItems[index];
+  }
+
+  Widget _buildItemList({
+    required String title,
+    required VoidCallback onTap,
+    required bool isSelected,
+  }) {
+    return Container(
+      color: isSelected ? Colors.blue.withOpacity(0.1) : Colors.white,
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        onTap: onTap,
       ),
     );
   }
@@ -304,7 +231,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
         );
       case 2:
         return AppBar(
-          title: const Text("Knowledge Base"),
+          title: const Text("Personal Assistant"),
           centerTitle: true,
         );
       case 3:
@@ -327,6 +254,158 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
     }
   }
 
+  Widget _buildAccountInformation() {
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 6,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.blue.withOpacity(0.2),
+                  child: const Icon(Icons.person, color: Colors.blue),
+                ),
+                const SizedBox(width: 12),
+                Obx(
+                  () => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        viewModel.currentUser.value.username,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        viewModel.currentUser.value.email,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Token Usage 🔥',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                Obx(() => Text(
+                    "${viewModel.tokenUsage.value.unlimited ? "∞" : viewModel.tokenUsage.value.availableTokens}/${viewModel.tokenUsage.value.unlimited ? "∞" : viewModel.tokenUsage.value.totalTokens}",
+                    style: const TextStyle(fontSize: 14))),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Obx(() => LinearProgressIndicator(
+                  value: viewModel.tokenUsage.value.unlimited
+                      ? 1.0
+                      : viewModel.tokenUsage.value.availableTokens / viewModel.tokenUsage.value.totalTokens,
+                  backgroundColor: Colors.grey[300],
+                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                )),
+            const SizedBox(height: 8),
+            //Account type indicator
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PricingPage()));
+              },
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: viewModel.subscriptionUsage.value.annually > 0
+                      ? Colors.yellowAccent
+                      : (viewModel.subscriptionUsage.value.monthly > 0 ? Colors.green : Colors.blue),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      blurRadius: 6,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Center(
+                    child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    viewModel.subscriptionUsage.value.name.toUpperCase(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHistoryList() {
+    return RefreshIndicator(
+      onRefresh: () async {
+        await viewModel.onRefreshDrawer();
+      },
+      child: Obx(
+        () => NotificationListener<ScrollNotification>(
+          onNotification: (scrollInfo) {
+            if (scrollInfo.metrics.maxScrollExtent > 0) {
+              final isAtBottom = scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
+              if (isAtBottom && !viewModel.isLoadingMore) {
+                // todo: add loadmore
+              }
+            }
+            return false;
+          },
+          child: ListView.builder(
+            padding: EdgeInsets.zero,
+            itemCount: viewModel.conversationSummaries.length,
+            itemBuilder: (context, index) {
+              final item = viewModel.conversationSummaries[index];
+              return _buildItemList(
+                title: item.title,
+                onTap: () {
+                  Navigator.of(context).pop();
+                  if (viewModel.selectedIndex != 0) {
+                    viewModel.onNavItemTapped(0);
+                  }
+                  locator<ChatPageViewModel>().conversationId = item.id;
+                },
+                isSelected: viewModel.selectedIndex == 0 && locator<ChatPageViewModel>().conversationId == item.id,
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   HomePageViewModel createViewModel() {
     return locator<HomePageViewModel>();
@@ -337,7 +416,7 @@ class NavDrawerItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final int index;
-  final int selectedIndex;
+  final bool isSelected;
   final Function(int) onTap;
 
   const NavDrawerItem({
@@ -345,20 +424,25 @@ class NavDrawerItem extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.index,
-    required this.selectedIndex,
     required this.onTap,
+    required this.isSelected,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon, color: index == selectedIndex ? Colors.blue : Colors.grey),
-      title: Text(
-        label,
-        style: TextStyle(color: index == selectedIndex ? Colors.blue : Colors.grey),
+    return Container(
+      color: isSelected ? Colors.blue.withOpacity(0.1) : Colors.white,
+      child: ListTile(
+        leading: Icon(icon, color: isSelected ? Colors.blue : Colors.grey),
+        title: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        selected: isSelected,
+        onTap: () => onTap(index),
       ),
-      selected: index == selectedIndex,
-      onTap: () => onTap(index),
     );
   }
 }
