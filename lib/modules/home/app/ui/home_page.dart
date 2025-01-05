@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:jarvis_ai/modules/email/app/ui/email_page.dart';
+import 'package:jarvis_ai/modules/home/app/ui/account_upgrade_page.dart';
 import 'package:jarvis_ai/modules/home/app/ui/chat/chat_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/home_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page.dart';
@@ -28,6 +30,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
     const KBAIAssistantListPage(),
     KnowledgePage(),
     SettingPage(),
+    const EmailPage(),
   ];
 
   @override
@@ -39,19 +42,126 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
           drawer: Drawer(
             child: Column(
               children: [
-                DrawerHeader(
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                  ),
-                  child: Center(
-                    child: Obx(
-                      () => Text(
-                        "Token available: ${viewModel.tokenUsage.value.availableTokens}",
-                        style: const TextStyle(color: Colors.white, fontSize: 24),
+                Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            blurRadius: 6,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.blue.withOpacity(0.2),
+                                child: const Icon(Icons.person,
+                                    color: Colors.blue),
+                              ),
+                              const SizedBox(width: 12),
+                              Obx(() => Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        viewModel.currentUser.value.username,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        viewModel.currentUser.value.email,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Token Usage 🔥',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Obx(() => Text(
+                                  "${viewModel.tokenUsage.value.unlimited ? "∞" : viewModel.tokenUsage.value.availableTokens}/${viewModel.tokenUsage.value.unlimited ? "∞" : viewModel.tokenUsage.value.totalTokens}",
+                                  style: const TextStyle(fontSize: 14))),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Obx(() => LinearProgressIndicator(
+                                value: viewModel.tokenUsage.value.unlimited
+                                    ? 1.0
+                                    : viewModel
+                                            .tokenUsage.value.availableTokens /
+                                        viewModel.tokenUsage.value.totalTokens,
+                                backgroundColor: Colors.grey[300],
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                    Colors.blue),
+                              )),
+                          const SizedBox(height: 8),
+                          //Account type indicator
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const PricingPage()));
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color:
+                                    viewModel.subscriptionUsage.value.annually >
+                                            0
+                                        ? Colors.yellowAccent
+                                        : (viewModel.subscriptionUsage.value
+                                                    .monthly >
+                                                0
+                                            ? Colors.green
+                                            : Colors.blue),
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  viewModel.subscriptionUsage.value.name
+                                      .toUpperCase(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )),
+                            ),
+                          )
+                        ],
+                      ),
+                    )),
                 Column(
                   children: [
                     NavDrawerItem(
@@ -82,6 +192,13 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                       selectedIndex: viewModel.selectedIndex,
                       onTap: viewModel.onNavItemTapped,
                     ),
+                    NavDrawerItem(
+                      icon: Icons.email,
+                      label: "Email",
+                      index: 5,
+                      selectedIndex: viewModel.selectedIndex,
+                      onTap: viewModel.onNavItemTapped,
+                    ),
                   ],
                 ),
                 const Divider(height: 1, color: Colors.grey),
@@ -94,7 +211,8 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                       () => NotificationListener<ScrollNotification>(
                         onNotification: (scrollInfo) {
                           if (scrollInfo.metrics.maxScrollExtent > 0) {
-                            final isAtBottom = scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
+                            final isAtBottom = scrollInfo.metrics.pixels ==
+                                scrollInfo.metrics.maxScrollExtent;
                             if (isAtBottom && !viewModel.isLoadingMore) {
                               // todo: add loadmore
                             }
@@ -110,7 +228,10 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                               title: Text(
                                 item.title,
                                 style: TextStyle(
-                                  color: viewModel.selectedIndex == 0 && locator<ChatPageViewModel>().conversationId == item.id
+                                  color: viewModel.selectedIndex == 0 &&
+                                          locator<ChatPageViewModel>()
+                                                  .conversationId ==
+                                              item.id
                                       ? Colors.blue
                                       : Colors.grey,
                                 ),
@@ -120,7 +241,8 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                                 if (viewModel.selectedIndex != 0) {
                                   viewModel.onNavItemTapped(0);
                                 }
-                                locator<ChatPageViewModel>().conversationId = item.id;
+                                locator<ChatPageViewModel>().conversationId =
+                                    item.id;
                               },
                             );
                           },
@@ -213,6 +335,11 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
           title: const Text("Settings"),
           centerTitle: true,
         );
+      case 5:
+        return AppBar(
+          title: const Text("Email Helper"),
+          centerTitle: true,
+        );
       default:
         return AppBar();
     }
@@ -243,10 +370,12 @@ class NavDrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon, color: index == selectedIndex ? Colors.blue : Colors.grey),
+      leading:
+          Icon(icon, color: index == selectedIndex ? Colors.blue : Colors.grey),
       title: Text(
         label,
-        style: TextStyle(color: index == selectedIndex ? Colors.blue : Colors.grey),
+        style: TextStyle(
+            color: index == selectedIndex ? Colors.blue : Colors.grey),
       ),
       selected: index == selectedIndex,
       onTap: () => onTap(index),
