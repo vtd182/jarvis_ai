@@ -4,7 +4,9 @@ class KBAIAssistantInfo extends StatefulWidget {
   final String title;
   final String? initialName;
   final String? initialDescription;
-  final Function(String name, String description) onConfirm;
+  final String? initialInstructions;
+  final bool isInstructionsUpdate;
+  final Function(String name, String description, String instruction) onConfirm;
 
   const KBAIAssistantInfo({
     super.key,
@@ -12,6 +14,8 @@ class KBAIAssistantInfo extends StatefulWidget {
     this.initialName,
     this.initialDescription,
     required this.onConfirm,
+    this.initialInstructions,
+    this.isInstructionsUpdate = false,
   });
 
   @override
@@ -22,18 +26,21 @@ class _KBAIAssistantInfoState extends State<KBAIAssistantInfo> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _instructionsController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _nameController.text = widget.initialName ?? '';
     _descriptionController.text = widget.initialDescription ?? '';
+    _instructionsController.text = widget.initialInstructions ?? '';
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
+    _instructionsController.dispose();
     super.dispose();
   }
 
@@ -67,35 +74,50 @@ class _KBAIAssistantInfoState extends State<KBAIAssistantInfo> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 16),
+                if (!widget.isInstructionsUpdate) const SizedBox(height: 16),
                 // Assistant Name Field
-                TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Assistant name',
-                    border: const OutlineInputBorder(),
-                    counterText: '${_nameController.text.length}/50',
+                if (!widget.isInstructionsUpdate)
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Assistant name',
+                      border: const OutlineInputBorder(),
+                      counterText: '${_nameController.text.length}/50',
+                    ),
+                    maxLength: 50,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter the assistant name';
+                      }
+                      return null;
+                    },
                   ),
-                  maxLength: 50,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the assistant name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
+                if (!widget.isInstructionsUpdate) const SizedBox(height: 16),
                 // Assistant Description Field
-                TextFormField(
-                  controller: _descriptionController,
-                  decoration: InputDecoration(
-                    labelText: 'Assistant description',
-                    border: const OutlineInputBorder(),
-                    counterText: '${_descriptionController.text.length}/2000',
+                if (!widget.isInstructionsUpdate)
+                  TextFormField(
+                    controller: _descriptionController,
+                    decoration: InputDecoration(
+                      labelText: 'Assistant description',
+                      border: const OutlineInputBorder(),
+                      counterText: '${_descriptionController.text.length}/2000',
+                    ),
+                    maxLength: 2000,
+                    maxLines: 4,
                   ),
-                  maxLength: 2000,
-                  maxLines: 4,
-                ),
+                if (widget.isInstructionsUpdate) const SizedBox(height: 16),
+                // Assistant Description Field
+                if (widget.isInstructionsUpdate)
+                  TextFormField(
+                    controller: _instructionsController,
+                    decoration: InputDecoration(
+                      labelText: 'Assistant Instructions',
+                      border: const OutlineInputBorder(),
+                      counterText: '${_instructionsController.text.length}/2000',
+                    ),
+                    maxLength: 2000,
+                    maxLines: 4,
+                  ),
                 const SizedBox(height: 16),
                 // Footer
                 Row(
@@ -113,6 +135,7 @@ class _KBAIAssistantInfoState extends State<KBAIAssistantInfo> {
                           widget.onConfirm(
                             _nameController.text,
                             _descriptionController.text,
+                            _instructionsController.text,
                           );
                           Navigator.of(context).pop();
                         }

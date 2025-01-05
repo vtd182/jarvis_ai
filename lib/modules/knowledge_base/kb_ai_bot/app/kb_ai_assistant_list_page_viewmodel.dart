@@ -99,7 +99,7 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
           title: 'Create Assistant',
           initialName: null,
           initialDescription: null,
-          onConfirm: (name, description) async {
+          onConfirm: (name, description, _) async {
             final success = await run(
               () => _createAIAssistantUseCase.run(
                 assistantName: name,
@@ -139,7 +139,7 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
           title: 'Update Assistant',
           initialName: assistant.assistantName,
           initialDescription: assistant.description,
-          onConfirm: (name, description) async {
+          onConfirm: (name, description, _) async {
             final success = await run(
               () => _updateAIAssistantUseCase.run(
                 assistantId: assistant.id,
