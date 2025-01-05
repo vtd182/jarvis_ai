@@ -33,49 +33,51 @@ class _KBAIAssistantKnowledgeBaseManagerPageState
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
-        floatingActionButton: viewModel.kBAIKnowledgeImportedList.isEmpty
-            ? null
-            : FloatingActionButton(
-                onPressed: () async {
-                  viewModel.showImportDialog();
-                },
-                child: const Icon(Icons.add),
-              ),
-        appBar: AppBar(
-          title: const Text("Knowledge Base Manager"),
-          centerTitle: true,
-        ),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            await viewModel.onRefresh();
-          },
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (scrollInfo) {
-              if (scrollInfo.metrics.maxScrollExtent > 0) {
-                final isAtBottom = scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
-                if (isAtBottom && viewModel.isHasNext && !viewModel.isLoadingMore) {
-                  viewModel.onLoadingMore();
-                }
-              }
-              return false;
-            },
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                _buildSearchAndFilterBar(),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: viewModel.kBAIKnowledgeImportedList.isEmpty
-                      ? KnowledgeBaseEmptyImport(
-                          onImport: () async {
-                            viewModel.showImportDialog();
-                          },
-                        )
-                      : _buildGrid(),
+    return SafeArea(
+      child: Obx(
+        () => Scaffold(
+          floatingActionButton: viewModel.kBAIKnowledgeImportedList.isEmpty
+              ? null
+              : FloatingActionButton(
+                  onPressed: () async {
+                    viewModel.showImportDialog();
+                  },
+                  child: const Icon(Icons.add),
                 ),
-              ],
+          appBar: AppBar(
+            title: const Text("Knowledge Base Manager"),
+            centerTitle: true,
+          ),
+          body: RefreshIndicator(
+            onRefresh: () async {
+              await viewModel.onRefresh();
+            },
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (scrollInfo) {
+                if (scrollInfo.metrics.maxScrollExtent > 0) {
+                  final isAtBottom = scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
+                  if (isAtBottom && viewModel.isHasNext && !viewModel.isLoadingMore) {
+                    viewModel.onLoadingMore();
+                  }
+                }
+                return false;
+              },
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  _buildSearchAndFilterBar(),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: viewModel.kBAIKnowledgeImportedList.isEmpty
+                        ? KnowledgeBaseEmptyImport(
+                            onImport: () async {
+                              viewModel.showImportDialog();
+                            },
+                          )
+                        : _buildGrid(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
