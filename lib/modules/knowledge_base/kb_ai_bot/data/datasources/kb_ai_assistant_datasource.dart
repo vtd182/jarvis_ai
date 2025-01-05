@@ -34,8 +34,8 @@ abstract class KBAIAssistantDataSource {
     required String orderField,
     required int offset,
     required int limit,
-    required bool isFavorite,
-    required bool isPublished,
+    required bool? isFavorite,
+    required bool? isPublished,
   });
 
   Future<String> importKnowledgeToKBAIAssistant({
@@ -130,8 +130,8 @@ class KBAIAssistantDataSourceImp implements KBAIAssistantDataSource {
     required String orderField,
     required int offset,
     required int limit,
-    required bool isFavorite,
-    required bool isPublished,
+    required bool? isFavorite,
+    required bool? isPublished,
   }) {
     return _kbAiAssistantService.getListKBAIAssistant(
       query,

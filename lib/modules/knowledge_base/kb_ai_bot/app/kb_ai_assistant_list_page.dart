@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -73,11 +72,25 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
             child: _buildSearchField(),
           ),
           const SizedBox(width: 16),
-          CupertinoButton(
-            onPressed: () {
-              print("Filter");
-            },
-            child: const Icon(Icons.filter_list),
+          Obx(
+            () => DropdownButton<FilterType>(
+              value: viewModel.isFavorite == true
+                  ? FilterType.favorite
+                  : viewModel.isPublished == true
+                      ? FilterType.published
+                      : FilterType.all,
+              onChanged: (filterType) {
+                if (filterType != null) {
+                  viewModel.onApplyFilter(filterType);
+                }
+              },
+              items: FilterType.values.map((filterType) {
+                return DropdownMenuItem<FilterType>(
+                  value: filterType,
+                  child: Text(filterType.label),
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),
@@ -95,8 +108,8 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
             onDelete: () async {
               await viewModel.showDeleteAssistantDialog(item);
             },
-            onFavoriteTap: () {
-              print("Favorite");
+            onFavoriteTap: () async {
+              await viewModel.favoriteAssistant(item);
             },
             onEditTap: () async {
               await viewModel.showUpdateAssistantDialog(item);

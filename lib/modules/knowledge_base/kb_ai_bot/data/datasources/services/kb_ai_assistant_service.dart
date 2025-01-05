@@ -35,8 +35,8 @@ abstract class KBAIAssistantService {
     @Query("order_field") String orderField,
     @Query("offset") int offset,
     @Query("limit") int limit,
-    @Query("is_favorite") bool isFavorite,
-    @Query("is_published") bool isPublished,
+    @Query("is_favorite") bool? isFavorite,
+    @Query("is_published") bool? isPublished,
   );
 
   @POST("/{assistantId}/knowledges/{knowledgeId}")
