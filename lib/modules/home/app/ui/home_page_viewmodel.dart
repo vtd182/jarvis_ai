@@ -195,4 +195,29 @@ class HomePageViewModel extends AppViewModel {
     await getHistoryConversation();
     await getTokenUsage();
   }
+
+  void resetAll() {
+    conversationSummaries.clear();
+    tokenUsage.value = TokenUsage(
+      availableTokens: 0,
+      unlimited: false,
+      totalTokens: 0,
+      date: DateTime.now(),
+    );
+    subscriptionUsage.value = SubscriptionUsage(
+      name: '',
+      daily: 0,
+      monthly: 0,
+      annually: 0,
+    );
+    currentUser.value = UserModel(id: '', email: '', username: '', roles: []);
+    _selectedIndex.value = 0;
+  }
+
+  @override
+  void disposeState() {
+    resetAll();
+    _sessionExpiredEventListener?.cancel();
+    super.disposeState();
+  }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/locator.dart';
+import 'package:jarvis_ai/modules/auth/app/ui/login/login_page.dart';
 import 'package:jarvis_ai/modules/home/app/ui/setting/setting_page_viewmodel.dart';
 import 'package:suga_core/suga_core.dart';
 
 import '../../../../../storage/spref.dart';
-import '../../../../auth/app/ui/login/login_page.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -121,7 +121,7 @@ class _SettingPageState extends BaseViewState<SettingPage, SettingPageViewModel>
       case 'Log out':
         await viewModel.signOut();
         SPref.instance.deleteAll();
-        await Get.off(() => const LoginPage());
+        await Get.offAll(() => const LoginPage());
         break;
       default:
         break;
