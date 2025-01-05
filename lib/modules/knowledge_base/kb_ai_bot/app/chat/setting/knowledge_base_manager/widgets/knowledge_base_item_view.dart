@@ -225,6 +225,6 @@ class _KnowledgeBaseItemViewState<T> extends State<KnowledgeBaseItemView<T>> {
   }
 
   String _formatDate(DateTime date) {
-    return "${date.month}/${date.day}/${date.year}";
+    return "${date.day}/${date.month}/${date.year}";
   }
 }
