@@ -93,9 +93,9 @@ class HomePageViewModel extends AppViewModel {
   );
 
   Future<Unit> onSignInKB() async {
-    final token = await SPref.instance.getKBAccessToken();
+    final token = await SPref.instance.getKBAccessToken() ?? "";
     final expiresAt = await SPref.instance.getKBExpiresAt();
-    final expiresAtDate = DateTime.fromMillisecondsSinceEpoch(int.parse(expiresAt.toString()));
+    final expiresAtDate = DateTime.fromMillisecondsSinceEpoch(int.tryParse(expiresAt.toString()) ?? 0);
     if (token == "" || expiresAtDate.isAfter(DateTime.now())) {
       final appToken = await SPref.instance.getAccessToken();
       if (appToken != "") {
