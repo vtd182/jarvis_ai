@@ -29,7 +29,7 @@ abstract class AppViewModel extends BaseViewModel {
   Future<Unit> handleRestError(RestError restError, String? errorCode) async {
     switch (errorCode) {
       default:
-        showToast(restError.getAllErrorWithString());
+        showToast(restError.getError());
         break;
     }
     return unit;
