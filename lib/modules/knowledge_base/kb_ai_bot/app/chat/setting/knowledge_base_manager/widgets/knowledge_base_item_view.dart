@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:jarvis_ai/gen/assets.gen.dart';
 import 'package:jarvis_ai/modules/knowledge/domain/models/response_get_kl.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/chat/setting/knowledge_base_manager/kb_ai_assistant_knowledge_base_manager_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_knowledge.dart';
 
 class KnowledgeBaseItemView<T> extends StatefulWidget {
   final T item;
   final VoidCallback onDelete;
-  final VoidCallback onFavoriteTap;
-  final VoidCallback onEditTap;
+  final VoidCallback? onImportTap;
   final VoidCallback onItemTap;
   final ValueNotifier<String?> openItemIdNotifier;
   final bool enableSwipeToDelete;
+  final ImportState importState;
 
   const KnowledgeBaseItemView({
     super.key,
     required this.item,
     required this.onDelete,
-    required this.onFavoriteTap,
+    required this.onImportTap,
     required this.onItemTap,
     required this.openItemIdNotifier,
-    required this.onEditTap,
     this.enableSwipeToDelete = true,
+    this.importState = ImportState.idle,
   });
 
   @override
@@ -183,21 +184,11 @@ class _KnowledgeBaseItemViewState<T> extends State<KnowledgeBaseItemView<T>> {
                         ],
                       ),
                       const Spacer(),
-                      InkWell(
-                        onTap: widget.onEditTap,
-                        child: const Icon(
-                          Icons.edit_outlined,
-                          color: Colors.grey,
-                          size: 24,
+                      if (widget.onImportTap != null)
+                        InkWell(
+                          onTap: widget.importState != ImportState.success ? widget.onImportTap : null,
+                          child: _buildButtonWithState(),
                         ),
-                      ),
-                      InkWell(
-                        onTap: widget.onFavoriteTap,
-                        child: Icon(
-                          Icons.star,
-                          size: 24,
-                        ),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 4),
@@ -218,6 +209,19 @@ class _KnowledgeBaseItemViewState<T> extends State<KnowledgeBaseItemView<T>> {
         ),
       ],
     );
+  }
+
+  Widget _buildButtonWithState() {
+    switch (widget.importState) {
+      case ImportState.idle:
+        return const Icon(Icons.import_export);
+      case ImportState.loading:
+        return const CircularProgressIndicator();
+      case ImportState.success:
+        return const Icon(Icons.check, color: Colors.green);
+      case ImportState.error:
+        return const Icon(Icons.error, color: Colors.red);
+    }
   }
 
   String _formatDate(DateTime date) {
