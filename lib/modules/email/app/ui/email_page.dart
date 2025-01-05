@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:jarvis_ai/modules/email/app/ui/email_view_model.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:suga_core/suga_core.dart';
+
 import '../../../../locator.dart';
-import 'dart:async';
 
 class EmailPage extends StatefulWidget {
   const EmailPage({super.key});
@@ -19,6 +21,8 @@ class _EmailPageState extends BaseViewState<EmailPage, EmailViewModel> {
   EmailViewModel createViewModel() {
     return locator<EmailViewModel>();
   }
+
+  Timer? _debounce;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,7 @@ class _EmailPageState extends BaseViewState<EmailPage, EmailViewModel> {
 
 class EmailInput extends StatelessWidget {
   EmailInput({super.key});
+  Timer? _debounce;
   final _debouncer = Debouncer(milliseconds: 1000);
 
   @override
@@ -53,7 +58,7 @@ class EmailInput extends StatelessWidget {
                 onChanged: (value) {
                   locator<EmailViewModel>().title.value = value;
                   if (locator<EmailViewModel>().content.value.isNotEmpty) {
-                    _debouncer.run(() => locator<EmailViewModel>().generateSuggestions());
+                    _onTextChanged();
                   }
                 }),
             const SizedBox(height: 16),
@@ -67,7 +72,7 @@ class EmailInput extends StatelessWidget {
                 onChanged: (value) {
                   locator<EmailViewModel>().sender.value = value;
                   if (locator<EmailViewModel>().content.value.isNotEmpty) {
-                    _debouncer.run(() => locator<EmailViewModel>().generateSuggestions());
+                    _onTextChanged();
                   }
                 }),
             const SizedBox(height: 16),
@@ -82,12 +87,22 @@ class EmailInput extends StatelessWidget {
               onChanged: (value) {
                 locator<EmailViewModel>().content.value = value;
                 if (value.isNotEmpty) {
-                  _debouncer.run(() => locator<EmailViewModel>().generateSuggestions());
+                  _onTextChanged();
                 }
               },
             ),
           ],
         ));
+  }
+
+  void _onTextChanged() {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(
+      const Duration(seconds: 1),
+      () {
+        _debouncer.run(() => locator<EmailViewModel>().generateSuggestions());
+      },
+    );
   }
 }
 
