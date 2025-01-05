@@ -147,7 +147,7 @@ class KBAIAssistantRepository {
     );
   }
 
-  Future<bool> importKnowledgeToKBAIAssistant({
+  Future<String> importKnowledgeToKBAIAssistant({
     required String assistantId,
     required String knowledgeId,
   }) {
@@ -157,7 +157,7 @@ class KBAIAssistantRepository {
     );
   }
 
-  Future<bool> removeKnowledgeFromKBAIAssistant({
+  Future<String> removeKnowledgeFromKBAIAssistant({
     required String assistantId,
     required String knowledgeId,
   }) {
