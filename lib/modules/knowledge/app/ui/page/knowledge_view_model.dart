@@ -2,7 +2,6 @@ import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/ads/remote_config.dart';
-import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/main.dart';
 import 'package:jarvis_ai/modules/knowledge/app/ui/page/kl_detail_page.dart';
 import 'package:jarvis_ai/modules/knowledge/domain/models/request_create_kl.dart';
@@ -11,11 +10,7 @@ import 'package:jarvis_ai/modules/knowledge/domain/models/response_get_kl.dart';
 import 'package:jarvis_ai/modules/knowledge/domain/usecases/create_kl_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge/domain/usecases/delete_kl_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge/domain/usecases/get_knowledge_usecase.dart';
-import 'package:jarvis_ai/modules/knowledge_base/kb_auth/domain/usecase/knowledge_base_sign_in_usecase.dart';
 import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
-import 'package:jarvis_ai/storage/spref.dart';
-
-bool isSignInKnowledge = false;
 
 class KnowledgeViewModel extends GetxController {
   final GetKnowledgeUsecase _getKnowledgeUsecase;
@@ -64,11 +59,6 @@ class KnowledgeViewModel extends GetxController {
     bool isLoadMore = false,
   }) async {
     try {
-      if (!isSignInKnowledge) {
-        isSignInKnowledge = true;
-        await locator<KnowledgeBaseSignInUseCase>().run(token: (await SPref.instance.getAccessToken()) ?? "");
-      }
-
       bool canLoad = isCanLoadMore(isLoadMore);
       if (!canLoad) {
         return;
