@@ -7,8 +7,12 @@ class Config {
   static const Level logLevel = Level.debug;
   static const bool aliceEnable = true;
 
+  // main config
   static const String baseUrl = "https://api.dev.jarvis.cx";
   static const String apiVersion = "1";
   static const int connectTimeout = 30000;
   static const int receiveTimeout = 30000;
+
+  // knowledge config
+  static const String knowledgeBaseUrl = "https://knowledge-api.dev.jarvis.cx";
 }

@@ -1,4 +1,8 @@
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/remote_config.dart';
+import 'package:jarvis_ai/main.dart';
 import 'package:jarvis_ai/modules/prompt/domain/model/prompt_item_model.dart';
 import 'package:jarvis_ai/modules/prompt/domain/model/prompts_response_model.dart';
 import 'package:jarvis_ai/modules/prompt/domain/usecase/add_prompt_favorite_usecase.dart';
@@ -7,6 +11,7 @@ import 'package:jarvis_ai/modules/prompt/domain/usecase/delete_prompt_usecase.da
 import 'package:jarvis_ai/modules/prompt/domain/usecase/get_prompt_usecase.dart';
 import 'package:jarvis_ai/modules/prompt/domain/usecase/remove_prompt_favorite_usecase.dart';
 import 'package:jarvis_ai/modules/prompt/domain/usecase/update_prompt_usecase.dart';
+import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
 import 'package:suga_core/suga_core.dart';
 
 class PromptViewModel extends GetxController {
@@ -167,9 +172,14 @@ class PromptViewModel extends GetxController {
       await getPrivatePrompt();
       isLoading.value = false;
     } catch (e) {
-      Get.back();
       isLoading.value = false;
-      print("Error during createPrivatePrompt: $e");
+      Get.snackbar(
+        "Error",
+        "Something went wrong! Try again",
+        backgroundColor: AppTheme.red3,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 2),
+      );
     }
   }
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -72,6 +73,8 @@ class SplashPageViewModel extends AppViewModel {
     // );
 
     final isAuth = await this.isAuth();
+    EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
+
     if (!isAuth) {
       await Get.off(() => const LoginPage());
       return unit;
@@ -99,7 +102,6 @@ class SplashPageViewModel extends AppViewModel {
         }
 
         final res = await _refreshTokenUseCase.run();
-        print("refreshToken: $res");
         return res;
       } else {
         return true;

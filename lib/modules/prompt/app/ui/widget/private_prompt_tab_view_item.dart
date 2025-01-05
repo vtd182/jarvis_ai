@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/event_log.dart';
 import 'package:jarvis_ai/extensions/context_ext.dart';
 import 'package:jarvis_ai/modules/home/app/ui/home_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_view_model.dart';
@@ -26,7 +27,7 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
 
   @override
   void initState() {
-    print("tpoo init private");
+    EventLog.logEvent("prompt_private_tab_view");
     controller.isFetchingNewData.value = false;
     controller.getPrivatePrompt();
     _scrollController.addListener(_scrollListener);
@@ -93,6 +94,7 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
+                  EventLog.logEvent("create_private_prompt");
                   Get.dialog(CreatePrivatePromptDialog());
                 },
                 child: Container(
@@ -172,7 +174,10 @@ class _PrivatePromptTabViewItemState extends State<PrivatePromptTabViewItem> {
                                       ),
                                       onPressed: () {
                                         Get.dialog(ConfirmDeletePromptDialog(
-                                          id: item.id!,
+                                          title: "prompt",
+                                          onDelete: () {
+                                            controller.deletePrompt(id: item.id!);
+                                          },
                                         ));
                                       },
                                     ),

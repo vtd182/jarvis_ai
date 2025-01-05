@@ -1,10 +1,12 @@
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
 import 'package:jarvis_ai/modules/home/domain/models/conversation_summary_model.dart';
 import 'package:jarvis_ai/modules/home/domain/usecases/get_history_conversation_usecase.dart';
 import 'package:jarvis_ai/modules/home/domain/usecases/get_token_usage_usecase.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_auth/domain/usecase/knowledge_base_sign_in_usecase.dart';
+import 'package:jarvis_ai/storage/spref.dart';
 import 'package:suga_core/suga_core.dart';
 
 import '../../../../core/abstracts/app_view_model.dart';
@@ -16,9 +18,12 @@ class HomePageViewModel extends AppViewModel {
   final GetTokenUsageUseCase _getTokenUsageUseCase;
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final GetHistoryConversationUseCase _getHistoryConversationUseCase;
+  final KnowledgeBaseSignInUseCase _knowledgeBaseSignInUseCase;
+
   final conversationSummaries = <ConversationSummaryModel>[].obs;
   final RxInt _selectedIndex = 0.obs;
   final currentAssistant = Assistant.gpt_4o_mini.obs;
+
   final models = <Assistant>[
     Assistant.gpt_4o_mini,
     Assistant.gpt_4o,
@@ -27,8 +32,38 @@ class HomePageViewModel extends AppViewModel {
     Assistant.gemini_1_5_flash_latest,
     Assistant.gemini_1_5_pro_latest,
   ].obs;
+
   set selectedIndex(int index) => _selectedIndex.value = index;
   int get selectedIndex => _selectedIndex.value;
+
+  final _query = Rx<String>("");
+  final _orderField = Rx<String>("createdAt");
+  final _order = Rx<String>("DESC");
+  final _offset = Rx<int>(0);
+  final _limit = Rx<int>(10);
+  final _isHasNext = Rx<bool>(false);
+  final _isLoadingMore = Rx<bool>(false);
+
+  set isLoadingMore(bool value) => _isLoadingMore.value = value;
+  bool get isLoadingMore => _isLoadingMore.value;
+
+  set query(String value) => _query.value = value;
+  String get query => _query.value;
+
+  set orderField(String value) => _orderField.value = value;
+  String get orderField => _orderField.value;
+
+  set order(String value) => _order.value = value;
+  String get order => _order.value;
+
+  set offset(int value) => _offset.value = value;
+  int get offset => _offset.value;
+
+  set limit(int value) => _limit.value = value;
+  int get limit => _limit.value;
+
+  bool get isHasNext => _isHasNext.value;
+  set isHasNext(bool value) => _isHasNext.value = value;
 
   Rx<TokenUsage> tokenUsage = TokenUsage(
     availableTokens: 0,
@@ -43,7 +78,23 @@ class HomePageViewModel extends AppViewModel {
     this._getTokenUsageUseCase,
     this._getCurrentUserUseCase,
     this._getHistoryConversationUseCase,
+    this._knowledgeBaseSignInUseCase,
   );
+
+  Future<Unit> onSignInKB() async {
+    final token = await SPref.instance.getKBAccessToken();
+    // if (token != "") {
+    final appToken = await SPref.instance.getAccessToken();
+    if (appToken != "") {
+      await run(
+        () async {
+          await _knowledgeBaseSignInUseCase.run(token: appToken!);
+        },
+      );
+    }
+    // }
+    return unit;
+  }
 
   Future<Unit> getTokenUsage() async {
     await run(() async {
@@ -72,7 +123,21 @@ class HomePageViewModel extends AppViewModel {
       assistantModel: 'dify',
     );
     if (res.items.isNotEmpty) {
-      conversationSummaries.value = res.items;
+      conversationSummaries.assignAll(res.items);
     }
+    isHasNext = res.hasMore;
+  }
+
+  Future<void> onNavItemTapped(int index) async {
+    if (index == 2 || index == 3) {
+      await onSignInKB();
+    }
+    selectedIndex = index;
+    Get.back();
+  }
+
+  Future<void> onRefreshDrawer() async {
+    await getHistoryConversation();
+    await getTokenUsage();
   }
 }

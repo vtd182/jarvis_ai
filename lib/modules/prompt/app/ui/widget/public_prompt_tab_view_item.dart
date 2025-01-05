@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jarvis_ai/ads/event_log.dart';
 import 'package:jarvis_ai/extensions/context_ext.dart';
 import 'package:jarvis_ai/modules/home/app/ui/chat/chat_page_viewmodel.dart';
 import 'package:jarvis_ai/modules/prompt/app/ui/prompt/prompt_view_model.dart';
@@ -23,6 +24,7 @@ class _PublicPromptTabViewItemState extends State<PublicPromptTabViewItem> {
 
   @override
   void initState() {
+    EventLog.logEvent("prompt_public_tab_view");
     controller.isFetchingNewData.value = false;
     controller.getPublicPrompt(query: "");
     _scrollController.addListener(_scrollListener);
