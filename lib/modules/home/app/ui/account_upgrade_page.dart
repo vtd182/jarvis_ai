@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
@@ -117,7 +116,7 @@ class PricingPage extends StatelessWidget {
             ElevatedButton(
               onPressed: _launchURL,
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Colors.blue),
+                backgroundColor: MaterialStateProperty.all(Colors.orange),
               ),
               child: const Text(
                 'Upgrade Now!',
