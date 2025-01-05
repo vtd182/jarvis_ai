@@ -176,4 +176,12 @@ class KBAIAssistantRepository {
       firstMessage: firstMessage,
     );
   }
+
+  Future<KBAIAssistant> favoriteKBAIAssistant({
+    required String assistantId,
+  }) {
+    return dataSource.favoriteKBAIAssistant(
+      assistantId: assistantId,
+    );
+  }
 }
