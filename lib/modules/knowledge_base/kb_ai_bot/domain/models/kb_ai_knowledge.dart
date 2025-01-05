@@ -23,6 +23,10 @@ class KBAIKnowledge extends Equatable {
   final String description;
   @JsonKey(name: 'id')
   final String id;
+  @JsonKey(name: 'numUnits')
+  final int? numUnits;
+  @JsonKey(name: 'totalSize')
+  final double? totalSize;
 
   const KBAIKnowledge({
     required this.createdAt,
@@ -33,6 +37,8 @@ class KBAIKnowledge extends Equatable {
     required this.knowledgeName,
     required this.description,
     required this.id,
+    required this.numUnits,
+    required this.totalSize,
   });
 
   @override

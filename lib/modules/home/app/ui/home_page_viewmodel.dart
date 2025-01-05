@@ -3,7 +3,9 @@ import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/modules/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:jarvis_ai/modules/home/domain/enums/assistant.dart';
 import 'package:jarvis_ai/modules/home/domain/models/conversation_summary_model.dart';
+import 'package:jarvis_ai/modules/home/domain/models/subscription_usage.dart';
 import 'package:jarvis_ai/modules/home/domain/usecases/get_history_conversation_usecase.dart';
+import 'package:jarvis_ai/modules/home/domain/usecases/get_subcription_usage_use_case.dart';
 import 'package:jarvis_ai/modules/home/domain/usecases/get_token_usage_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_auth/domain/usecase/knowledge_base_sign_in_usecase.dart';
 import 'package:jarvis_ai/storage/spref.dart';
@@ -16,6 +18,7 @@ import '../../domain/models/token_usage.dart';
 @lazySingleton
 class HomePageViewModel extends AppViewModel {
   final GetTokenUsageUseCase _getTokenUsageUseCase;
+  final GetSubscriptionUsageUseCase _getSubscriptionUsageUseCase;
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final GetHistoryConversationUseCase _getHistoryConversationUseCase;
   final KnowledgeBaseSignInUseCase _knowledgeBaseSignInUseCase;
@@ -72,6 +75,13 @@ class HomePageViewModel extends AppViewModel {
     date: DateTime.now(),
   ).obs;
 
+  Rx<SubscriptionUsage> subscriptionUsage = SubscriptionUsage(
+    name: '',
+    daily: 0,
+    monthly: 0,
+    annually: 0,
+  ).obs;
+
   Rx<UserModel> currentUser = UserModel(id: '', email: '', username: '', roles: []).obs;
 
   HomePageViewModel(
@@ -79,20 +89,23 @@ class HomePageViewModel extends AppViewModel {
     this._getCurrentUserUseCase,
     this._getHistoryConversationUseCase,
     this._knowledgeBaseSignInUseCase,
+    this._getSubscriptionUsageUseCase,
   );
 
   Future<Unit> onSignInKB() async {
-    final token = await SPref.instance.getKBAccessToken();
-    // if (token != "") {
-    final appToken = await SPref.instance.getAccessToken();
-    if (appToken != "") {
-      await run(
-        () async {
-          await _knowledgeBaseSignInUseCase.run(token: appToken!);
-        },
-      );
+    final token = await SPref.instance.getKBAccessToken() ?? "";
+    final expiresAt = await SPref.instance.getKBExpiresAt();
+    final expiresAtDate = DateTime.fromMillisecondsSinceEpoch(int.tryParse(expiresAt.toString()) ?? 0);
+    if (token == "" || expiresAtDate.isAfter(DateTime.now())) {
+      final appToken = await SPref.instance.getAccessToken();
+      if (appToken != "") {
+        await run(
+          () async {
+            await _knowledgeBaseSignInUseCase.run(token: appToken!);
+          },
+        );
+      }
     }
-    // }
     return unit;
   }
 
@@ -104,13 +117,27 @@ class HomePageViewModel extends AppViewModel {
     return unit;
   }
 
+  Future<Unit> getSubscriptionUsage() async {
+    await run(() async {
+      final subscriptionUsage = await _getSubscriptionUsageUseCase.run();
+      this.subscriptionUsage.value = subscriptionUsage;
+    });
+    return unit;
+  }
+
   Future<UserModel> getCurrentUser() async {
-    return _getCurrentUserUseCase.run();
+    await run(() async {
+      final user = await _getCurrentUserUseCase.run();
+      this.currentUser.value = user;
+    });
+    return currentUser.value;
   }
 
   @override
   void initState() {
     getTokenUsage();
+    getSubscriptionUsage();
+    getCurrentUser();
     getHistoryConversation();
     super.initState();
   }

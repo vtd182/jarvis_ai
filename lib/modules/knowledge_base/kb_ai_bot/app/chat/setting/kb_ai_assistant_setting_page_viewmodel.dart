@@ -55,7 +55,7 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
           title: 'Update Assistant',
           initialName: assistant?.assistantName,
           initialDescription: assistant?.description,
-          onConfirm: (name, description) {
+          onConfirm: (name, description, _) {
             print('Name: $name, Description: $description');
           },
         );
@@ -71,13 +71,43 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
           title: 'Update Assistant',
           initialName: assistant.assistantName,
           initialDescription: assistant.description,
-          onConfirm: (name, description) async {
+          onConfirm: (name, description, _) async {
             final success = await run(
               () => _updateAIAssistantUseCase.run(
                 assistantId: assistant.id,
                 assistantName: name,
                 instructions: "",
                 description: description,
+              ),
+            );
+            if (success) {
+              showToast("Update Assistant Success");
+              await onRefresh();
+            } else {
+              showToast("Update Assistant Failed");
+            }
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> showUpdateInstructionsDialog(KBAIAssistant assistant) async {
+    await showDialog(
+      context: Get.context!,
+      builder: (context) {
+        return KBAIAssistantInfo(
+          title: 'Update Instructions',
+          isInstructionsUpdate: true,
+          initialInstructions: assistant.instructions,
+          onConfirm: (_, __, instructions) async {
+            print("inssssss: " + instructions);
+            final success = await run(
+              () => _updateAIAssistantUseCase.run(
+                assistantId: assistant.id,
+                assistantName: assistant.assistantName,
+                instructions: instructions,
+                description: assistant.description ?? "",
               ),
             );
             if (success) {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:jarvis_ai/gen/assets.gen.dart';
 import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/chat/setting/kb_ai_assistant_setting_page_viewmodel.dart';
 import 'package:suga_core/suga_core.dart';
+
+import 'knowledge_base_manager/kb_ai_assistant_knowledge_base_manager_page.dart';
 
 class KBAIAssistantSettingPage extends StatefulWidget {
   final String assistantId;
@@ -15,24 +17,9 @@ class KBAIAssistantSettingPage extends StatefulWidget {
 }
 
 class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingPage, KBAIAssistantSettingPageViewModel> {
-  bool _isNotificationsEnabled = true;
-  bool _isFavorite = false;
-
   @override
   loadArguments() {
     viewModel.assistantId = widget.assistantId;
-  }
-
-  void _toggleNotifications(bool value) {
-    setState(() {
-      _isNotificationsEnabled = value;
-    });
-  }
-
-  void _toggleFavorite(bool value) {
-    setState(() {
-      _isFavorite = value;
-    });
   }
 
   @override
@@ -92,13 +79,21 @@ class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingP
                 title: const Text(
                   "Knowledge Base",
                 ),
-                onTap: () {},
+                onTap: () {
+                  Get.to(
+                    () => KBAIAssistantKnowledgeBaseManagerPage(
+                      assistantId: widget.assistantId,
+                    ),
+                  );
+                },
               ),
               _buildOptionRow(
                 title: const Text(
                   "Instructions",
                 ),
-                onTap: () {},
+                onTap: () {
+                  viewModel.showUpdateInstructionsDialog(viewModel.assistant!);
+                },
               ),
               _buildOptionRow(
                 title: const Text(

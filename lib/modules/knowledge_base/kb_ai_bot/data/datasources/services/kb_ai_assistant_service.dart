@@ -35,18 +35,18 @@ abstract class KBAIAssistantService {
     @Query("order_field") String orderField,
     @Query("offset") int offset,
     @Query("limit") int limit,
-    @Query("is_favorite") bool isFavorite,
-    @Query("is_published") bool isPublished,
+    @Query("is_favorite") bool? isFavorite,
+    @Query("is_published") bool? isPublished,
   );
 
   @POST("/{assistantId}/knowledges/{knowledgeId}")
-  Future<bool> importKnowledgeToKBAIAssistant(
+  Future<String> importKnowledgeToKBAIAssistant(
     @Path("assistantId") String assistantId,
     @Path("knowledgeId") String knowledgeId,
   );
 
   @DELETE("/{assistantId}/knowledges/{knowledgeId}")
-  Future<bool> removeKnowledgeFromKBAIAssistant(
+  Future<String> removeKnowledgeFromKBAIAssistant(
     @Path("assistantId") String assistantId,
     @Path("knowledgeId") String knowledgeId,
   );
@@ -92,4 +92,7 @@ abstract class KBAIAssistantService {
     @Query("offset") int offset,
     @Query("limit") int limit,
   );
+
+  @POST("/{assistantId}/favorite")
+  Future<KBAIAssistant> favoriteKBAIAssistant(@Path("assistantId") String assistantId);
 }
