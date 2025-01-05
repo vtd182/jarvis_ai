@@ -6,13 +6,9 @@ import 'package:suga_core/suga_core.dart';
 @lazySingleton
 class ReplyEmailUsecase extends Usecase {
   final EmailRepository _emailRepository;
-  const ReplyEmailUsecase({required EmailRepository emailRepository})
-      : _emailRepository = emailRepository;
+  const ReplyEmailUsecase({required EmailRepository emailRepository}) : _emailRepository = emailRepository;
 
-  Future<EmailReplyResponse> run(
-      {required String email,
-      required String mainIdea,
-      required Map<String, dynamic> metadata}) async {
+  Future<EmailReplyResponse> run({required String email, required String mainIdea, required Map<String, dynamic> metadata}) async {
     return _emailRepository.reponseEmail(
       email: email,
       mainIdea: mainIdea,

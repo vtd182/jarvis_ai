@@ -12,8 +12,7 @@ class EmailIdeaSuggestionResponse {
     required this.ideas,
   });
 
-  factory EmailIdeaSuggestionResponse.fromJson(Map<String, dynamic> json) =>
-      _$EmailIdeaSuggestionResponseFromJson(json);
+  factory EmailIdeaSuggestionResponse.fromJson(Map<String, dynamic> json) => _$EmailIdeaSuggestionResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$EmailIdeaSuggestionResponseToJson(this);
 }

@@ -26,8 +26,7 @@ class EmailViewModel extends AppViewModel {
 
   Future<void> responseEmail() async {
     loadingReply.value = true;
-    final res = await _replyEmailUsecase
-        .run(email: content.value, mainIdea: idea.value, metadata: {
+    final res = await _replyEmailUsecase.run(email: content.value, mainIdea: idea.value, metadata: {
       'context': [<String, String>{}],
       'subject': title.value != '' ? title.value : 'Auto detect for me',
       'sender': sender.value != '' ? sender.value : 'Auto detect for me',

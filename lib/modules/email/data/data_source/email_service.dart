@@ -18,6 +18,5 @@ abstract class EmailService {
   Future<EmailReplyResponse> responseEmail(@Body() Map<String, dynamic> body);
 
   @POST("/reply-ideas")
-  Future<EmailIdeaSuggestionResponse> suggestReplyIdeas(
-      @Body() Map<String, dynamic> body);
+  Future<EmailIdeaSuggestionResponse> suggestReplyIdeas(@Body() Map<String, dynamic> body);
 }

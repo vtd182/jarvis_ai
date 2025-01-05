@@ -8,22 +8,22 @@ part 'subscription_usage.g.dart';
 @CopyWith()
 class SubscriptionUsage extends Equatable {
   @JsonKey(name: "name")
-   String name;
+  String name;
 
   @JsonKey(name: "dailyTokens")
   int daily;
 
   @JsonKey(name: "monthlyTokens")
-    int monthly;
+  int monthly;
 
   @JsonKey(name: "annuallyTokens")
-    int annually;
+  int annually;
 
   SubscriptionUsage({
-        required this.name,
-        required this.daily,
-        required this.monthly,
-        required this.annually,
+    required this.name,
+    required this.daily,
+    required this.monthly,
+    required this.annually,
   });
 
   @override

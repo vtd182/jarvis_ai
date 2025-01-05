@@ -15,8 +15,7 @@ class EmailReplyResponse {
     required this.remainingUsage,
   });
 
-  factory EmailReplyResponse.fromJson(Map<String, dynamic> json) =>
-      _$EmailReplyResponseFromJson(json);
+  factory EmailReplyResponse.fromJson(Map<String, dynamic> json) => _$EmailReplyResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$EmailReplyResponseToJson(this);
 }
