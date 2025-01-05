@@ -151,7 +151,7 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
     _debounce = Timer(
       const Duration(seconds: 1),
       () {
-        print("Search: $query");
+        viewModel.onSearch(query);
       },
     );
   }

@@ -205,4 +205,11 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
       },
     );
   }
+
+  Future<void> onSearch(String value) async {
+    await showLoading();
+    query = value;
+    await loadAIAssistants();
+    await hideLoading();
+  }
 }
