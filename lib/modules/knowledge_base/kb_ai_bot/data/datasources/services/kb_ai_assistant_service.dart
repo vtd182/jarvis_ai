@@ -40,13 +40,13 @@ abstract class KBAIAssistantService {
   );
 
   @POST("/{assistantId}/knowledges/{knowledgeId}")
-  Future<bool> importKnowledgeToKBAIAssistant(
+  Future<String> importKnowledgeToKBAIAssistant(
     @Path("assistantId") String assistantId,
     @Path("knowledgeId") String knowledgeId,
   );
 
   @DELETE("/{assistantId}/knowledges/{knowledgeId}")
-  Future<bool> removeKnowledgeFromKBAIAssistant(
+  Future<String> removeKnowledgeFromKBAIAssistant(
     @Path("assistantId") String assistantId,
     @Path("knowledgeId") String knowledgeId,
   );

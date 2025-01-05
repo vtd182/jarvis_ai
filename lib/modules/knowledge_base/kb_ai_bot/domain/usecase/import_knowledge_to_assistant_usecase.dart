@@ -7,7 +7,7 @@ class ImportKnowledgeToAssistantUseCase {
 
   ImportKnowledgeToAssistantUseCase(this._aiAssistantRepository);
 
-  Future<bool> run({
+  Future<String> run({
     required String assistantId,
     required String knowledgeId,
   }) {

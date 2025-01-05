@@ -38,12 +38,12 @@ abstract class KBAIAssistantDataSource {
     required bool isPublished,
   });
 
-  Future<bool> importKnowledgeToKBAIAssistant({
+  Future<String> importKnowledgeToKBAIAssistant({
     required String assistantId,
     required String knowledgeId,
   });
 
-  Future<bool> removeKnowledgeFromKBAIAssistant({
+  Future<String> removeKnowledgeFromKBAIAssistant({
     required String assistantId,
     required String knowledgeId,
   });
@@ -235,7 +235,7 @@ class KBAIAssistantDataSourceImp implements KBAIAssistantDataSource {
   }
 
   @override
-  Future<bool> importKnowledgeToKBAIAssistant({required String assistantId, required String knowledgeId}) {
+  Future<String> importKnowledgeToKBAIAssistant({required String assistantId, required String knowledgeId}) {
     return _kbAiAssistantService.importKnowledgeToKBAIAssistant(
       assistantId,
       knowledgeId,
@@ -243,7 +243,7 @@ class KBAIAssistantDataSourceImp implements KBAIAssistantDataSource {
   }
 
   @override
-  Future<bool> removeKnowledgeFromKBAIAssistant({required String assistantId, required String knowledgeId}) {
+  Future<String> removeKnowledgeFromKBAIAssistant({required String assistantId, required String knowledgeId}) {
     return _kbAiAssistantService.removeKnowledgeFromKBAIAssistant(
       assistantId,
       knowledgeId,
