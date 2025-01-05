@@ -82,8 +82,7 @@ class HomePageViewModel extends AppViewModel {
     annually: 0,
   ).obs;
 
-  Rx<UserModel> currentUser =
-      UserModel(id: '', email: '', username: '', roles: []).obs;
+  Rx<UserModel> currentUser = UserModel(id: '', email: '', username: '', roles: []).obs;
 
   HomePageViewModel(
     this._getTokenUsageUseCase,

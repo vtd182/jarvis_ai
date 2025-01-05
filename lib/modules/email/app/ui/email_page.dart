@@ -53,8 +53,7 @@ class EmailInput extends StatelessWidget {
                 onChanged: (value) {
                   locator<EmailViewModel>().title.value = value;
                   if (locator<EmailViewModel>().content.value.isNotEmpty) {
-                    _debouncer.run(
-                        () => locator<EmailViewModel>().generateSuggestions());
+                    _debouncer.run(() => locator<EmailViewModel>().generateSuggestions());
                   }
                 }),
             const SizedBox(height: 16),
@@ -68,8 +67,7 @@ class EmailInput extends StatelessWidget {
                 onChanged: (value) {
                   locator<EmailViewModel>().sender.value = value;
                   if (locator<EmailViewModel>().content.value.isNotEmpty) {
-                    _debouncer.run(
-                        () => locator<EmailViewModel>().generateSuggestions());
+                    _debouncer.run(() => locator<EmailViewModel>().generateSuggestions());
                   }
                 }),
             const SizedBox(height: 16),
@@ -84,8 +82,7 @@ class EmailInput extends StatelessWidget {
               onChanged: (value) {
                 locator<EmailViewModel>().content.value = value;
                 if (value.isNotEmpty) {
-                    _debouncer.run(
-                        () => locator<EmailViewModel>().generateSuggestions());
+                  _debouncer.run(() => locator<EmailViewModel>().generateSuggestions());
                 }
               },
             ),
@@ -120,15 +117,12 @@ class ReplySuggestions extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        emailViewModel.idea.value =
-                            emailViewModel.suggestions[index];
-                        textEditingController.text =
-                            emailViewModel.suggestions[index];
+                        emailViewModel.idea.value = emailViewModel.suggestions[index];
+                        textEditingController.text = emailViewModel.suggestions[index];
                       },
                       child: Obx(() => _buildReplyOption(
                             emailViewModel.suggestions[index],
-                            emailViewModel.idea.value ==
-                                emailViewModel.suggestions[index],
+                            emailViewModel.idea.value == emailViewModel.suggestions[index],
                           )),
                     );
                   },
@@ -148,8 +142,7 @@ class ReplySuggestions extends StatelessWidget {
               GestureDetector(
                 onTap: () => _showLanguageChooser(context),
                 child: Obx(
-                  () => Text(
-                      'Language: ${locator<EmailViewModel>().selectedLanguage.value}'),
+                  () => Text('Language: ${locator<EmailViewModel>().selectedLanguage.value}'),
                 ),
               ),
             ],
@@ -200,9 +193,7 @@ class ReplySuggestions extends StatelessWidget {
         ),
         child: ListTile(
           title: Text(text),
-          trailing: selected
-              ? const Icon(Icons.check)
-              : const Icon(Icons.arrow_forward),
+          trailing: selected ? const Icon(Icons.check) : const Icon(Icons.arrow_forward),
         ),
       ),
     );
@@ -222,8 +213,7 @@ class ReplySuggestions extends StatelessWidget {
               languages: locator<EmailViewModel>().languages,
               onLanguageSelected: (selectedLanguage) {
                 // print('Selected Language: $selectedLanguage');
-                locator<EmailViewModel>().selectedLanguage.value =
-                    selectedLanguage;
+                locator<EmailViewModel>().selectedLanguage.value = selectedLanguage;
                 // Handle language selection
               },
             ),
@@ -267,13 +257,9 @@ class ReplySuggestions extends StatelessWidget {
                       Center(
                           child: ElevatedButton(
                               onPressed: () {
-                                Clipboard.setData(ClipboardData(
-                                    text:
-                                        locator<EmailViewModel>().reply.value));
+                                Clipboard.setData(ClipboardData(text: locator<EmailViewModel>().reply.value));
                                 Navigator.pop(context);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Copied to clipboard')));
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Copied to clipboard')));
                               },
                               child: const Text('Copy')))
                     ]);
@@ -301,31 +287,26 @@ class ReplySuggestions extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Email Style',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const Text('Email Style', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 20),
                 const Text('Length'),
                 Wrap(
                   spacing: 10,
                   children: [
-                    for (var length in locator<EmailViewModel>().length)
-                      _buildOptionChip(length, 'Length'),
+                    for (var length in locator<EmailViewModel>().length) _buildOptionChip(length, 'Length'),
                   ],
                 ),
                 const SizedBox(height: 20),
                 const Text('Formality'),
                 Wrap(spacing: 10, children: [
-                  for (var formality in locator<EmailViewModel>().formality)
-                    _buildOptionChip(formality, 'Formality'),
+                  for (var formality in locator<EmailViewModel>().formality) _buildOptionChip(formality, 'Formality'),
                 ]),
                 const SizedBox(height: 20),
                 const Text('Tone'),
                 Wrap(
                   spacing: 10,
                   children: [
-                    for (var tone in locator<EmailViewModel>().tone)
-                      _buildOptionChip(tone, 'Tone'),
+                    for (var tone in locator<EmailViewModel>().tone) _buildOptionChip(tone, 'Tone'),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -347,16 +328,9 @@ class ReplySuggestions extends StatelessWidget {
   Widget _buildOptionChip(String value, String type) {
     return Obx(() => ChoiceChip(
           label: Text(value),
-          selected:
-              (type == 'Length' &&
-                      locator<EmailViewModel>().selectedEmailLength.value ==
-                          value) ||
-                  (type == 'Formality' &&
-                      locator<EmailViewModel>().selectedEmailFormality.value ==
-                          value) ||
-                  (type == 'Tone' &&
-                      locator<EmailViewModel>().selectedEmailTone.value ==
-                          value),
+          selected: (type == 'Length' && locator<EmailViewModel>().selectedEmailLength.value == value) ||
+              (type == 'Formality' && locator<EmailViewModel>().selectedEmailFormality.value == value) ||
+              (type == 'Tone' && locator<EmailViewModel>().selectedEmailTone.value == value),
           onSelected: (selected) {
             switch (type) {
               case 'Length':
@@ -394,8 +368,7 @@ class _LanguageDialState extends State<LanguageDial> {
   @override
   initState() {
     super.initState();
-    _selectedIndex = widget.languages
-        .indexOf(locator<EmailViewModel>().selectedLanguage.value);
+    _selectedIndex = widget.languages.indexOf(locator<EmailViewModel>().selectedLanguage.value);
   }
 
   @override
@@ -411,8 +384,7 @@ class _LanguageDialState extends State<LanguageDial> {
           Expanded(
             child: ListWheelScrollView.useDelegate(
               physics: const FixedExtentScrollPhysics(),
-              controller:
-                  FixedExtentScrollController(initialItem: _selectedIndex),
+              controller: FixedExtentScrollController(initialItem: _selectedIndex),
               itemExtent: 50,
               diameterRatio: 2.0, // Adjust to control curvature
               perspective: 0.003, // Adjust to control 3D effect
@@ -429,12 +401,8 @@ class _LanguageDialState extends State<LanguageDial> {
                       widget.languages[index],
                       style: TextStyle(
                         fontSize: 16,
-                        color: index == _selectedIndex
-                            ? Colors.blue
-                            : Colors.black54,
-                        fontWeight: index == _selectedIndex
-                            ? FontWeight.bold
-                            : FontWeight.normal,
+                        color: index == _selectedIndex ? Colors.blue : Colors.black54,
+                        fontWeight: index == _selectedIndex ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
                   );

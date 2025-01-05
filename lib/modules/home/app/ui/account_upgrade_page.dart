@@ -38,8 +38,7 @@ class PricingPage extends StatelessWidget {
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50)))),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)))),
                   child: //x icon
                       const Icon(Icons.close),
                 )),
@@ -122,8 +121,7 @@ class PricingPage extends StatelessWidget {
               ),
               child: const Text(
                 'Upgrade Now!',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
             ),
           ],
@@ -136,8 +134,7 @@ class PricingPage extends StatelessWidget {
     const url = 'https://admin.jarvis.cx/pricing/overview';
     try {
       print("test");
-      await launchUrl(Uri.parse(url),
-          mode: LaunchMode.externalNonBrowserApplication);
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalNonBrowserApplication);
     } catch (e) {
       print(e);
     }
@@ -153,9 +150,7 @@ class PricingPage extends StatelessWidget {
   }) {
     return Expanded(
       child: Card(
-        color: tier == 'Pro'
-            ? Colors.orange[100]
-            : (tier == 'Starter' ? Colors.blue[100] : Colors.white),
+        color: tier == 'Pro' ? Colors.orange[100] : (tier == 'Starter' ? Colors.blue[100] : Colors.white),
         elevation: 4,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -224,8 +219,7 @@ class BlinkAnimation extends StatefulWidget {
   State<BlinkAnimation> createState() => _BlinkAnimationState();
 }
 
-class _BlinkAnimationState extends State<BlinkAnimation>
-    with SingleTickerProviderStateMixin {
+class _BlinkAnimationState extends State<BlinkAnimation> with SingleTickerProviderStateMixin {
   late final AnimationController controller = AnimationController(
     duration: const Duration(seconds: 2),
     vsync: this,

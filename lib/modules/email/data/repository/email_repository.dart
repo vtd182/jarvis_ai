@@ -9,10 +9,7 @@ class EmailRepository {
 
   EmailRepository(this._emailService);
 
-  Future<EmailReplyResponse> reponseEmail(
-      {required String email,
-      required String mainIdea,
-      required Map<String, dynamic> metadata}) async {
+  Future<EmailReplyResponse> reponseEmail({required String email, required String mainIdea, required Map<String, dynamic> metadata}) async {
     return _emailService.responseEmail({
       "email": email,
       "action": "Reply to this email",
@@ -21,8 +18,7 @@ class EmailRepository {
     });
   }
 
-  Future<EmailIdeaSuggestionResponse> suggestReplyIdeas(
-      {required String email, required Map<String, dynamic> metadata}) async {
+  Future<EmailIdeaSuggestionResponse> suggestReplyIdeas({required String email, required Map<String, dynamic> metadata}) async {
     final queries = {
       "email": email,
       "action": "Suggest 3 ideas for this email",

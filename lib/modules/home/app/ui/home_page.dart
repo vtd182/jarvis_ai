@@ -64,13 +64,11 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                             children: [
                               CircleAvatar(
                                 backgroundColor: Colors.blue.withOpacity(0.2),
-                                child: const Icon(Icons.person,
-                                    color: Colors.blue),
+                                child: const Icon(Icons.person, color: Colors.blue),
                               ),
                               const SizedBox(width: 12),
                               Obx(() => Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         viewModel.currentUser.value.username,
@@ -110,32 +108,22 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                           Obx(() => LinearProgressIndicator(
                                 value: viewModel.tokenUsage.value.unlimited
                                     ? 1.0
-                                    : viewModel
-                                            .tokenUsage.value.availableTokens /
-                                        viewModel.tokenUsage.value.totalTokens,
+                                    : viewModel.tokenUsage.value.availableTokens / viewModel.tokenUsage.value.totalTokens,
                                 backgroundColor: Colors.grey[300],
-                                valueColor: const AlwaysStoppedAnimation<Color>(
-                                    Colors.blue),
+                                valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
                               )),
                           const SizedBox(height: 8),
                           //Account type indicator
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const PricingPage()));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PricingPage()));
                             },
                             child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color:
-                                    viewModel.subscriptionUsage.value.annually >
-                                            0
-                                        ? Colors.yellowAccent
-                                        : (viewModel.subscriptionUsage.value
-                                                    .monthly >
-                                                0
-                                            ? Colors.green
-                                            : Colors.blue),
+                                color: viewModel.subscriptionUsage.value.annually > 0
+                                    ? Colors.yellowAccent
+                                    : (viewModel.subscriptionUsage.value.monthly > 0 ? Colors.green : Colors.blue),
                                 borderRadius: BorderRadius.circular(12),
                                 boxShadow: [
                                   BoxShadow(
@@ -149,8 +137,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                                   child: Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: Text(
-                                  viewModel.subscriptionUsage.value.name
-                                      .toUpperCase(),
+                                  viewModel.subscriptionUsage.value.name.toUpperCase(),
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -211,8 +198,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                       () => NotificationListener<ScrollNotification>(
                         onNotification: (scrollInfo) {
                           if (scrollInfo.metrics.maxScrollExtent > 0) {
-                            final isAtBottom = scrollInfo.metrics.pixels ==
-                                scrollInfo.metrics.maxScrollExtent;
+                            final isAtBottom = scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent;
                             if (isAtBottom && !viewModel.isLoadingMore) {
                               // todo: add loadmore
                             }
@@ -228,10 +214,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                               title: Text(
                                 item.title,
                                 style: TextStyle(
-                                  color: viewModel.selectedIndex == 0 &&
-                                          locator<ChatPageViewModel>()
-                                                  .conversationId ==
-                                              item.id
+                                  color: viewModel.selectedIndex == 0 && locator<ChatPageViewModel>().conversationId == item.id
                                       ? Colors.blue
                                       : Colors.grey,
                                 ),
@@ -241,8 +224,7 @@ class _HomePageState extends BaseViewState<HomePage, HomePageViewModel> {
                                 if (viewModel.selectedIndex != 0) {
                                   viewModel.onNavItemTapped(0);
                                 }
-                                locator<ChatPageViewModel>().conversationId =
-                                    item.id;
+                                locator<ChatPageViewModel>().conversationId = item.id;
                               },
                             );
                           },
@@ -370,12 +352,10 @@ class NavDrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading:
-          Icon(icon, color: index == selectedIndex ? Colors.blue : Colors.grey),
+      leading: Icon(icon, color: index == selectedIndex ? Colors.blue : Colors.grey),
       title: Text(
         label,
-        style: TextStyle(
-            color: index == selectedIndex ? Colors.blue : Colors.grey),
+        style: TextStyle(color: index == selectedIndex ? Colors.blue : Colors.grey),
       ),
       selected: index == selectedIndex,
       onTap: () => onTap(index),
