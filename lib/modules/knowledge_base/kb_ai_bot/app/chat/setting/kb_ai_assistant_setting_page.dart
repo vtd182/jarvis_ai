@@ -79,6 +79,7 @@ class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingP
                 _buildOptionRow(
                   title: const Text(
                     "Knowledge Base",
+                    style: TextStyle(fontSize: 16),
                   ),
                   onTap: () {
                     Get.to(
@@ -91,6 +92,7 @@ class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingP
                 _buildOptionRow(
                   title: const Text(
                     "Instructions",
+                    style: TextStyle(fontSize: 16),
                   ),
                   onTap: () {
                     viewModel.showUpdateInstructionsDialog(viewModel.assistant!);
@@ -99,7 +101,11 @@ class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingP
                 _buildOptionRow(
                   title: const Text(
                     "Delete Assistant",
-                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                   onTap: () {
                     viewModel.showDeleteAssistantDialog(viewModel.assistant!);
