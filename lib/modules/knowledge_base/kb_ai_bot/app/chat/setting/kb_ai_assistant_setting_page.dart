@@ -17,24 +17,9 @@ class KBAIAssistantSettingPage extends StatefulWidget {
 }
 
 class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingPage, KBAIAssistantSettingPageViewModel> {
-  bool _isNotificationsEnabled = true;
-  bool _isFavorite = false;
-
   @override
   loadArguments() {
     viewModel.assistantId = widget.assistantId;
-  }
-
-  void _toggleNotifications(bool value) {
-    setState(() {
-      _isNotificationsEnabled = value;
-    });
-  }
-
-  void _toggleFavorite(bool value) {
-    setState(() {
-      _isFavorite = value;
-    });
   }
 
   @override
@@ -106,7 +91,9 @@ class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingP
                 title: const Text(
                   "Instructions",
                 ),
-                onTap: () {},
+                onTap: () {
+                  viewModel.showUpdateInstructionsDialog(viewModel.assistant!);
+                },
               ),
               _buildOptionRow(
                 title: const Text(
