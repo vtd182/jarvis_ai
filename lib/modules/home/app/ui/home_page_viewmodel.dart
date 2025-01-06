@@ -109,11 +109,13 @@ class HomePageViewModel extends AppViewModel {
     if (token == "" || expiresAtDate.isAfter(DateTime.now())) {
       final appToken = await SPref.instance.getAccessToken();
       if (appToken != "") {
+        await showLoading();
         await run(
           () async {
             await _knowledgeBaseSignInUseCase.run(token: appToken!);
           },
         );
+        await hideLoading();
       }
     }
     return unit;
