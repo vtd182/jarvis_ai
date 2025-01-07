@@ -37,6 +37,7 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
   void dispose() {
     _scrollController.removeListener(_handleScroll);
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 

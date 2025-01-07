@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/locator.dart';
@@ -26,6 +27,41 @@ class _KBAIAssistantKnowledgeBaseManagerPageState
   final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
 
+  final ScrollController _scrollController = ScrollController();
+  bool _isFabVisible = true; // Trạng thái hiển thị FAB
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_handleScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_handleScroll);
+    _scrollController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _handleScroll() {
+    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+      // Nếu trượt xuống thì ẩn FAB
+      if (_isFabVisible) {
+        setState(() {
+          _isFabVisible = false;
+        });
+      }
+    } else if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
+      // Nếu trượt lên thì hiển thị FAB
+      if (!_isFabVisible) {
+        setState(() {
+          _isFabVisible = true;
+        });
+      }
+    }
+  }
+
   @override
   loadArguments() {
     viewModel.assistantId.value = widget.assistantId;
@@ -36,7 +72,7 @@ class _KBAIAssistantKnowledgeBaseManagerPageState
     return SafeArea(
       child: Obx(
         () => Scaffold(
-          floatingActionButton: viewModel.kBAIKnowledgeImportedList.isEmpty
+          floatingActionButton: viewModel.kBAIKnowledgeImportedList.isEmpty || !_isFabVisible
               ? null
               : FloatingActionButton(
                   onPressed: () async {
@@ -107,6 +143,7 @@ class _KBAIAssistantKnowledgeBaseManagerPageState
 
   Widget _buildGrid() {
     return ResponsiveGridList(
+      controller: _scrollController,
       desiredItemWidth: 300,
       minSpacing: 16,
       children: [
