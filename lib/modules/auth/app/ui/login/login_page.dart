@@ -2,14 +2,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/ads/event_log.dart';
+import 'package:jarvis_ai/gen/assets.gen.dart';
 import 'package:jarvis_ai/locator.dart';
+import 'package:jarvis_ai/modules/auth/app/ui/forgot_password/forgot_password_page.dart';
 import 'package:jarvis_ai/modules/auth/app/ui/login/login_page_viewmodel.dart';
+import 'package:jarvis_ai/modules/auth/app/ui/register/register_page.dart';
 import 'package:jarvis_ai/modules/shared/theme/app_theme.dart';
 import 'package:suga_core/suga_core.dart';
-
-import '../../../../../gen/assets.gen.dart';
-import '../forgot_password/forgot_password_page.dart';
-import '../register/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -25,16 +24,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-        ),
+        backgroundColor: Colors.white,
       ),
       body: const LoginPageView(),
     );
@@ -322,7 +312,7 @@ class _LoginPageViewState extends BaseViewState<LoginPageView, LoginPageViewMode
   }
 
   Future<void> _login() async {
-    await viewModel.login("cuongtp1408@gmail.com", "Aa123456");
+    //await viewModel.login("cuongtp1408@gmail.com", "Aa123456");
     if (viewModel.autoValidateMode.value == AutovalidateMode.disabled) {
       viewModel.autoValidateMode.value = AutovalidateMode.always;
     }
