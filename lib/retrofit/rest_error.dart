@@ -31,6 +31,14 @@ class RestError extends DioException {
         allMessages.add(map);
         return RestError(allMessages, headers);
       }
+    } else if (map is Map<String, dynamic>) {
+      if (map.containsKey("message") && map["message"] != null) {
+        if (map.containsKey("details") && map["details"] is List<dynamic>) {
+          for (final detail in map["details"]) {
+            allMessages.add(detail["issue"].toString());
+          }
+        }
+      }
     }
 
     // Nếu map chứa key "message", thêm giá trị của message vào allMessages
