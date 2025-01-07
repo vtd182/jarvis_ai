@@ -76,7 +76,7 @@ class SplashPageViewModel extends AppViewModel {
     EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
 
     if (!isAuth) {
-      await Get.off(() => const LoginPage());
+      await Get.offAll(() => const LoginPage());
       return unit;
     }
 
