@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jarvis_ai/locator.dart';
@@ -23,15 +24,51 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
   final TextEditingController _searchController = TextEditingController();
   Timer? _debounce;
 
+  final ScrollController _scrollController = ScrollController();
+  bool _isFabVisible = true; // Trạng thái hiển thị FAB
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_handleScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_handleScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _handleScroll() {
+    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+      // Nếu trượt xuống thì ẩn FAB
+      if (_isFabVisible) {
+        setState(() {
+          _isFabVisible = false;
+        });
+      }
+    } else if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
+      // Nếu trượt lên thì hiển thị FAB
+      if (!_isFabVisible) {
+        setState(() {
+          _isFabVisible = true;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await viewModel.showCreateAssistantDialog();
-        },
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: _isFabVisible
+          ? FloatingActionButton(
+              onPressed: () async {
+                await viewModel.showCreateAssistantDialog();
+              },
+              child: const Icon(Icons.add),
+            )
+          : null,
       body: Obx(
         () => RefreshIndicator(
           onRefresh: () async {
@@ -99,6 +136,7 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
 
   Widget _buildGrid() {
     return ResponsiveGridList(
+      controller: _scrollController,
       desiredItemWidth: 300,
       minSpacing: 16,
       children: [
