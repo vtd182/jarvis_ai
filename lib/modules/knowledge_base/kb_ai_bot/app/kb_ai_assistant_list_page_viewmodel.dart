@@ -103,6 +103,7 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
           initialName: null,
           initialDescription: null,
           onConfirm: (name, description, _) async {
+            await showLoading();
             final success = await run(
               () => _createAIAssistantUseCase.run(
                 assistantName: name,
@@ -116,6 +117,7 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
             } else {
               showToast("Create Assistant Failed");
             }
+            await hideLoading();
           },
         );
       },
@@ -143,6 +145,7 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
           initialName: assistant.assistantName,
           initialDescription: assistant.description,
           onConfirm: (name, description, _) async {
+            await showLoading();
             final success = await run(
               () => _updateAIAssistantUseCase.run(
                 assistantId: assistant.id,
@@ -157,6 +160,7 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
             } else {
               showToast("Update Assistant Failed");
             }
+            await hideLoading();
           },
         );
       },
@@ -170,6 +174,7 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
     );
     if (confirm) {
       String delete = "";
+      await showLoading();
       final success = await run(() async {
         delete = await _deleteAIAssistantByIdUseCase.run(assistantId: assistant.id);
       });
@@ -180,6 +185,7 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
       } else {
         showToast("Delete Assistant Failed");
       }
+      await hideLoading();
     }
   }
 
@@ -195,13 +201,13 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
               onPressed: () {
                 Get.back(result: false);
               },
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () {
                 Get.back(result: true);
               },
-              child: Text("Confirm"),
+              child: const Text("Confirm"),
             ),
           ],
         );
@@ -251,7 +257,7 @@ extension FilterTypeExtension on FilterType {
       case FilterType.favorite:
         return "Favorite";
       case FilterType.published:
-        return "Fublished";
+        return "Published";
       case FilterType.all:
         return "All";
     }
