@@ -138,6 +138,7 @@ class _KBAIAssistantListPageState extends BaseViewState<KBAIAssistantListPage, K
   Widget _buildGrid() {
     return ResponsiveGridList(
       controller: _scrollController,
+      physics: const AlwaysScrollableScrollPhysics(),
       desiredItemWidth: 300,
       minSpacing: 16,
       children: [

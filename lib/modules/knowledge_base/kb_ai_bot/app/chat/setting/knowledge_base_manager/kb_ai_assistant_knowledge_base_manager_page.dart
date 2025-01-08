@@ -143,6 +143,7 @@ class _KBAIAssistantKnowledgeBaseManagerPageState
 
   Widget _buildGrid() {
     return ResponsiveGridList(
+      physics: const AlwaysScrollableScrollPhysics(),
       controller: _scrollController,
       desiredItemWidth: 300,
       minSpacing: 16,

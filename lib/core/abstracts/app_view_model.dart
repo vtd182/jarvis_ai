@@ -17,6 +17,7 @@ abstract class AppViewModel extends BaseViewModel {
 
   @override
   Future<Unit> handleError(dynamic error) async {
+    await locator<LoadingHelper>().clear();
     if (error is RestError) {
       final errorCode = error.getHeader('X-Error-Code');
       await handleRestError(error, errorCode);
