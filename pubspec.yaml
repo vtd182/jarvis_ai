@@ -222,11 +222,18 @@ dev_dependencies:
 
   mockito: ^5.4.2
   pedantic: ^1.11.1
+  flutter_launcher_icons: ^0.13.1
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/ic_app_launcher.png"
 
 flutter_gen:
   output: lib/gen/
   line_length: 150
+
+
 
 flutter:
   uses-material-design: true
@@ -235,6 +242,7 @@ flutter:
     - assets/images/
     - assets/langs/
     - assets/map_style.txt
+    - assets/ic_app_launcher.png
   fonts:
     - family: Lobster
       fonts:
