@@ -44,20 +44,15 @@ class _KBAIAssistantSettingPageState extends BaseViewState<KBAIAssistantSettingP
                     Positioned(
                         right: 0,
                         bottom: 0,
-                        child: InkWell(
-                          onTap: () async {
-                            await viewModel.showCreateAssistantDialog();
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
-                              shape: BoxShape.circle,
-                            ),
-                            child: InkWell(
-                              onTap: () => viewModel.showUpdateAssistantDialog(viewModel.assistant!),
-                              child: const Icon(Icons.edit),
-                            ),
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            shape: BoxShape.circle,
+                          ),
+                          child: InkWell(
+                            onTap: () => viewModel.showUpdateAssistantDialog(viewModel.assistant!),
+                            child: const Icon(Icons.edit),
                           ),
                         )),
                   ],

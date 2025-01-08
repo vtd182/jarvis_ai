@@ -1,10 +1,13 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/core/abstracts/app_view_model.dart';
 import 'package:jarvis_ai/helpers/ui_helper.dart';
 import 'package:jarvis_ai/helpers/utils.dart';
+import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/shared/kb_ai_assistant_info.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/events/kb_ai_delete_event.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/delete_ai_assistant_by_id_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/get_ai_assistant_by_id_usecase.dart';
@@ -47,22 +50,6 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
     await getAssistantById(assistantId);
   }
 
-  Future<void> showCreateAssistantDialog() async {
-    await showDialog(
-      context: Get.context!,
-      builder: (context) {
-        return KBAIAssistantInfo(
-          title: 'Update Assistant',
-          initialName: assistant?.assistantName,
-          initialDescription: assistant?.description,
-          onConfirm: (name, description, _) {
-            print('Name: $name, Description: $description');
-          },
-        );
-      },
-    );
-  }
-
   Future<void> showUpdateAssistantDialog(KBAIAssistant assistant) async {
     await showDialog(
       context: Get.context!,
@@ -72,6 +59,7 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
           initialName: assistant.assistantName,
           initialDescription: assistant.description,
           onConfirm: (name, description, _) async {
+            await showLoading();
             final success = await run(
               () => _updateAIAssistantUseCase.run(
                 assistantId: assistant.id,
@@ -80,11 +68,10 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
                 description: description,
               ),
             );
+            await hideLoading();
             if (success) {
               showToast("Update Assistant Success");
               await onRefresh();
-            } else {
-              showToast("Update Assistant Failed");
             }
           },
         );
@@ -101,7 +88,7 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
           isInstructionsUpdate: true,
           initialInstructions: assistant.instructions,
           onConfirm: (_, __, instructions) async {
-            print("inssssss: " + instructions);
+            await showLoading();
             final success = await run(
               () => _updateAIAssistantUseCase.run(
                 assistantId: assistant.id,
@@ -110,11 +97,10 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
                 description: assistant.description ?? "",
               ),
             );
+            await hideLoading();
             if (success) {
               showToast("Update Assistant Success");
               await onRefresh();
-            } else {
-              showToast("Update Assistant Failed");
             }
           },
         );
@@ -129,15 +115,16 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
     );
     if (confirm) {
       String delete = "";
+      await showLoading();
       final success = await run(() async {
         delete = await _deleteAIAssistantByIdUseCase.run(assistantId: assistant.id);
       });
+      await hideLoading();
       if (success && delete == "true") {
+        locator<EventBus>().fire(const KBAIDeleteEvent());
         backPageOrHome();
         showToast("Delete Assistant Success");
         await onRefresh();
-      } else {
-        showToast("Delete Assistant Failed");
       }
     }
   }
@@ -154,13 +141,13 @@ class KBAIAssistantSettingPageViewModel extends AppViewModel {
               onPressed: () {
                 Get.back(result: false);
               },
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () {
                 Get.back(result: true);
               },
-              child: Text("Confirm"),
+              child: const Text("Confirm"),
             ),
           ],
         );

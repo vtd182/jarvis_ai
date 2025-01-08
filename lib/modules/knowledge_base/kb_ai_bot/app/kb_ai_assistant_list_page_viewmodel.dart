@@ -1,9 +1,14 @@
+import 'dart:async';
+
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 import 'package:jarvis_ai/core/abstracts/app_view_model.dart';
 import 'package:jarvis_ai/helpers/ui_helper.dart';
+import 'package:jarvis_ai/locator.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/app/shared/kb_ai_assistant_info.dart';
+import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/events/kb_ai_delete_event.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/models/kb_ai_assistant.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/create_ai_assistant_usecase.dart';
 import 'package:jarvis_ai/modules/knowledge_base/kb_ai_bot/domain/usecase/delete_ai_assistant_by_id_usecase.dart';
@@ -19,6 +24,8 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
   final DeleteAIAssistantByIdUseCase _deleteAIAssistantByIdUseCase;
   final UpdateAIAssistantUseCase _updateAIAssistantUseCase;
   final FavoriteKBAIAssistantUseCase _favoriteKBAIAssistantUseCase;
+
+  StreamSubscription? _listenDeleteEvent;
 
   KBAIAssistantListPageViewModel(
     this._getListAIAssistantsUseCase,
@@ -90,8 +97,19 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
 
   @override
   void initState() {
+    _listenDeleteEvent = locator<EventBus>().on<KBAIDeleteEvent>().listen(
+      (event) {
+        onRefresh();
+      },
+    );
     loadAIAssistants();
     super.initState();
+  }
+
+  @override
+  void disposeState() {
+    _listenDeleteEvent?.cancel();
+    super.disposeState();
   }
 
   Future<void> showCreateAssistantDialog() async {
@@ -225,8 +243,9 @@ class KBAIAssistantListPageViewModel extends AppViewModel {
   Future<void> favoriteAssistant(KBAIAssistant assistant) async {
     final success = await run(() => _favoriteKBAIAssistantUseCase.run(assistantId: assistant.id));
     if (success) {
-      assistant.isFavorite ? showToast("UnFavorite") : showToast("Favorite");
       await onRefresh();
+    } else {
+      showToast("Favorite Assistant Failed");
     }
   }
 

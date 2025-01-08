@@ -28,10 +28,12 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
   double _dragOffset = 0;
   static const double _maxOffset = 100;
   static const double _threshold = 0.3;
+  bool _isFavorite = false;
 
   @override
   void initState() {
     super.initState();
+    _isFavorite = widget.assistant.isFavorite;
     widget.openItemIdNotifier.addListener(_onNotifierChanged);
   }
 
@@ -158,10 +160,15 @@ class _KBAIAssistantItemViewState extends State<KBAIAssistantItemView> {
                         ),
                       ),
                       InkWell(
-                        onTap: widget.onFavoriteTap,
+                        onTap: () {
+                          setState(() {
+                            _isFavorite = !_isFavorite;
+                          });
+                          widget.onFavoriteTap();
+                        },
                         child: Icon(
-                          widget.assistant.isFavorite ? Icons.star : Icons.star_border_outlined,
-                          color: widget.assistant.isFavorite ? Colors.orange : Colors.grey,
+                          _isFavorite ? Icons.star : Icons.star_border_outlined,
+                          color: _isFavorite ? Colors.orange : Colors.grey,
                           size: 24,
                         ),
                       ),

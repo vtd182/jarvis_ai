@@ -92,6 +92,7 @@ class _KnowledgeBaseListForImportState extends State<KnowledgeBaseListForImport>
 
   Widget _buildGrid() {
     return ResponsiveGridList(
+      physics: const AlwaysScrollableScrollPhysics(),
       desiredItemWidth: 300,
       minSpacing: 16,
       children: [
